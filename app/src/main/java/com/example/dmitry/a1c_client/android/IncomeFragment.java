@@ -1,0 +1,109 @@
+package com.example.dmitry.a1c_client.android;
+
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.di.DaggerIncomeFragmentComponent;
+import com.example.dmitry.a1c_client.di.IncomeModule;
+import com.example.dmitry.a1c_client.di.MainComponent;
+import com.example.dmitry.a1c_client.domain.entity.Document;
+import com.example.dmitry.a1c_client.presentation.IncomePresenter;
+import com.example.dmitry.a1c_client.presentation.IncomeView;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+public class IncomeFragment extends Fragment implements IncomeView {
+    @Inject IncomePresenter presenter;
+    @BindView(R.id.progress) ProgressBar progressBar;
+    @BindView(R.id.error_text) TextView errorText;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    private DocumentsAdapter adapter;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_income, container, false);
+        initDi();
+        ButterKnife.bind(this, view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return view;
+    }
+
+    private void initDi() {
+        MainComponent mainComponent = ((MyApplication) getActivity().getApplication()).getMainComponent();
+        DaggerIncomeFragmentComponent.builder().mainComponent(mainComponent).incomeModule(new IncomeModule(this)).build().inject(this);
+        presenter.init();
+    }
+
+    @Override
+    public void setDocuments(List<Document> documents) {
+        if (adapter == null) {
+            adapter = new DocumentsAdapter(documents);
+            recyclerView.setAdapter(adapter);
+        }else {
+            adapter.update(documents);
+        }
+
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(GONE);
+    }
+
+    @Override
+    public void showError() {
+        errorText.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hideError() {
+        errorText.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showDocuments() {
+        recyclerView.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hideDocuments() {
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.stop();
+    }
+}
