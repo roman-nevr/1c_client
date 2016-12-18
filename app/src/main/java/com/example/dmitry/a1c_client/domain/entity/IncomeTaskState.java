@@ -35,8 +35,8 @@ public abstract class IncomeTaskState {
 
     public enum State{
         notInitialised, ready,
-        positionRequested, positionReceived, positionTransmissionError,
-        storagePlaceRequested, storagePlaceReceived, storagePlaceTransmissionError,
+        progress, positionReceived, positionTransmissionError,
+        storagePlaceReceived, storagePlaceTransmissionError,
         barCodeSavingTransmissionError, barCodeNotFoundDialog, newBarcodeDialog,
         barCodeSaving, noRightsDialog
     }

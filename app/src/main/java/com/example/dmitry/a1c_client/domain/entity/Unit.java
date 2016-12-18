@@ -15,8 +15,7 @@ import java.util.List;
 @AutoValue
 public abstract class Unit {
     public static final Unit EMPTY = builder().id("").name("").build();
-    public static final List<Unit> DEFAULT_LIST =
-            Collections.unmodifiableList(getDefaultList());
+
     public static final List<Unit> EMPTY_LIST =
             Collections.unmodifiableList(Collections.emptyList());
 
@@ -37,10 +36,5 @@ public abstract class Unit {
         public abstract Unit build();
     }
 
-    private static List<Unit> getDefaultList() {
-        List<Unit> result = new ArrayList<>();
-        result.add(builder().id("1").name("шт.").build());
-        result.add(builder().id("2").name("уп.").build());
-        return result;
-    }
+
 }

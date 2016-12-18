@@ -18,7 +18,7 @@ import com.example.dmitry.a1c_client.di.DaggerIncomeFragmentComponent;
 import com.example.dmitry.a1c_client.di.IncomeListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.domain.entity.Document;
-import com.example.dmitry.a1c_client.presentation.IncomePresenter;
+import com.example.dmitry.a1c_client.presentation.IncomeListPresenter;
 import com.example.dmitry.a1c_client.presentation.IncomeListView;
 
 import java.util.List;
@@ -32,7 +32,8 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class IncomeFragment extends Fragment implements IncomeListView {
-    @Inject IncomePresenter presenter;
+    @Inject
+    IncomeListPresenter presenter;
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.error_text) TextView errorText;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;

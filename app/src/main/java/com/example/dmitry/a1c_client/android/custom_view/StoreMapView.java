@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.domain.AStarPathing;
 import com.example.dmitry.a1c_client.domain.entity.StoreMapObject;
 
 import java.util.List;
@@ -153,6 +152,7 @@ public class StoreMapView extends View {
 
     public void setStoreMapObject(StoreMapObject inStoreMapObject){
         this.storeMapObject = inStoreMapObject;
+        storeMapObject.getPath();
         this.invalidate();
 
         /*storeMapObject = new StoreMapObject(3,3);
@@ -188,8 +188,8 @@ public class StoreMapView extends View {
                     paddingTop + (contentHeight + mTextHeight) / 2,
                     mTextPaint);
         }else {
-            AStarPathing aStarPathing = new AStarPathing(storeMapObject);
-            List<Point> pathing = aStarPathing.pathing();
+
+            List<Point> pathing = storeMapObject.getPath();
             //List<Point> pathing = aStarPathing.pathing(new Point(0,0), new Point(2,2));
             float xSpace = contentWidth / storeMapObject.getWidth();
             float ySpace = contentHeight / storeMapObject.getHeight();

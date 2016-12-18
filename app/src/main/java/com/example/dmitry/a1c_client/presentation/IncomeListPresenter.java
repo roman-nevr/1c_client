@@ -17,7 +17,7 @@ import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.
 import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.progress;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.ready;
 
-public class IncomePresenter {
+public class IncomeListPresenter {
     @Inject
     IncomeListView view;
     @Inject StateKeeper<IncomeListState> incomeStateKeeper;
@@ -25,7 +25,7 @@ public class IncomePresenter {
     private CompositeSubscription compositeSubscription;
 
     @Inject
-    public IncomePresenter() {}
+    public IncomeListPresenter() {}
 
     public void init() {
         boolean success = incomeStateKeeper.change(state -> {

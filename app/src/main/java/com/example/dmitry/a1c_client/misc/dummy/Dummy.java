@@ -1,17 +1,19 @@
-package com.example.dmitry.a1c_client.dummy;
+package com.example.dmitry.a1c_client.misc.dummy;
 
 import com.example.dmitry.a1c_client.domain.entity.Client;
 import com.example.dmitry.a1c_client.domain.entity.Document;
 import com.example.dmitry.a1c_client.domain.entity.Image;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 import com.example.dmitry.a1c_client.domain.entity.Unit;
-import com.google.auto.value.AutoValue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.dmitry.a1c_client.domain.entity.Unit.builder;
 
 /**
  * Created by roma on 18.12.2016.
@@ -21,6 +23,9 @@ public class Dummy {
     public static final List<Client> CLIENTS = new ArrayList<>();
     public static final List<Document> DOCUMENTS = new ArrayList<>();
     public static final List<NomenclaturePosition> NOMENCLATURE = new ArrayList<>();
+
+    public static final List<Unit> DEFAULT_LIST =
+            Collections.unmodifiableList(getDefaultList());
 
 
     public static final Map<String, Client> CLIENT_MAP = new HashMap<>();
@@ -44,21 +49,28 @@ public class Dummy {
         }
 
         POSITION_MAP.put("11111111", NomenclaturePosition.create("1", "First", "First description",
-                "F111", "11111111", Image.EMPTY, Unit.DEFAULT_LIST));
-        POSITION_MAP.put("11111111", NomenclaturePosition.builder().id("1").positionName("Первая").
-                vendorCode("F111").description("111").units(Unit.DEFAULT_LIST).build());
-        POSITION_MAP.put("11111112", NomenclaturePosition.builder().id("2").positionName("Second").
-                vendorCode("F222").description("222").units(Unit.DEFAULT_LIST).build());
-        POSITION_MAP.put("11111113", NomenclaturePosition.builder().id("3").positionName("Third").
-                vendorCode("F333").description("333").units(Unit.DEFAULT_LIST).build());
+                "F111", "11111111", Image.EMPTY, Dummy.DEFAULT_LIST));
+        POSITION_MAP.put("11111112", NomenclaturePosition.create("2", "Second", "Second description",
+                "F112", "11111112", Image.EMPTY, Dummy.DEFAULT_LIST));
+        POSITION_MAP.put("11111113", NomenclaturePosition.create("3", "Third", "Third description",
+                "F113", "11111113", Image.EMPTY, Dummy.DEFAULT_LIST));
 
-        VENDOR_CODES_MAP.put("chul", NomenclaturePosition.builder().id("4").positionName("Чулки")
-                .description("Чулки черные").vendorCode("chul").units(Unit.DEFAULT_LIST).build());
-        VENDOR_CODES_MAP.put("abc", NomenclaturePosition.builder().id("5").positionName("Букварь")
-                .description("Детский букварь").vendorCode("abc").units(Unit.DEFAULT_LIST).build());
-        VENDOR_CODES_MAP.put("error", NomenclaturePosition.builder().id("6").positionName("error")
-                .description("error").vendorCode("error").units(Unit.DEFAULT_LIST).build());
+        VENDOR_CODES_MAP.put("chul", NomenclaturePosition.create("5", "Чулки", "Черные чулки",
+                "chul", "11111115", Image.EMPTY, Dummy.DEFAULT_LIST));
+        VENDOR_CODES_MAP.put("abc", NomenclaturePosition.create("6", "Букварь", "Детский букварь",
+                "abc", "11111116", Image.EMPTY, Dummy.DEFAULT_LIST));
+        VENDOR_CODES_MAP.put("error", NomenclaturePosition.create("7", "error", "Детский букварь",
+                "error", "11111117", Image.EMPTY, Dummy.DEFAULT_LIST));
     }
+
+    private static List<Unit> getDefaultList() {
+        List<Unit> result = new ArrayList<>();
+        result.add(builder().id("1").name("шт.").build());
+        result.add(builder().id("2").name("уп.").build());
+        return result;
+    }
+
+
 
     private static void addDocument(Document item) {
         DOCUMENTS.add(item);
@@ -82,6 +94,6 @@ public class Dummy {
     private static NomenclaturePosition createNomenclature(int i) {
         return NomenclaturePosition.builder().id(""+i).positionName("Товар "+i)
                 .description("Описание товара "+i).vendorCode("AB"+i+"CD").barCode(""+i)
-                .units(Unit.DEFAULT_LIST).image(Image.EMPTY).build();
+                .units(Dummy.DEFAULT_LIST).image(Image.EMPTY).build();
     }
 }

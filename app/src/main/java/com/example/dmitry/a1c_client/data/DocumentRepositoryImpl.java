@@ -2,13 +2,10 @@ package com.example.dmitry.a1c_client.data;
 
 
 import com.example.dmitry.a1c_client.domain.DocumentRepository;
-import com.example.dmitry.a1c_client.domain.entity.Client;
 import com.example.dmitry.a1c_client.domain.entity.Document;
-import com.example.dmitry.a1c_client.dummy.Dummy;
+import com.example.dmitry.a1c_client.misc.dummy.Dummy;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

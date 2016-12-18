@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class NomenclaturePosition {
 
     public static final NomenclaturePosition EMPTY = builder().id("").positionName("")
-            .description("").barCode("").vendorCode("").image(Image.EMPTY).units(Unit.DEFAULT_LIST)
+            .description("").barCode("").vendorCode("").image(Image.EMPTY).units(Unit.EMPTY_LIST)
             .build();
 
     public abstract String id();
