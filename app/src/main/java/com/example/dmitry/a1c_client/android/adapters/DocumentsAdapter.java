@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.adapters;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +39,7 @@ public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyH
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
         Document document = documentList.get(position);
+        holder.id.setText(document.id());
         holder.docNumber.setText(document.docNumber());
         holder.docDate.setText(dateFormat.format(document.docDate()));
         holder.clientName.setText(document.client().name());
@@ -50,9 +51,10 @@ public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyH
     }
 
     class MyHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.number) TextView docNumber;
-        @BindView(R.id.date) TextView docDate;
-        @BindView(R.id.client_name) TextView clientName;
+        @BindView(R.id.tvId) TextView id;
+        @BindView(R.id.tvNumber) TextView docNumber;
+        @BindView(R.id.tvPropsDate) TextView docDate;
+        @BindView(R.id.tvClientName) TextView clientName;
 
         public MyHolder(View itemView) {
             super(itemView);

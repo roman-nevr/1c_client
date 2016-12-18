@@ -6,6 +6,75 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="DocumentsListItem">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TableRowTextStyle">
+        <item name="android:textSize">@dimen/tableRowTextSize</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginLeft">5dp</item>
+    </style>
+    <style name="DetailsTableRowTextStyle">
+        <item name="android:textSize">@dimen/detailsTableFormRowTextSize</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="PropertiesTextStyle">
+        <item name="android:textSize">@dimen/propertiesTableFormTextSize</item>
+    </style>
+    <style name="RashodnyOrderTextStyle">
+        <item name="android:textSize">@dimen/rashodnyOrderTextSize</item>
+        <item name="android:padding">@dimen/rashodnyOrderTextPadding</item>
+    </style>
+    <style name="EquipActBarCodeStyle">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+    <style name="EquipActAuxStyle">
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="EquipActKitName">
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="EquipActKitDescription">
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="EquipActItem">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
 </resources>

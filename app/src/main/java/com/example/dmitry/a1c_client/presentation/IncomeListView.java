@@ -5,7 +5,7 @@ import com.example.dmitry.a1c_client.domain.entity.Document;
 
 import java.util.List;
 
-public interface IncomeView {
+public interface IncomeListView {
     void setDocuments(List<Document> documents);
 
     void showProgress();

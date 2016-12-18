@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 @AutoValue
-abstract public class IncomeState {
-    public static final IncomeState EMPTY = builder()
+abstract public class IncomeListState {
+    public static final IncomeListState EMPTY = builder()
             .documents(Collections.unmodifiableList(Collections.emptyList()))
             .state(State.notInitialased).build();
 
@@ -17,7 +17,7 @@ abstract public class IncomeState {
 
     abstract public Builder toBuilder();
 
-    public static Builder builder() {return new AutoValue_IncomeState.Builder();}
+    public static Builder builder() {return new AutoValue_IncomeListState.Builder();}
 
     public enum State {
         error, ready, progress, notInitialased
@@ -30,6 +30,6 @@ abstract public class IncomeState {
 
         public abstract Builder state(State state);
 
-        public abstract IncomeState build();
+        public abstract IncomeListState build();
     }
 }

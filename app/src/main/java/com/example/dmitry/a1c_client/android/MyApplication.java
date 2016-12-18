@@ -12,14 +12,14 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        injectDi();
+        initDI();
     }
 
     public MainComponent getMainComponent() {
         return mainComponent;
     }
 
-    private void injectDi() {
+    private void initDI() {
         mainComponent = DaggerMainComponent.create();
     }
 }

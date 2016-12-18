@@ -2,4 +2,49 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="item_width">200dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="mainMenuTextSize">20dp</dimen>
+
+    <dimen name="documentNumberColumnWidth">20dp</dimen>
+    <dimen name="documentDateColumnWidth">30dp</dimen>
+    <dimen name="documentSumColumnWidth">30dp</dimen>
+
+    <dimen name="detailsQuantityColumnWidth">40dp</dimen>
+
+    <dimen name="tabBarWithButtonsHeight">50dp</dimen>
+    <dimen name="tabItemTextSize">20sp</dimen>
+
+    <dimen name="tableRowTextSize">20sp</dimen>
+    <dimen name="dividerWidth">1px</dimen>
+
+    <dimen name="detailsTableFormRowTextSize">15sp</dimen>
+
+    <dimen name="propertiesTableFormTextSize">12sp</dimen>
+
+    <dimen name="rashodnyOrderTextSize">20sp</dimen>
+    <dimen name="rashodnyOrderTextPadding">5dp</dimen>
+
+    <dimen name="commitButtonWidth">200dp</dimen>
+    <dimen name="mapButtonWidth">200dp</dimen>
+
+    <dimen name="mapBarCodeTextSize">15sp</dimen>
+
+    <dimen name="detailsItemFormBarcodeLabelTextSize">20sp</dimen>
+    <dimen name="detailsItemFormNomenklaturaLabelTextSize">16sp</dimen>
+    <dimen name="detailsItemFormStorageElementWidth">100dp</dimen>
+    <dimen name="detailsItemFormButtonHeight">40dp</dimen>
+    <dimen name="detailsItemFormVerticalMargin">4dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
 </resources>

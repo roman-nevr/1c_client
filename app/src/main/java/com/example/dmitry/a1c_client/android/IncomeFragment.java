@@ -13,12 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.adapters.DocumentsAdapter;
 import com.example.dmitry.a1c_client.di.DaggerIncomeFragmentComponent;
-import com.example.dmitry.a1c_client.di.IncomeModule;
+import com.example.dmitry.a1c_client.di.IncomeListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.domain.entity.Document;
 import com.example.dmitry.a1c_client.presentation.IncomePresenter;
-import com.example.dmitry.a1c_client.presentation.IncomeView;
+import com.example.dmitry.a1c_client.presentation.IncomeListView;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class IncomeFragment extends Fragment implements IncomeView {
+public class IncomeFragment extends Fragment implements IncomeListView {
     @Inject IncomePresenter presenter;
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.error_text) TextView errorText;
@@ -50,7 +51,7 @@ public class IncomeFragment extends Fragment implements IncomeView {
 
     private void initDi() {
         MainComponent mainComponent = ((MyApplication) getActivity().getApplication()).getMainComponent();
-        DaggerIncomeFragmentComponent.builder().mainComponent(mainComponent).incomeModule(new IncomeModule(this)).build().inject(this);
+        DaggerIncomeFragmentComponent.builder().mainComponent(mainComponent).incomeListModule(new IncomeListModule(this)).build().inject(this);
         presenter.init();
     }
 
@@ -68,6 +69,8 @@ public class IncomeFragment extends Fragment implements IncomeView {
     @Override
     public void showProgress() {
         progressBar.setVisibility(VISIBLE);
+        errorText.setVisibility(GONE);
+        recyclerView.setVisibility(GONE);
     }
 
     @Override
@@ -77,7 +80,9 @@ public class IncomeFragment extends Fragment implements IncomeView {
 
     @Override
     public void showError() {
+        progressBar.setVisibility(GONE);
         errorText.setVisibility(VISIBLE);
+        recyclerView.setVisibility(GONE);
     }
 
     @Override
@@ -87,6 +92,8 @@ public class IncomeFragment extends Fragment implements IncomeView {
 
     @Override
     public void showDocuments() {
+        progressBar.setVisibility(GONE);
+        errorText.setVisibility(GONE);
         recyclerView.setVisibility(VISIBLE);
     }
 

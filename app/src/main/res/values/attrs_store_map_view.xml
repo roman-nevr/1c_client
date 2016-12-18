@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="StoreMapView">
+        <attr name="warningString" format="string" />
+        <attr name="warningStringSize" format="dimension" />
+        <attr name="warningPicture" format="reference" />
+    </declare-styleable>
+</resources>

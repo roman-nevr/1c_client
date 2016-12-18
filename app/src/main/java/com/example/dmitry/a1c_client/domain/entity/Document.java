@@ -14,6 +14,8 @@ abstract public class Document {
 
     abstract public Client client();
 
+    abstract public String comment();
+
     public static Builder builder() {return new AutoValue_Document.Builder();}
 
 
@@ -26,6 +28,8 @@ abstract public class Document {
         public abstract Builder docDate(Date docDate);
 
         public abstract Builder client(Client client);
+
+        public abstract Builder comment(String comment);
 
         public abstract Document build();
     }

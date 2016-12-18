@@ -3,7 +3,7 @@ package com.example.dmitry.a1c_client.presentation;
 
 import com.example.dmitry.a1c_client.BuildConfig;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
-import com.example.dmitry.a1c_client.domain.entity.IncomeState;
+import com.example.dmitry.a1c_client.domain.entity.IncomeListState;
 import com.example.dmitry.a1c_client.domain.interactor.UpdateDocumentsInteractor;
 
 import javax.inject.Inject;
@@ -13,13 +13,14 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeState.State.notInitialased;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeState.State.progress;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeState.State.ready;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.notInitialased;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.progress;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.ready;
 
 public class IncomePresenter {
-    @Inject IncomeView view;
-    @Inject StateKeeper<IncomeState> incomeStateKeeper;
+    @Inject
+    IncomeListView view;
+    @Inject StateKeeper<IncomeListState> incomeStateKeeper;
     @Inject UpdateDocumentsInteractor updateDocumentsInteractor;
     private CompositeSubscription compositeSubscription;
 
@@ -41,7 +42,7 @@ public class IncomePresenter {
 
     public void start() {
         compositeSubscription = new CompositeSubscription();
-        Observable<IncomeState> observable = incomeStateKeeper
+        Observable<IncomeListState> observable = incomeStateKeeper
                 .getObservable()
                 .observeOn(AndroidSchedulers.mainThread());
         subscribeIncomeStateState(observable);
@@ -49,10 +50,10 @@ public class IncomePresenter {
 
     }
 
-    private void subscribeDocuments(Observable<IncomeState> observable) {
+    private void subscribeDocuments(Observable<IncomeListState> observable) {
         Subscription subscription = observable
                 .filter(incomeState -> incomeState.state()==ready)
-                .map(IncomeState::documents)
+                .map(IncomeListState::documents)
                 .distinctUntilChanged()
                 .subscribe(
                         documents -> {
@@ -63,27 +64,21 @@ public class IncomePresenter {
         compositeSubscription.add(subscription);
     }
 
-    private void subscribeIncomeStateState(Observable<IncomeState> observable) {
+    private void subscribeIncomeStateState(Observable<IncomeListState> observable) {
         Subscription subscription = observable
-                .map(IncomeState::state)
+                .map(IncomeListState::state)
                 .distinctUntilChanged()
                 .subscribe(
                         state -> {
                             switch (state) {
                                 case progress:
                                     view.showProgress();
-                                    view.hideDocuments();
-                                    view.hideError();
                                     break;
                                 case error:
                                     view.showError();
-                                    view.hideDocuments();
-                                    view.hideProgress();
                                     break;
                                 case ready:
                                     view.showDocuments();
-                                    view.hideProgress();
-                                    view.hideError();
                                     break;
                                 default:
                                     if (BuildConfig.DEBUG) {
