@@ -2,10 +2,10 @@ package com.example.dmitry.a1c_client.android;
 
 import android.app.Application;
 
-import com.example.dmitry.a1c_client.di.DaggerIncomeTaskComponent;
 import com.example.dmitry.a1c_client.di.DaggerMainComponent;
-import com.example.dmitry.a1c_client.di.IncomeTaskComponent;
-import com.example.dmitry.a1c_client.di.IncomeTaskModule;
+import com.example.dmitry.a1c_client.di.income_task.DaggerIncomeTaskComponent;
+import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
+import com.example.dmitry.a1c_client.di.income_task.IncomeTaskModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.presentation.IncomeTaskView;
 
@@ -23,8 +23,13 @@ public class MyApplication extends Application {
     public MainComponent getMainComponent() {
         return mainComponent;
     }
-    public IncomeTaskComponent getIncomeTaskComponent(){
-        return incomeTaskComponent;}
+
+    public IncomeTaskComponent getIncomeTaskComponent() {
+        if (incomeTaskComponent == null) {
+            incomeTaskComponent = DaggerIncomeTaskComponent.create();
+        }
+        return incomeTaskComponent;
+    }
 
 
     private void initDI() {
@@ -33,10 +38,5 @@ public class MyApplication extends Application {
 
     public void clearIncomeTaskComponent(){
         incomeTaskComponent = null;
-    }
-    public IncomeTaskComponent buildIncomeTaskComponent(IncomeTaskView view){
-        incomeTaskComponent = DaggerIncomeTaskComponent.builder()
-                .incomeTaskModule(new IncomeTaskModule(view)).build();
-        return incomeTaskComponent;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dmitry.a1c_client.di;
 
+import com.example.dmitry.a1c_client.di.scopes.PerActivity;
 import com.example.dmitry.a1c_client.presentation.IncomeListView;
 
 import dagger.Module;
