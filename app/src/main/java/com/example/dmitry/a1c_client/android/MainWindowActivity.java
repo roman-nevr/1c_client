@@ -14,7 +14,7 @@ public class MainWindowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            IncomeFragment incomeFragment = new IncomeFragment();
+            IncomeListFragment incomeFragment = new IncomeListFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.main_container, incomeFragment, INCOME_FRAGMENT).commit();
         }
     }

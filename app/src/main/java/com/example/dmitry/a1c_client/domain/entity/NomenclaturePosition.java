@@ -46,6 +46,8 @@ public abstract class NomenclaturePosition {
         return new AutoValue_NomenclaturePosition.Builder();
     }
 
+    public abstract Builder toBuilder();
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Builder description(String description);

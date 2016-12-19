@@ -25,7 +25,9 @@ public class IncomeListPresenter {
     private CompositeSubscription compositeSubscription;
 
     @Inject
-    public IncomeListPresenter() {}
+    public IncomeListPresenter() {
+        System.out.println(1);
+    }
 
     public void init() {
         boolean success = incomeStateKeeper.change(state -> {

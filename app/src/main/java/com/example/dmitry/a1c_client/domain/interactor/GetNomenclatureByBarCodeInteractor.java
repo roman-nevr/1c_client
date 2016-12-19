@@ -8,6 +8,7 @@ import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 
 import javax.inject.Inject;
 
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionReceived;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionTransmissionError;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.progress;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.ready;
@@ -22,8 +23,13 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
 
     private String barCode;
 
-    public GetNomenclatureByBarCodeInteractor(String barCode) {
+    @Inject
+    public GetNomenclatureByBarCodeInteractor() {
+    }
+
+    public Interactor setBarCode(String barCode){
         this.barCode = barCode;
+        return this;
     }
 
     @Override
@@ -39,13 +45,17 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
     }
 
     private void showError() {
-        incomeTaskStateStateKeeper.change(state -> state.builder()
-                .state(positionTransmissionError).build());
+        incomeTaskStateStateKeeper.change(state -> {
+
+            return state.toBuilder()
+                .state(positionTransmissionError).build();});
     }
 
     private void updateState(NomenclaturePosition position) {
-        incomeTaskStateStateKeeper.change(state -> state.builder()
-                .position(position).state(ready).build());
+        incomeTaskStateStateKeeper.change(state -> {
+            IncomeTaskState newState = state.toBuilder().position(position).state(positionTransmissionError).build();
+            return state.toBuilder()
+                .position(position).state(positionReceived).build();});
     }
 
     private NomenclaturePosition getPosition() {
@@ -53,7 +63,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
     }
 
     private void showProgress() {
-        incomeTaskStateStateKeeper.change(state -> state.builder().state(progress).build());
+        incomeTaskStateStateKeeper.change(state -> state.toBuilder().state(progress).build());
     }
 
 

@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.android.adapters.DocumentsAdapter;
+import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment;
 import com.example.dmitry.a1c_client.di.DaggerIncomeFragmentComponent;
 import com.example.dmitry.a1c_client.di.IncomeListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.domain.entity.Document;
 import com.example.dmitry.a1c_client.presentation.IncomeListPresenter;
 import com.example.dmitry.a1c_client.presentation.IncomeListView;
+import com.example.dmitry.a1c_client.presentation.interfaces.IOnItemClick;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class IncomeFragment extends Fragment implements IncomeListView {
+public class IncomeListFragment extends Fragment implements IncomeListView, IOnItemClick {
     @Inject
     IncomeListPresenter presenter;
     @BindView(R.id.progress) ProgressBar progressBar;
@@ -59,7 +61,7 @@ public class IncomeFragment extends Fragment implements IncomeListView {
     @Override
     public void setDocuments(List<Document> documents) {
         if (adapter == null) {
-            adapter = new DocumentsAdapter(documents);
+            adapter = new DocumentsAdapter(documents, this);
             recyclerView.setAdapter(adapter);
         }else {
             adapter.update(documents);
@@ -113,5 +115,10 @@ public class IncomeFragment extends Fragment implements IncomeListView {
     public void onStop() {
         super.onStop();
         presenter.stop();
+    }
+
+    @Override
+    public void onItemClickAction(View view, String id) {
+        IncomeTaskActivity.start(getContext());
     }
 }

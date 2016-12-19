@@ -2,7 +2,7 @@ package com.example.dmitry.a1c_client.domain.entity;
 
 import com.google.auto.value.AutoValue;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.notInitialised;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.empty;
 
 /**
  * Created by roma on 18.12.2016.
@@ -12,7 +12,7 @@ import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.
 public abstract class IncomeTaskState {
 
     public static final IncomeTaskState EMPTY = builder().position(NomenclaturePosition.EMPTY)
-            .quantity(0).state(notInitialised).unit(Unit.EMPTY).storageElement("").storagePlace("")
+            .quantity(0).state(empty).unit(Unit.EMPTY).storageElement("").storagePlace("")
             .storeMapObject(StoreMapObject.EMPTY).build();
 
     public abstract NomenclaturePosition position();
@@ -33,8 +33,10 @@ public abstract class IncomeTaskState {
         return new AutoValue_IncomeTaskState.Builder();
     }
 
+    public abstract Builder toBuilder();
+
     public enum State{
-        notInitialised, ready,
+        empty, ready,
         progress, positionReceived, positionTransmissionError,
         storagePlaceReceived, storagePlaceTransmissionError,
         barCodeSavingTransmissionError, barCodeNotFoundDialog, newBarcodeDialog,

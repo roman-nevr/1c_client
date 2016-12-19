@@ -7,6 +7,7 @@ import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 
 import javax.inject.Inject;
 
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionReceived;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionTransmissionError;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.progress;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.ready;
@@ -37,13 +38,13 @@ public class GetNomenclatureByVendorCodeInteractor extends Interactor {
     }
 
     private void showError() {
-        stateKeeper.change(state -> state.builder()
+        stateKeeper.change(state -> state.toBuilder()
                 .state(positionTransmissionError).build());
     }
 
     private void updateState(NomenclaturePosition position) {
-        stateKeeper.change(state -> state.builder()
-                .position(position).state(ready).build());
+        stateKeeper.change(state -> state.toBuilder()
+                .position(position).state(positionReceived).build());
     }
 
     private NomenclaturePosition getPosition() {
@@ -51,6 +52,6 @@ public class GetNomenclatureByVendorCodeInteractor extends Interactor {
     }
 
     private void showProgress() {
-        stateKeeper.change(state -> state.builder().state(progress).build());
+        stateKeeper.change(state -> state.toBuilder().state(progress).build());
     }
 }

@@ -52,16 +52,16 @@ public class IncomeTaskRepositoryImpl implements IncomeTaskRepository {
             return Single.error(new IOException());
         }
         if (taskState.quantity() == 1){
-            return Single.just(taskState.builder().storeMapObject(StoreMapObject.FIRST)
+            return Single.just(taskState.toBuilder().storeMapObject(StoreMapObject.FIRST)
                     .storageElement("полка " + taskState.quantity())
                     .storagePlace("ряд "+taskState.quantity()).build());
-        }else return Single.just(taskState.builder().storeMapObject(StoreMapObject.SECOND)
+        }else return Single.just(taskState.toBuilder().storeMapObject(StoreMapObject.SECOND)
                 .storageElement("полка " + taskState.quantity())
                 .storagePlace("ряд "+taskState.quantity()).build());
     }
 
     @Override
     public Single<IncomeTaskState> setNomenclatureBarCode(IncomeTaskState taskState) {
-        return Single.just(taskState.builder().state(noRightsDialog).build());
+        return Single.just(taskState.toBuilder().state(noRightsDialog).build());
     }
 }

@@ -11,6 +11,7 @@ public class StateKeeper<T> {
 
     public StateKeeper(T state) {
         defaultValue = state;
+        subject.onNext(defaultValue);
     }
 
     public Observable<T> getObservable() {
@@ -39,6 +40,10 @@ public class StateKeeper<T> {
                 return true;
             }
         }
+    }
+
+    public T getValue(){
+        return subject.getValue();
     }
 
     public interface Modifier<T> {

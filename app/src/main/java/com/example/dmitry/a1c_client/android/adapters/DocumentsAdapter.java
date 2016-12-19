@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.domain.entity.Document;
+import com.example.dmitry.a1c_client.presentation.interfaces.IOnItemClick;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -19,8 +20,10 @@ import butterknife.ButterKnife;
 public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyHolder>{
     private List<Document> documentList;
     private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+    private IOnItemClick onItemClick;
 
-    public DocumentsAdapter(List<Document> documentList) {
+    public DocumentsAdapter(List<Document> documentList, IOnItemClick onItemClick) {
+        this.onItemClick = onItemClick;
         this.documentList = documentList;
         setHasStableIds(true);
     }
@@ -43,6 +46,7 @@ public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyH
         holder.docNumber.setText(document.docNumber());
         holder.docDate.setText(dateFormat.format(document.docDate()));
         holder.clientName.setText(document.client().name());
+        holder.holderView.setOnClickListener(v -> onItemClick.onItemClickAction(v, document.id()));
     }
 
     @Override
@@ -55,10 +59,12 @@ public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyH
         @BindView(R.id.tvNumber) TextView docNumber;
         @BindView(R.id.tvPropsDate) TextView docDate;
         @BindView(R.id.tvClientName) TextView clientName;
+        public final View holderView;
 
         public MyHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            holderView = itemView;
         }
     }
 }
