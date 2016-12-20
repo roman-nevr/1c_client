@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/detailsItemFormButtonHeight"
-    android:textColor="@color/colorPrimaryDark"
-    android:id="@android:id/text1"
+    android:textColor="@color/colorSecondary"
     style="?android:attr/spinnerDropDownItemStyle"
     android:maxLines="1"
     android:textSize="@dimen/detailsItemFormNomenklaturaLabelTextSize"
     android:ellipsize="marquee"
+    android:layout_margin="5dp"
     tools:text="111"/>

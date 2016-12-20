@@ -23,6 +23,7 @@ public interface IncomeTaskView {
     public void showEmptyState();
     public String getQuantity();
     public void showQuantityError();
+    public void clearBarCode();
     /*public Button btnMap();
     public EditText etBarCode();
     public EditText etQuantity();*/

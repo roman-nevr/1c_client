@@ -66,7 +66,6 @@ public class IncomeListFragment extends Fragment implements IncomeListView, IOnI
         }else {
             adapter.update(documents);
         }
-
     }
 
     @Override

@@ -21,8 +21,13 @@ public class GetNomenclatureByVendorCodeInteractor extends Interactor {
     @Inject IncomeTaskRepository taskRepository;
     private String vendorCode;
 
-    public GetNomenclatureByVendorCodeInteractor(String vendorCode) {
+    @Inject
+    public GetNomenclatureByVendorCodeInteractor() {
+    }
+
+    public Interactor setVendorCode(String vendorCode){
         this.vendorCode = vendorCode;
+        return this;
     }
 
     @Override
@@ -31,7 +36,7 @@ public class GetNomenclatureByVendorCodeInteractor extends Interactor {
             showProgress();
             NomenclaturePosition position = getPosition();
             updateState(position);
-        }catch (Throwable throwable){
+        } catch (Throwable throwable) {
             throwable.printStackTrace();
             showError();
         }

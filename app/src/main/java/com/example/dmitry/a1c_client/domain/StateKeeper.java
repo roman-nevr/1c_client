@@ -11,7 +11,6 @@ public class StateKeeper<T> {
 
     public StateKeeper(T state) {
         defaultValue = state;
-        subject.onNext(defaultValue);
     }
 
     public Observable<T> getObservable() {

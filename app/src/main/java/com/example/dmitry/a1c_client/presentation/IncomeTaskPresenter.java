@@ -53,12 +53,14 @@ public class IncomeTaskPresenter {
 
     @Inject
     public IncomeTaskPresenter() {
-
     }
 
     public void startSubscriptions(EditText etBarCode, EditText etQuantity, Spinner spinner,
                                    Button btnShowMap, Button btnGetStorageInfo) {
 
+        if(stateKeeper.getValue()==null){
+            stateKeeper.update(IncomeTaskState.EMPTY);
+        }
         subscriptions = new CompositeSubscription();
         subscribeOnBarCode(etBarCode);
         subscribeOnQuantity(etQuantity);
@@ -73,6 +75,7 @@ public class IncomeTaskPresenter {
         subscribeOnEmptyState();
         subscribeOnProgress();
     }
+
 
     private void subscribeOnProgress() {
         subscriptions.add(stateKeeper.getObservable()
@@ -148,6 +151,23 @@ public class IncomeTaskPresenter {
                 }));
     }
 
+    private void subscribeOnQuantity(EditText etQuantity) {
+        subscriptions.add(RxTextView.textChanges(etQuantity).debounce(500, TimeUnit.MILLISECONDS)
+                .map(charSequence -> charSequence.toString())
+                .filter(CommonFilters::isValidNumber)
+                .map(s -> Integer.parseInt(s))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(quantity -> {
+                    if (isQuantityChanged(quantity)){
+                        stateKeeper.change(state -> state.toBuilder().quantity(quantity).build());
+                        storageInteractor.execute();
+                    }else {
+                        view.showPosition(stateKeeper.getValue().position());
+                    }
+                }));
+    }
+
+
 
     private void subscribeOnStorageInfoButton(Button btnGetStorageInfo) {
         subscriptions.add(RxView.clicks(btnGetStorageInfo)
@@ -160,7 +180,6 @@ public class IncomeTaskPresenter {
                     }else {
                         view.showQuantityError();
                     }
-
                 }));
     }
 
@@ -180,41 +199,28 @@ public class IncomeTaskPresenter {
                                 .build())));
     }
 
-
-
-
-    private void subscribeOnQuantity(EditText etQuantity) {
-        subscriptions.add(RxTextView.textChanges(etQuantity).debounce(500, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .map(charSequence -> charSequence.toString())
-                .filter(CommonFilters::isValidNumber)
-                .map(s -> Integer.parseInt(s))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(quantity -> {
-                    stateKeeper.change(state -> state.toBuilder().quantity(quantity).build());
-                    storageInteractor.execute();
-                }));
-    }
-
     private void subscribeOnBarCode(EditText etBarCode) {
-        subscriptions.add(RxTextView.textChanges(etBarCode).debounce(500, TimeUnit.MILLISECONDS)
+        subscriptions.add(RxTextView.textChanges(etBarCode).debounce(1000, TimeUnit.MILLISECONDS)
                 .map(charSequence -> charSequence.toString())
                 .filter(CommonFilters::isValidBarCode)
+                .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(barCode -> barCodeInteractor.setBarCode(barCode).execute()));
+                .subscribe(barCode -> {
+                    if(isBarCodeChanged(barCode)){
+                        barCodeInteractor.setBarCode(barCode).execute();
+                    }
+                }));
     }
 
 
     public void stop() {
-        subscriptions.unsubscribe();
+        subscriptions.clear();
     }
 
     public SpinnerAdapter provideSpinnerAdapter(Context context) {
-        if (adapter == null) {
-            IncomeTaskState state = stateKeeper.getValue();
-            adapter = new UnitSpinnerAdapter(context, R.layout.spinner_simple_item_layout,
-                    stateKeeper.getValue().position().units());
-        }
+        IncomeTaskState state = stateKeeper.getValue();
+        adapter = new UnitSpinnerAdapter(context, R.layout.spinner_simple_item_layout,
+                state.position().units());
         return adapter;
     }
 
@@ -266,13 +272,26 @@ public class IncomeTaskPresenter {
     }
 
     private Boolean isSpinnerReady(Integer integer) {
-        IncomeTaskState.State state = stateKeeper.getValue().state();
-        return (integer >= 0 && (state == positionReceived || state == storagePlaceReceived)) ?
-                true : false;
+        IncomeTaskState taskState = stateKeeper.getValue();
+        if(taskState != null){
+            IncomeTaskState.State state = taskState.state();
+            return (integer >= 0 && (state == positionReceived || state == storagePlaceReceived)) ?
+                    true : false;
+        }else {
+            return false;
+        }
     }
 
     private Boolean isProgress(IncomeTaskState taskState) {
         return taskState.state() == progress ? true : false;
+    }
+
+    private boolean isBarCodeChanged(String barCode){
+        return !stateKeeper.getValue().position().barCode().equals(barCode);
+    }
+
+    private boolean isQuantityChanged(Integer quantity) {
+        return quantity != stateKeeper.getValue().quantity();
     }
 
 }

@@ -48,6 +48,11 @@ public class IncomeTaskRepositoryImpl implements IncomeTaskRepository {
 
     @Override
     public Single<IncomeTaskState> getStorageInfo(IncomeTaskState taskState) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(taskState.quantity() == 99){
             return Single.error(new IOException());
         }

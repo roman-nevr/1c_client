@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnNo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:id="@+id/textView7" />
+
+    <Button
+        android:text="Отменить"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnNo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/btnYes" />
+
+    <Button
+        android:text="Завести"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnYes"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/textView7" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:textAlignment="center"
+        android:id="@+id/etVendorCode"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        tools:text="Name"/>
+
+    <TextView
+        android:text="TextView"
+        android:textSize="@dimen/detailsItemFormBarcodeLabelTextSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvBarCode"
+        tools:text="11111111"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Введите артикул для поиска"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/tvNomenklatura"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Введенный штрихкод:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_alignBaseline="@+id/tvBarCode"
+        android:layout_alignBottom="@+id/tvBarCode"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text=""
+        android:textSize="@dimen/detailsItemFormBarcodeLabelTextSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvNomenklatura"
+        tools:text="Номенклатура"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/tvBarCode"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Найденная позиция номенклатуры"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/textView4"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tvNomenklatura" />
+</RelativeLayout>

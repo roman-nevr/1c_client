@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.adapters.UnitSpinnerAdapter;
 import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment;
 import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment.MessageCallBack;
 import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment;
@@ -56,15 +57,13 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        unitsSpinner.setAdapter(presenter.provideSpinnerAdapter(getApplicationContext()));
-        presenter.startSubscriptions(etBarCode, etQuantity, unitsSpinner,
-                btnGetStoragePlace, btnShowMap);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
+        presenter.startSubscriptions(etBarCode, etQuantity, unitsSpinner,
+                btnShowMap, btnGetStoragePlace);
     }
 
     @Override
@@ -101,7 +100,26 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         tvNomenklatura.setText(position.positionName());
         tvDescription.setText(position.description());
         tvVendorCode.setText(position.vendorCode());
+        etQuantity.setText("");
+        enableStorageViews();
+        unitsSpinner.setAdapter(presenter.provideSpinnerAdapter(getApplicationContext()));
     }
+
+    private void enableStorageViews(){
+        etQuantity.setEnabled(true);
+        unitsSpinner.setEnabled(true);
+        btnGetStoragePlace.setEnabled(true);
+        btnShowMap.setEnabled(true);
+    }
+
+    private void disableStorageViews(){
+        etQuantity.setEnabled(false);
+        unitsSpinner.setEnabled(false);
+        btnGetStoragePlace.setEnabled(false);
+        btnShowMap.setEnabled(false);
+    }
+
+
 
     @Override
     public void showStorageInfo(String place, String element) {
@@ -140,8 +158,15 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     @Override
     public void showEmptyState() {
         etBarCode.setText("");
-        showPosition(NomenclaturePosition.EMPTY);
+        tvNomenklatura.setText("");
+        tvDescription.setText("");
+        tvVendorCode.setText("");
+        etQuantity.setText("");
         showStorageInfo("", "");
+        if(unitsSpinner.getAdapter()!=null){
+            ((UnitSpinnerAdapter)unitsSpinner.getAdapter()).clearItems();
+        }
+        disableStorageViews();
     }
 
     @Override
@@ -152,6 +177,11 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     @Override
     public void showQuantityError() {
         etQuantity.setError("ошибка");
+    }
+
+    @Override
+    public void clearBarCode() {
+        etBarCode.setText("");
     }
 
     public static void start(Context context){
