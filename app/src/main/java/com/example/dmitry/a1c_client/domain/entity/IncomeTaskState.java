@@ -40,7 +40,7 @@ public abstract class IncomeTaskState {
         progress, positionReceived, positionTransmissionError,
         storagePlaceReceived, storagePlaceTransmissionError,
         barCodeSavingTransmissionError, barCodeNotFoundDialog, newBarcodeDialog,
-        barCodeSaving, noRightsDialog
+        barCodeSaved, noRightsDialog
     }
 
     @AutoValue.Builder

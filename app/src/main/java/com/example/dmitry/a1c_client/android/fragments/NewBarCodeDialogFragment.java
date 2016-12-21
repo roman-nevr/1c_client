@@ -11,18 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.domain.IncomeTaskRepository;
+import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogPresenter;
 import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogView;
 
+import org.w3c.dom.Text;
+
 import javax.inject.Inject;
 
-import ru.yoursolution.a1cclient.App;
-import ru.yoursolution.a1cclient.R;
-import ru.yoursolution.a1cclient.domain.model.DetailFormState;
-import ru.yoursolution.a1cclient.implementations.DetailFormStateRepository;
-import ru.yoursolution.a1cclient.presentation.ui.interfaces.INewBarCodeDialogFragmentConvention;
-import ru.yoursolution.a1cclient.presentation.ui.presenters.NewBarCodeDialogFragmentPresenterImpl;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 
 /**
@@ -31,86 +32,52 @@ import rx.Observable;
 
 public class NewBarCodeDialogFragment extends DialogFragment implements NewBarCodeDialogView {
 
-    private View form;
-    private Button btnYes;
-    private Button btnNo;
-    private EditText etVendorCode;
-    private TextView tvBarCode;
-    private TextView tvNomenklatura;
-
     @Inject NewBarCodeDialogPresenter presenter;
+    private View form;
+    @BindView(R.id.etVendorCode) EditText etVendorCode;
+    @BindView(R.id.tvBarCode) TextView tvBarCode;
+    @BindView(R.id.tvNomenklatura) TextView tvNomenklatura;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         form = getActivity().getLayoutInflater().inflate(R.layout.new_barcode_dialog_layout, null, true);
-        bindViews(form);
-
-        repository = App.detailFormStateRepository;
-        observable = repository.getObservable();
-        presenter = new NewBarCodeDialogFragmentPresenterImpl(this);
-
-
+        ButterKnife.bind(this, form);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(form);
         return builder.create();
     }
 
-    private void bindViews(View form) {
-        btnYes = (Button) form.findViewById(R.id.btnYes);
-        btnNo = (Button) form.findViewById(R.id.btnNo);
-        etVendorCode = (EditText) form.findViewById(R.id.etVendorCode);
-        tvBarCode = (TextView) form.findViewById(R.id.tvBarCode);
-        tvNomenklatura = (TextView) form.findViewById(R.id.tvNomenklatura);
+    @OnClick(R.id.btnYes)
+    public void onYesClick(){
+        presenter.onYesButtonClick();
+    };
 
-        btnYes.setOnClickListener(v -> {
-            presenter.onYesButtonClick();
-        });
-        btnNo.setOnClickListener(v -> {
-            presenter.onNoButtonClick();
-        });
+    @OnClick(R.id.btnNo)
+    public void onNoClick(){
+        presenter.onCancelButtonClick();
+    };
+
+    @Override public void showNomenklatura(NomenclaturePosition position) {
+        tvNomenklatura.setText(position.positionName());
     }
 
-
-    @Override
-    public void showNomenklatura(String arg) {
-        tvNomenklatura.setText(arg);
+    @Override public void showBarCode(String arg) {
     }
 
-    @Override
-    public void showBarCode(String arg) {
-        tvBarCode.setText(arg);
+    @Override public Observable<CharSequence> getVendorCodeObservable() {
+        return null;
     }
 
-    @Override
-    public EditText getVendorCodeView() {
-        return etVendorCode;
+    @Override public void showYesButton() {
+
     }
 
-    @Override
-    public void showYesButton() {
-        btnYes.setClickable(true);
+    @Override public void hideYesButton() {
+
     }
 
-    @Override
-    public void hideYesButton() {
-        btnYes.setClickable(false);
-    }
+    @Override public void showError() {
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.init();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        presenter.onStop();
     }
 }
