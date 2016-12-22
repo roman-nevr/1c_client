@@ -6,9 +6,10 @@ package com.example.dmitry.a1c_client.misc;
 
 public class CommonFilters {
     public static Boolean isValidBarCode(String barCode){
+
         try {
             Long.parseLong(barCode);
-            return true;
+            return barCode.length() > 0;
         }catch (NumberFormatException e){
             return false;
         }

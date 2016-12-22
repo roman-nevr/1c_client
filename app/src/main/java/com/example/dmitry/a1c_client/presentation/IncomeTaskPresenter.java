@@ -10,6 +10,7 @@ import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.android.adapters.UnitSpinnerAdapter;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState;
+import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState;
 import com.example.dmitry.a1c_client.domain.entity.Unit;
 import com.example.dmitry.a1c_client.domain.interactor.GetNomenclatureByBarCodeInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.GetStorageInteractor;
@@ -25,16 +26,15 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.barCodeNotFoundDialog;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.barCodeSavingTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.empty;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.newBarcodeDialog;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionReceived;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.progress;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.ready;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.storagePlaceReceived;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.storagePlaceTransmissionError;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.connectionError;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.notFound;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.barCodeInput;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.displayPosition;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.displayStorageInfo;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.newBarcodeDialog;
 import static com.example.dmitry.a1c_client.misc.CommonFilters.isValidNumber;
 
 /**
@@ -53,7 +53,12 @@ public class IncomeTaskPresenter {
 
     @Inject
     public IncomeTaskPresenter() {
+        subscriptions = new CompositeSubscription();
     }
+
+    public static final int RETRY = 0;
+    public static final int ASK_NEW_BARCODE = 1;
+    public static final int SHOW_NEW_BARCODE_DIALOG = 2;
 
     public void startSubscriptions(EditText etBarCode, EditText etQuantity, Spinner spinner,
                                    Button btnShowMap, Button btnGetStorageInfo) {
@@ -61,19 +66,33 @@ public class IncomeTaskPresenter {
         if(stateKeeper.getValue()==null){
             stateKeeper.update(IncomeTaskState.EMPTY);
         }
-        subscriptions = new CompositeSubscription();
-        subscribeOnBarCode(etBarCode);
-        subscribeOnQuantity(etQuantity);
-        subscribeOnSpinner(spinner);
-        subscribeOnShowMapButton(btnShowMap);
-        subscribeOnStorageInfoButton(btnGetStorageInfo);
-        subscribeOnNewPositionReceived();
-        subscribeOnStorageInfoReceved();
-        subscribeOnPositionNotFound();
-        subscribeOnNewBarCodeDialog();
+
+        subscribeOnProgress();
         subscribeOnNetError();
         subscribeOnEmptyState();
-        subscribeOnProgress();
+
+        subscribeOnBarCode(etBarCode);
+
+        subscribeOnPositionByBarCodeReceived();
+        subscribeOnPositionNotFound();
+
+        subscribeOnStorageInfoButton(btnGetStorageInfo);
+        subscribeOnQuantity(etQuantity);
+        subscribeOnStorageInfoReceved();
+        subscribeOnShowMapButton(btnShowMap);
+
+        subscribeOnNewBarCodeDialog();
+        subscribeOnPositionByVendorCodeReceived();
+
+        subscribeOnSpinner(spinner);
+    }
+
+    private void subscribeOnPositionByBarCodeReceived(){
+        subscribeOnNewPositionReceived();
+    }
+
+    private void subscribeOnPositionByVendorCodeReceived(){
+        //subscribeOnNewPositionReceived();
     }
 
 
@@ -112,7 +131,7 @@ public class IncomeTaskPresenter {
                 .filter(this::isNewBarCodeDialog)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(taskState -> {
-                    view.showNewBarCodeDialog();
+                    view.showNewBarCodeDialog(taskState.position().barCode());
                 }));
     }
 
@@ -233,11 +252,36 @@ public class IncomeTaskPresenter {
     }
 
     public void onOkButton(int queryId) {
-
+        switch (queryId){
+            case RETRY:{
+                break;
+            }
+            case ASK_NEW_BARCODE:{
+                view.showNewBarCodeDialog(stateKeeper.getValue().position().barCode());
+                break;
+            }
+            case SHOW_NEW_BARCODE_DIALOG:{
+                break;
+            }
+            default: throw new UnsupportedOperationException("unknown queryId");
+        }
     }
 
     public void onCancelButton(int queryId) {
-
+        switch (queryId){
+            case RETRY:{
+                break;
+            }
+            case ASK_NEW_BARCODE:{
+                stateKeeper.update(IncomeTaskState.EMPTY);
+                break;
+            }
+            case SHOW_NEW_BARCODE_DIALOG:{
+                stateKeeper.update(IncomeTaskState.EMPTY);
+                break;
+            }
+            default: throw new UnsupportedOperationException("unknown queryId");
+        }
     }
 
     public void onMessageButton(int queryId) {
@@ -246,44 +290,48 @@ public class IncomeTaskPresenter {
 
     //filter methods
     private Boolean isPositionReceived(IncomeTaskState taskState) {
-        return taskState.state() == positionReceived ? true : false;
+        return taskState.positionState() == received;
     }
 
     private Boolean isStorageInfoReceived(IncomeTaskState taskState) {
-        return taskState.state() == storagePlaceReceived ? true : false;
+        return taskState.storageState() == received;
     }
 
     private Boolean isPositionNotFound(IncomeTaskState taskState) {
-        return taskState.state() == barCodeNotFoundDialog ? true : false;
+        return taskState.positionState() == notFound;
     }
 
     private Boolean isNewBarCodeDialog(IncomeTaskState taskState) {
-        return taskState.state() == newBarcodeDialog ? true : false;
+        return taskState.viewState() == newBarcodeDialog;
     }
 
     private Boolean isNetError(IncomeTaskState taskState) {
-        return (taskState.state() == positionTransmissionError
-                || taskState.state() == barCodeSavingTransmissionError
-                || taskState.state() == storagePlaceTransmissionError) ? true : false;
+        return (taskState.positionState() == error
+                || taskState.storageState() == error
+                || taskState.errorState() == connectionError);
     }
 
     private Boolean isEmptyState(IncomeTaskState taskState) {
-        return (taskState.state() == empty) ? true : false;
+        return (taskState.viewState() == barCodeInput);
     }
 
     private Boolean isSpinnerReady(Integer integer) {
         IncomeTaskState taskState = stateKeeper.getValue();
         if(taskState != null){
-            IncomeTaskState.State state = taskState.state();
-            return (integer >= 0 && (state == positionReceived || state == storagePlaceReceived)) ?
-                    true : false;
+            ViewState viewState = taskState.viewState();
+            return (integer >= 0 &&(
+                    (viewState == displayPosition && taskState.positionState() == received) ||
+                    (viewState == displayStorageInfo)));
         }else {
             return false;
         }
     }
 
     private Boolean isProgress(IncomeTaskState taskState) {
-        return taskState.state() == progress ? true : false;
+        return (taskState.viewState() == barCodeInput && taskState.positionState() == requested)
+                ||(taskState.viewState() == newBarcodeDialog && taskState.positionState() == requested)
+                ||(taskState.viewState() == displayPosition && taskState.storageState() == requested)
+                ||(taskState.viewState() == displayStorageInfo && taskState.storageState() == requested);
     }
 
     private boolean isBarCodeChanged(String barCode){

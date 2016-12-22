@@ -8,10 +8,13 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.barCodeSaved;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.barCodeSavingTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.progress;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.connectionError;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.noRights;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.displayPosition;
 
 /**
  * Created by Admin on 21.12.2016.
@@ -31,8 +34,8 @@ public class SaveBarCodeInteractor extends Interactor {
         }
         try {
             showProgress();
-            IncomeTaskState newTaskState = saveBarCode(barCode);
-            updateState(newTaskState);
+            boolean success = saveBarCode(barCode);
+            updateState(success);
         } catch (Throwable e) {
             e.printStackTrace();
             showError();
@@ -45,22 +48,32 @@ public class SaveBarCodeInteractor extends Interactor {
 
     private void showError() {
         stateKeeper.change(state -> state.toBuilder()
-                .state(barCodeSavingTransmissionError).build());
+                .positionState(error).errorState(connectionError).build());
     }
 
-    private void updateState(IncomeTaskState taskState) {
-        stateKeeper.change(state -> state.toBuilder()
-                .position(state.position().toBuilder().barCode(barCode).build())
-                .state(barCodeSaved).build());
+    private void updateState(boolean success) {
+        if (success) {
+            stateKeeper.change(state -> state.toBuilder().position(state.position()
+                            .toBuilder()
+                            .barCode(barCode).build())
+                    .viewState(displayPosition)
+                    .positionState(received)
+                    .errorState(ok).build());
+        } else {
+            stateKeeper.change(state -> state.toBuilder()
+                    .positionState(error)
+                    .errorState(noRights)
+                    .build());
+        }
     }
 
-    private IncomeTaskState saveBarCode(String barCode) throws IOException {
+    private boolean saveBarCode(String barCode) throws IOException {
         return taskRepository.saveBarCode(stateKeeper.getValue().position(), barCode)
                 .toBlocking().value();
     }
 
     private void showProgress() {
-        stateKeeper.change(state -> state.toBuilder().state(progress).build());
+        stateKeeper.change(state -> state.toBuilder().positionState(requested).build());
     }
 
 }

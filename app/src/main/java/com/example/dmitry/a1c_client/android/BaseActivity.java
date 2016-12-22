@@ -23,7 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initDi(savedInstanceState);
     }
 
-    @LayoutRes abstract int provideLayoutId();
+    abstract protected @LayoutRes int provideLayoutId();
 
     abstract protected void initDi(Bundle savedInstanceState);
 }

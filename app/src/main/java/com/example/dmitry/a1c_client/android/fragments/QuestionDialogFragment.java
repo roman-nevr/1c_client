@@ -117,4 +117,8 @@ public class QuestionDialogFragment extends DialogFragment {
         }
     }
 
+    @Override public void onPause() {
+        super.onPause();
+        dismiss();
+    }
 }

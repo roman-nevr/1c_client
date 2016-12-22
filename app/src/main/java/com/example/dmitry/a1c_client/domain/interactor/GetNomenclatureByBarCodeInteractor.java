@@ -1,6 +1,5 @@
 package com.example.dmitry.a1c_client.domain.interactor;
 
-import com.example.dmitry.a1c_client.data.IncomeTaskRepositoryImpl;
 import com.example.dmitry.a1c_client.domain.IncomeTaskRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState;
@@ -8,10 +7,10 @@ import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionReceived;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.progress;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.ready;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.barCodeNotFoundDialog;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.positionReceived;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.positionTransmissionError;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.progress;
 
 /**
  * Created by roma on 18.12.2016.
@@ -27,7 +26,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
     public GetNomenclatureByBarCodeInteractor() {
     }
 
-    public Interactor setBarCode(String barCode){
+    public Interactor setBarCode(String barCode) {
         this.barCode = barCode;
         return this;
     }
@@ -37,25 +36,46 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
         try {
             showProgress();
             NomenclaturePosition position = getPosition();
-            updateState(position);
+            if (position != NomenclaturePosition.EMPTY) {
+                updateState(position);
+            } else {
+                showPositionNoFound();
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             showError();
         }
     }
 
+    private void showPositionNoFound() {
+        incomeTaskStateStateKeeper.change(state -> state
+                .toBuilder()
+                .position(state.position().toBuilder().barCode(barCode).build())
+                .viewState(barCodeNotFoundDialog)
+                .build());
+    }
+
     private void showError() {
         incomeTaskStateStateKeeper.change(state -> {
 
             return state.toBuilder()
-                .state(positionTransmissionError).build();});
+                    .viewState(positionTransmissionError)
+                    .build();
+        });
     }
 
     private void updateState(NomenclaturePosition position) {
         incomeTaskStateStateKeeper.change(state -> {
-            IncomeTaskState newState = state.toBuilder().position(position).state(positionTransmissionError).build();
+            IncomeTaskState newState = state
+                    .toBuilder()
+                    .position(position)
+                    .viewState(positionTransmissionError)
+                    .build();
             return state.toBuilder()
-                .position(position).state(positionReceived).build();});
+                    .position(position)
+                    .viewState(positionReceived)
+                    .build();
+        });
     }
 
     private NomenclaturePosition getPosition() {
@@ -63,7 +83,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
     }
 
     private void showProgress() {
-        incomeTaskStateStateKeeper.change(state -> state.toBuilder().state(progress).build());
+        incomeTaskStateStateKeeper.change(state -> state.toBuilder().viewState(progress).build());
     }
 
 

@@ -15,16 +15,14 @@ public interface IncomeTaskView {
     public void hideProgress();
     public void showPosition(NomenclaturePosition position);
     public void showStorageInfo(String place, String element);
+    public void hideStorageInfo();
     public void showMap(StoreMapObject storeMapObject);
     public void showPositionNotFoundDialog();
-    public void showNewBarCodeDialog();
+    public void showNewBarCodeDialog(String barCode);
     public void showNetErrorMessage();
     public void showNoRightsMessage();
     public void showEmptyState();
     public String getQuantity();
     public void showQuantityError();
     public void clearBarCode();
-    /*public Button btnMap();
-    public EditText etBarCode();
-    public EditText etQuantity();*/
 }

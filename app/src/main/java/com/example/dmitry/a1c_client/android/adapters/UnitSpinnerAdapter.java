@@ -32,6 +32,9 @@ public class UnitSpinnerAdapter extends ArrayAdapter{
         if (convertView == null) {
             convertView = View.inflate(context, textViewResourceId, null);
         }
+        if(units == null){
+            System.out.println("adapter units are null");
+        }
         ((TextView)convertView).setText(units.get(position).name());
         return convertView;
     }

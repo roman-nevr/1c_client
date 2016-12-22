@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import rx.Single;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.noRightsDialog;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.noRightsDialog;
 
 /**
  * Created by roma on 18.12.2016.
@@ -67,6 +67,18 @@ public class IncomeTaskRepositoryImpl implements IncomeTaskRepository {
 
     @Override
     public Single<IncomeTaskState> setNomenclatureBarCode(IncomeTaskState taskState) {
-        return Single.just(taskState.toBuilder().state(noRightsDialog).build());
+        return Single.just(taskState.toBuilder().viewState(noRightsDialog).build());
+    }
+
+    @Override
+    public Single<Boolean> saveBarCode(NomenclaturePosition position, String barCode) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        NomenclaturePosition newPosition = position.toBuilder().barCode(barCode).build();
+        Dummy.NOMENCLATURE_MAP.put(barCode, newPosition);
+        return Single.just(true);
     }
 }

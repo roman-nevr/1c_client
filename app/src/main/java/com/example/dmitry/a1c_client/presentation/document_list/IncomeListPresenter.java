@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.presentation;
+package com.example.dmitry.a1c_client.presentation.document_list;
 
 
 import com.example.dmitry.a1c_client.BuildConfig;

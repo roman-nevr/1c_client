@@ -13,9 +13,10 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.barCodeSavingTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionReceived;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.State.positionTransmissionError;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.newBarcodeDialog;
+
 
 /**
  * Created by Admin on 20.12.2016.
@@ -57,8 +58,7 @@ public class NewBarCodeDialogPresenter {
     }
 
     private Boolean isNetError(IncomeTaskState taskState) {
-        return (taskState.state() == positionTransmissionError
-                || taskState.state() == barCodeSavingTransmissionError);
+        return ((taskState.viewState() == newBarcodeDialog && taskState.positionState() == error));
     }
 
     private void subscribeOnPosition() {
@@ -69,16 +69,21 @@ public class NewBarCodeDialogPresenter {
     }
 
     private Boolean isPositionReceived(IncomeTaskState taskState) {
-        return taskState.state() == positionReceived;
+        return (taskState.viewState() == newBarcodeDialog && taskState.positionState() == received);
     }
 
     private void subscribeOnVendorCode() {
         subscriptions.add(view.getVendorCodeObservable()
-                .debounce(1000, TimeUnit.MILLISECONDS)
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .filter(this::isValidVendorCode)
                 .map(chars -> chars.toString())
                 .subscribe(vendorCode -> {
                     getInteractor.setVendorCode(vendorCode).execute();
                 }));
+    }
+
+    private Boolean isValidVendorCode(CharSequence charSequence) {
+        return charSequence.length() > 0;
     }
 
     public void stop(){

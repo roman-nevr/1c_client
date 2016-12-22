@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.income_task;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +13,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.BaseActivity;
+import com.example.dmitry.a1c_client.android.MyApplication;
 import com.example.dmitry.a1c_client.android.adapters.UnitSpinnerAdapter;
 import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment;
 import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment.MessageCallBack;
+import com.example.dmitry.a1c_client.android.fragments.NewBarCodeDialogFragment;
 import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment;
 import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment.AnswerCallBack;
-import com.example.dmitry.a1c_client.di.income_task.DaggerIncomeTaskComponent;
 import com.example.dmitry.a1c_client.di.income_task.DaggerIncomeTaskViewComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskViewModule;
@@ -30,6 +32,9 @@ import com.example.dmitry.a1c_client.presentation.IncomeTaskView;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+
+import static com.example.dmitry.a1c_client.presentation.IncomeTaskPresenter.ASK_NEW_BARCODE;
+import static com.example.dmitry.a1c_client.presentation.IncomeTaskPresenter.RETRY;
 
 /**
  * Created by Admin on 19.12.2016.
@@ -51,8 +56,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @Inject IncomeTaskPresenter presenter;
 
-    public static final int RETRY = 0;
-    public static final int NEW_BARCODE = 1;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,20 +64,22 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         presenter.startSubscriptions(etBarCode, etQuantity, unitsSpinner,
                 btnShowMap, btnGetStoragePlace);
     }
 
+
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         presenter.stop();
     }
 
     @Override
-    int provideLayoutId() {
+    protected int provideLayoutId() {
         return R.layout.details_item_form_layout;
     }
 
@@ -127,6 +133,10 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         tvStoragePlace.setText(place);
     }
 
+    @Override public void hideStorageInfo() {
+
+    }
+
     @Override
     public void showMap(StoreMapObject storeMapObject) {
 
@@ -135,24 +145,31 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     @Override
     public void showPositionNotFoundDialog() {
         QuestionDialogFragment.newInstance("Позиция по штрихкоду не найдена \n Завести новый?",
-                "Да, завести", "Нет, не надо", NEW_BARCODE, this).show(getSupportFragmentManager()
-                , "ask");
+                "Да, завести", "Нет, не надо", ASK_NEW_BARCODE, this).show(getSupportFragmentManager()
+                , "notFound");
     }
 
     @Override
-    public void showNewBarCodeDialog() {
+    public void showNewBarCodeDialog(String barCode) {
+        hideProgress();
+        NewBarCodeDialogFragment.newInstance(barCode)
+                .show(getSupportFragmentManager(), "barCode");
     }
 
     @Override
     public void showNetErrorMessage() {
         hideProgress();
-        MessageDialogFragment.newInstance("Нет связи с сервером\n Попробуйте заново", RETRY);
+        MessageDialogFragment
+                .newInstance("Нет связи с сервером\n Попробуйте заново", RETRY)
+                .show(getSupportFragmentManager(), "error");
     }
 
     @Override
     public void showNoRightsMessage() {
         hideProgress();
-        MessageDialogFragment.newInstance("У вас нет прав на эту операцию", RETRY);
+        MessageDialogFragment
+                .newInstance("У вас нет прав на эту операцию", RETRY)
+                .show(getSupportFragmentManager(), "noRights");
     }
 
     @Override
@@ -164,6 +181,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         etQuantity.setText("");
         showStorageInfo("", "");
         if(unitsSpinner.getAdapter()!=null){
+            System.out.println("not null");
             ((UnitSpinnerAdapter)unitsSpinner.getAdapter()).clearItems();
         }
         disableStorageViews();

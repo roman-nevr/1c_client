@@ -1,7 +1,6 @@
 package com.example.dmitry.a1c_client.android.fragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -12,12 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.domain.IncomeTaskRepository;
+import com.example.dmitry.a1c_client.android.MyApplication;
+import com.example.dmitry.a1c_client.di.income_task.DaggerNewBarCodeViewComponent;
+import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
+import com.example.dmitry.a1c_client.di.income_task.NewBarCodeViewModule;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
+import com.example.dmitry.a1c_client.misc.utils;
 import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogPresenter;
 import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogView;
-
-import org.w3c.dom.Text;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import javax.inject.Inject;
 
@@ -37,6 +39,10 @@ public class NewBarCodeDialogFragment extends DialogFragment implements NewBarCo
     @BindView(R.id.etVendorCode) EditText etVendorCode;
     @BindView(R.id.tvBarCode) TextView tvBarCode;
     @BindView(R.id.tvNomenklatura) TextView tvNomenklatura;
+    @BindView (R.id.btnYes) Button btnYes;
+    @BindView (R.id.btnNo) Button btnNo;
+
+    public static final String BARCODE = "barCode";
 
     @NonNull
     @Override
@@ -45,7 +51,27 @@ public class NewBarCodeDialogFragment extends DialogFragment implements NewBarCo
         ButterKnife.bind(this, form);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(form);
+        hideYesButton();
+        initDI();
         return builder.create();
+    }
+
+    private void initDI() {
+        IncomeTaskComponent taskComponent = ((MyApplication)getActivity().getApplicationContext())
+                .getIncomeTaskComponent();
+        DaggerNewBarCodeViewComponent.builder().incomeTaskComponent(taskComponent)
+                .newBarCodeViewModule(new NewBarCodeViewModule(this)).build().inject(this);
+    }
+
+    @Override public void onStart() {
+        super.onStart();
+        presenter.setView(this);
+        presenter.start();
+    }
+
+    @Override public void onStop() {
+        super.onStop();
+        presenter.stop();
     }
 
     @OnClick(R.id.btnYes)
@@ -62,22 +88,27 @@ public class NewBarCodeDialogFragment extends DialogFragment implements NewBarCo
         tvNomenklatura.setText(position.positionName());
     }
 
-    @Override public void showBarCode(String arg) {
-    }
-
     @Override public Observable<CharSequence> getVendorCodeObservable() {
-        return null;
+        return RxTextView.textChanges(etVendorCode);
     }
 
     @Override public void showYesButton() {
-
+        btnYes.setEnabled(true);
     }
 
     @Override public void hideYesButton() {
-
+        btnYes.setEnabled(false);
     }
 
     @Override public void showError() {
+        utils.snackBarLong(tvNomenklatura, "Произошла ошибка");
+    }
 
+    public static DialogFragment newInstance(String barCode){
+        DialogFragment fragment = new NewBarCodeDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(BARCODE, barCode);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 }
