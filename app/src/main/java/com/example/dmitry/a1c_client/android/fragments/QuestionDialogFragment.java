@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.misc.utils;
 
 
 /**
@@ -23,15 +24,40 @@ import com.example.dmitry.a1c_client.R;
 
 public class QuestionDialogFragment extends DialogFragment {
 
-    private static AnswerCallBack listener;
-
-    private View form;
-    private boolean ok = false;
-    private int queryId;
     public static final String QUESTION = "question";
     public static final String BUTTON_OK = "ok";
     public static final String BUTTON_CANCEL = "cancel";
     public static final String ID = "id";
+    private static AnswerCallBack listener;
+    private View form;
+    private boolean ok = false;
+    private int queryId;
+
+    public static QuestionDialogFragment newInstance(String question, String btnOkText,
+                                                     String btnCancelText, int queryId,
+                                                     AnswerCallBack callBack) {
+        listener = callBack;
+        QuestionDialogFragment fragment = new QuestionDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(QuestionDialogFragment.QUESTION, question);
+        bundle.putString(QuestionDialogFragment.BUTTON_OK, btnOkText);
+        bundle.putString(QuestionDialogFragment.BUTTON_CANCEL, btnCancelText);
+        bundle.putInt(ID, queryId);
+        fragment.setArguments(bundle);
+        fragment.setCancelable(false);
+        return fragment;
+    }
+
+    public static QuestionDialogFragment newInstance(String question) {
+        QuestionDialogFragment fragment = new QuestionDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(QuestionDialogFragment.QUESTION, question);
+        bundle.putString(QuestionDialogFragment.BUTTON_OK, "Да");
+        bundle.putString(QuestionDialogFragment.BUTTON_CANCEL, "Нет");
+        bundle.putInt(ID, 0);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @NonNull
     @Override
@@ -46,13 +72,15 @@ public class QuestionDialogFragment extends DialogFragment {
         btnOk.setText(bundle.getString(BUTTON_OK));
         btnCancel.setText(bundle.getString(BUTTON_CANCEL));
         tvMessage.setText(bundle.getString(QUESTION));
-        btnOk.setOnClickListener(v -> {if (listener != null){
-                                            listener.onOkButtonClick(queryId);
-                                        }
-                                        ok = true;
-                                        dismiss();});
+        btnOk.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onOkButtonClick(queryId);
+            }
+            ok = true;
+            dismiss();
+        });
         btnCancel.setOnClickListener(v -> dismiss());
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(form);
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
@@ -69,56 +97,31 @@ public class QuestionDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(getParentFragment() instanceof MessageDialogFragment.MessageCallBack){
+        if (getParentFragment() instanceof MessageDialogFragment.MessageCallBack) {
             listener = (AnswerCallBack) getParentFragment();
-        }else if(context instanceof MessageDialogFragment.MessageCallBack){
+        } else if (context instanceof MessageDialogFragment.MessageCallBack) {
             listener = (AnswerCallBack) context;
-        }else {
+        } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    public interface AnswerCallBack {
-        void onOkButtonClick(int queryId);
-        void onCancelButtonClick(int queryId);
-    }
-
-    public static QuestionDialogFragment newInstance(String question, String btnOkText,
-                                                     String btnCancelText, int queryId,
-                                                     AnswerCallBack callBack){
-        listener = callBack;
-        QuestionDialogFragment fragment = new QuestionDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(QuestionDialogFragment.QUESTION, question);
-        bundle.putString(QuestionDialogFragment.BUTTON_OK, btnOkText);
-        bundle.putString(QuestionDialogFragment.BUTTON_CANCEL, btnCancelText);
-        bundle.putInt(ID, queryId);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    public static QuestionDialogFragment newInstance(String question){
-        QuestionDialogFragment fragment = new QuestionDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(QuestionDialogFragment.QUESTION, question);
-        bundle.putString(QuestionDialogFragment.BUTTON_OK, "Да");
-        bundle.putString(QuestionDialogFragment.BUTTON_CANCEL, "Нет");
-        bundle.putInt(ID, 0);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        if(listener != null && !ok){
+        /*if (listener != null && !ok) {
             listener.onCancelButtonClick(queryId);
-        }
+        }*/
     }
 
     @Override public void onPause() {
         super.onPause();
-        dismiss();
+        //dismiss();
+    }
+
+    public interface AnswerCallBack {
+        void onOkButtonClick(int queryId);
+
+        void onCancelButtonClick(int queryId);
     }
 }

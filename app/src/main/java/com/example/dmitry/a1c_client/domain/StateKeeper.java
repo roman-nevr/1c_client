@@ -19,6 +19,7 @@ public class StateKeeper<T> {
 
     public void update(T state) {
         synchronized (subjectLock) {
+           // System.out.println("check " + state);
             subject.onNext(state);
         }
     }
@@ -27,6 +28,7 @@ public class StateKeeper<T> {
         synchronized (subjectLock) {
             T newState;
             if (subject.hasValue()) {
+                //System.out.println(subject.getValue());
                 newState = modifier.modify(subject.getValue());
             } else {
                 newState = modifier.modify(defaultValue);
@@ -35,6 +37,7 @@ public class StateKeeper<T> {
             if (newState == null) {
                 return false;
             } else {
+                System.out.println(newState);
                 subject.onNext(newState);
                 return true;
             }

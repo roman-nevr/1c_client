@@ -26,6 +26,7 @@ import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskViewModule;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 import com.example.dmitry.a1c_client.domain.entity.StoreMapObject;
+import com.example.dmitry.a1c_client.misc.utils;
 import com.example.dmitry.a1c_client.presentation.IncomeTaskPresenter;
 import com.example.dmitry.a1c_client.presentation.IncomeTaskView;
 
@@ -33,8 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-import static com.example.dmitry.a1c_client.presentation.IncomeTaskPresenter.ASK_NEW_BARCODE;
-import static com.example.dmitry.a1c_client.presentation.IncomeTaskPresenter.RETRY;
+import static com.example.dmitry.a1c_client.misc.utils.hideKeyboard;
 
 /**
  * Created by Admin on 19.12.2016.
@@ -56,7 +56,9 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @Inject IncomeTaskPresenter presenter;
 
-
+    public static final int RETRY = 0;
+    public static final int BARCODE_NOT_FOUND = 1;
+    public static final int NEW_BARCODE_DIALOG = 2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,12 +95,16 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
 
     @Override
     public void showProgress() {
+        etBarCode.setEnabled(false);
+        etQuantity.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+        etBarCode.setEnabled(true);
+        etQuantity.setEnabled(true);
     }
 
     @Override
@@ -129,6 +135,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
 
     @Override
     public void showStorageInfo(String place, String element) {
+        hideKeyboard(this);
         tvStorageElement.setText(element);
         tvStoragePlace.setText(place);
     }
@@ -143,9 +150,10 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     }
 
     @Override
-    public void showPositionNotFoundDialog() {
+    public void showBarCodeNotFoundDialog() {
+        hideKeyboard(this);
         QuestionDialogFragment.newInstance("Позиция по штрихкоду не найдена \n Завести новый?",
-                "Да, завести", "Нет, не надо", ASK_NEW_BARCODE, this).show(getSupportFragmentManager()
+                "Да, завести", "Нет, не надо", BARCODE_NOT_FOUND, this).show(getSupportFragmentManager()
                 , "notFound");
     }
 
@@ -180,10 +188,11 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         tvVendorCode.setText("");
         etQuantity.setText("");
         showStorageInfo("", "");
-        if(unitsSpinner.getAdapter()!=null){
-            System.out.println("not null");
+        unitsSpinner.setAdapter(null);
+        /*if(unitsSpinner.getAdapter()!=null){
+            System.out.println("adapter not null");
             ((UnitSpinnerAdapter)unitsSpinner.getAdapter()).clearItems();
-        }
+        }*/
         disableStorageViews();
     }
 
@@ -197,11 +206,6 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         etQuantity.setError("ошибка");
     }
 
-    @Override
-    public void clearBarCode() {
-        etBarCode.setText("");
-    }
-
     public static void start(Context context){
         Intent intent = new Intent(context, IncomeTaskActivity.class);
         context.startActivity(intent);
@@ -209,16 +213,42 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
 
     @Override
     public void onMessageButtonClick(int id) {
-        presenter.onMessageButton(id);
     }
 
     @Override
     public void onOkButtonClick(int queryId) {
-        presenter.onOkButton(queryId);
+        switch (queryId){
+            case RETRY:{
+                presenter.onRetryAccept();
+                break;
+            }
+            case BARCODE_NOT_FOUND:{
+                presenter.onBarCodeNotFoundDialogAccept();
+                break;
+            }
+            case NEW_BARCODE_DIALOG:{
+                break;
+            }
+            default:throw new  UnsupportedOperationException();
+        }
     }
 
     @Override
     public void onCancelButtonClick(int queryId) {
-        presenter.onCancelButton(queryId);
+        switch (queryId){
+            case RETRY:{
+                presenter.onRetryDecline();
+                break;
+            }
+            case BARCODE_NOT_FOUND:{
+                presenter.onBarCodeNotFoundDialogDecline();
+                break;
+            }
+            case NEW_BARCODE_DIALOG:{
+                presenter.onNewBarCodeDialogDecline();
+                break;
+            }
+            default:throw new  UnsupportedOperationException();
+        }
     }
 }

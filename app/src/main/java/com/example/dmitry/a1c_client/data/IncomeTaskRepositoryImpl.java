@@ -10,8 +10,6 @@ import java.io.IOException;
 
 import rx.Single;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.noRightsDialog;
-
 /**
  * Created by roma on 18.12.2016.
  */
@@ -62,12 +60,7 @@ public class IncomeTaskRepositoryImpl implements IncomeTaskRepository {
                     .storagePlace("ряд "+taskState.quantity()).build());
         }else return Single.just(taskState.toBuilder().storeMapObject(StoreMapObject.SECOND)
                 .storageElement("полка " + taskState.quantity())
-                .storagePlace("ряд "+taskState.quantity()).build());
-    }
-
-    @Override
-    public Single<IncomeTaskState> setNomenclatureBarCode(IncomeTaskState taskState) {
-        return Single.just(taskState.toBuilder().viewState(noRightsDialog).build());
+                .storagePlace("ряд "+taskState.quantity()+taskState.unit().name()).build());
     }
 
     @Override

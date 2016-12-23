@@ -17,12 +17,11 @@ public interface IncomeTaskView {
     public void showStorageInfo(String place, String element);
     public void hideStorageInfo();
     public void showMap(StoreMapObject storeMapObject);
-    public void showPositionNotFoundDialog();
+    public void showBarCodeNotFoundDialog();
     public void showNewBarCodeDialog(String barCode);
     public void showNetErrorMessage();
     public void showNoRightsMessage();
     public void showEmptyState();
     public String getQuantity();
     public void showQuantityError();
-    public void clearBarCode();
 }

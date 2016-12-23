@@ -4,6 +4,7 @@ import com.example.dmitry.a1c_client.domain.entity.Client;
 import com.example.dmitry.a1c_client.domain.entity.Document;
 import com.example.dmitry.a1c_client.domain.entity.Image;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
+import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.domain.entity.Unit;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Dummy {
     public static final List<Client> CLIENTS = new ArrayList<>();
     public static final List<Document> DOCUMENTS = new ArrayList<>();
     public static final List<NomenclaturePosition> NOMENCLATURE = new ArrayList<>();
+    public static final List<ShipmentTaskPosition> SHIPMENT_TASK = new ArrayList<>();
 
     public static final List<Unit> DEFAULT_LIST =
             Collections.unmodifiableList(getDefaultList());
@@ -48,19 +50,31 @@ public class Dummy {
             addDocument(createDummyDocument1(i));
         }
 
+        for (int i = 1; i <= 5; i++) {
+            SHIPMENT_TASK.add(createDummyShipment(i));
+        }
+
         POSITION_MAP.put("11111111", NomenclaturePosition.create("1", "First", "First description",
-                "F111", "11111111", Image.EMPTY, Dummy.DEFAULT_LIST));
+                "F111", "11111111", Image.EMPTY, DEFAULT_LIST));
         POSITION_MAP.put("11111112", NomenclaturePosition.create("2", "Second", "Second description",
-                "F112", "11111112", Image.EMPTY, Dummy.DEFAULT_LIST));
+                "F112", "11111112", Image.EMPTY, DEFAULT_LIST));
         POSITION_MAP.put("11111113", NomenclaturePosition.create("3", "Third", "Third description",
-                "F113", "11111113", Image.EMPTY, Dummy.DEFAULT_LIST));
+                "F113", "11111113", Image.EMPTY, DEFAULT_LIST));
 
         VENDOR_CODES_MAP.put("chul", NomenclaturePosition.create("5", "Чулки", "Черные чулки",
-                "chul", "11111115", Image.EMPTY, Dummy.DEFAULT_LIST));
+                "chul", "11111115", Image.EMPTY, DEFAULT_LIST));
         VENDOR_CODES_MAP.put("abc", NomenclaturePosition.create("6", "Букварь", "Детский букварь",
-                "abc", "11111116", Image.EMPTY, Dummy.DEFAULT_LIST));
+                "abc", "11111116", Image.EMPTY, DEFAULT_LIST));
         VENDOR_CODES_MAP.put("error", NomenclaturePosition.create("7", "error", "Детский букварь",
-                "error", "11111117", Image.EMPTY, Dummy.DEFAULT_LIST));
+                "error", "11111117", Image.EMPTY, DEFAULT_LIST));
+    }
+
+    private static ShipmentTaskPosition createDummyShipment(int i) {
+        return ShipmentTaskPosition.create(
+                NomenclaturePosition.create("id"+i, "Название"+i,"Описание"+i, "art"+i,
+                        ""+i+i+i, Image.EMPTY, DEFAULT_LIST),
+                i , 0
+        );
     }
 
     private static List<Unit> getDefaultList() {

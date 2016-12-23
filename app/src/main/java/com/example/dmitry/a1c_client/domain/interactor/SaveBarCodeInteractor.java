@@ -8,12 +8,12 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.connectionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.noRights;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.ok;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.error;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.received;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.noRights;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.displayPosition;
 
 /**
@@ -42,8 +42,9 @@ public class SaveBarCodeInteractor extends Interactor {
         }
     }
 
-    public void setBarCode(String barCode) {
+    public Interactor setBarCode(String barCode) {
         this.barCode = barCode;
+        return this;
     }
 
     private void showError() {

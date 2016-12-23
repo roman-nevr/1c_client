@@ -6,9 +6,12 @@ import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.progress;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.storagePlaceReceived;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.storagePlaceTransmissionError;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.displayStorageInfo;
 
 /**
  * Created by roma on 18.12.2016.
@@ -36,13 +39,18 @@ public class GetStorageInteractor extends Interactor {
 
     private void showError() {
         stateKeeper.change(state -> state.toBuilder()
-                .viewState(storagePlaceTransmissionError).build());
+                .storageState(error)
+                .errorState(connectionError)
+                .build());
     }
 
     private void updateState(IncomeTaskState taskState) {
         stateKeeper.change(state -> state.toBuilder()
-                .storageElement(taskState.storageElement()).storagePlace(taskState.storagePlace())
-                .viewState(storagePlaceReceived).build());
+                .storageElement(taskState.storageElement())
+                .storagePlace(taskState.storagePlace())
+                .storageState(received)
+                .errorState(ok)
+                .build());
     }
 
     private IncomeTaskState getStorage(IncomeTaskState state){
@@ -50,6 +58,9 @@ public class GetStorageInteractor extends Interactor {
     }
 
     private void showProgress() {
-        stateKeeper.change(state -> state.toBuilder().viewState(progress).build());
+        stateKeeper.change(state -> state.toBuilder()
+                .viewState(displayStorageInfo)
+                .storageState(requested)
+                .build());
     }
 }

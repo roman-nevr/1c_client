@@ -8,7 +8,7 @@ import dagger.Component;
 /**
  * Created by Admin on 22.12.2016.
  */
-@Component(dependencies = IncomeTaskComponent.class, modules = NewBarCodeViewModule.class)
+@Component(dependencies = IncomeTaskComponent.class)
 @DialogScope
 public interface NewBarCodeViewComponent {
     void inject(NewBarCodeDialogFragment fragment);

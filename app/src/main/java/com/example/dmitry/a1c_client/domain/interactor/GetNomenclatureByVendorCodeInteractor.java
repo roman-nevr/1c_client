@@ -7,11 +7,13 @@ import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.connectionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.ok;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.error;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.received;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.notFound;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
+
 
 /**
  * Created by roma on 18.12.2016.
@@ -26,7 +28,7 @@ public class GetNomenclatureByVendorCodeInteractor extends Interactor {
     public GetNomenclatureByVendorCodeInteractor() {
     }
 
-    public Interactor setVendorCode(String vendorCode){
+    public Interactor setVendorCode(String vendorCode) {
         this.vendorCode = vendorCode;
         return this;
     }
@@ -36,11 +38,23 @@ public class GetNomenclatureByVendorCodeInteractor extends Interactor {
         try {
             showProgress();
             NomenclaturePosition position = getPosition();
-            updateState(position);
+            if (position != NomenclaturePosition.EMPTY) {
+                updateState(position);
+            } else {
+                setNotFound();
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             showError();
         }
+    }
+
+    private void setNotFound() {
+        stateKeeper.change(state -> state.toBuilder()
+                .position(NomenclaturePosition.EMPTY)
+                .positionState(notFound)
+                .errorState(ok)
+                .build());
     }
 
     private void showError() {

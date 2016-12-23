@@ -1,9 +1,11 @@
 package com.example.dmitry.a1c_client.domain.entity;
 
+import com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState;
+import com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState;
 import com.google.auto.value.AutoValue;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ErrorState.ok;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.TransmitionState.NaS;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.barCodeInput;
 
 /**
@@ -13,13 +15,13 @@ import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewSt
 @AutoValue
 public abstract class IncomeTaskState {
 
-    public static final IncomeTaskState EMPTY = create(NomenclaturePosition.EMPTY, 0, Unit.EMPTY, "", "", barCodeInput, NaS, NaS, ok, StoreMapObject.EMPTY);
+    public static final IncomeTaskState EMPTY = create(NomenclaturePosition.EMPTY, 0, Unit.EMPTY, "", "", barCodeInput, idle, idle, ok, StoreMapObject.EMPTY);
 
     public static Builder builder() {
         return new AutoValue_IncomeTaskState.Builder();
     }
 
-    public static IncomeTaskState create(NomenclaturePosition position, int quantity, Unit unit, String storagePlace, String storageElement, ViewState viewState, TransmitionState positionState, TransmitionState storageState, ErrorState errorState, StoreMapObject storeMapObject) {
+    public static IncomeTaskState create(NomenclaturePosition position, int quantity, Unit unit, String storagePlace, String storageElement, ViewState viewState, TransmissionState positionState, TransmissionState storageState, ErrorState errorState, StoreMapObject storeMapObject) {
         return builder()
                 .position(position)
                 .quantity(quantity)
@@ -46,9 +48,9 @@ public abstract class IncomeTaskState {
 
     public abstract ViewState viewState();
 
-    public abstract TransmitionState positionState();
+    public abstract TransmissionState positionState();
 
-    public abstract TransmitionState storageState();
+    public abstract TransmissionState storageState();
 
     public abstract ErrorState errorState();
 
@@ -66,15 +68,6 @@ public abstract class IncomeTaskState {
         barCodeSaving
     }
 
-    public enum TransmitionState {
-        NaS, requested, received, notFound, error  //Not a State
-    }
-
-    public enum ErrorState {
-        ok, noRights, connectionError
-    }
-
-
     @AutoValue.Builder public abstract static class Builder {
         public abstract Builder position(NomenclaturePosition position);
 
@@ -88,9 +81,9 @@ public abstract class IncomeTaskState {
 
         public abstract Builder viewState(ViewState viewState);
 
-        public abstract Builder storageState(TransmitionState storageState);
+        public abstract Builder storageState(TransmissionState storageState);
 
-        public abstract Builder positionState(TransmitionState positionState);
+        public abstract Builder positionState(TransmissionState positionState);
 
         public abstract Builder errorState(ErrorState errorState);
 

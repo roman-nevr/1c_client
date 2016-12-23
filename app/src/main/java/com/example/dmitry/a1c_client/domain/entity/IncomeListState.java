@@ -20,7 +20,7 @@ abstract public class IncomeListState {
     public static Builder builder() {return new AutoValue_IncomeListState.Builder();}
 
     public enum State {
-        error, ready, progress, notInitialased
+        downloadError, ready, progress, notInitialased
     }
 
 

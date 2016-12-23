@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.error;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.downloadError;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.progress;
 import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.ready;
 
@@ -41,7 +41,7 @@ public class UpdateDocumentsInteractor extends Interactor {
     }
 
     private void showError() {
-        incomeListStateKeeper.change(state -> state.toBuilder().state(error).build());
+        incomeListStateKeeper.change(state -> state.toBuilder().state(downloadError).build());
     }
 
     private void showProgress() {

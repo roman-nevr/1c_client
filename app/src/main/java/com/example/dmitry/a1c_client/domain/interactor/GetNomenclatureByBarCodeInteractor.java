@@ -7,10 +7,14 @@ import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.barCodeNotFoundDialog;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.positionReceived;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.positionTransmissionError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.progress;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.notFound;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.barCodeInput;
+import static com.example.dmitry.a1c_client.domain.entity.IncomeTaskState.ViewState.displayPosition;
 
 /**
  * Created by roma on 18.12.2016.
@@ -39,7 +43,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
             if (position != NomenclaturePosition.EMPTY) {
                 updateState(position);
             } else {
-                showPositionNoFound();
+                showBarCodeNoFound();
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -47,35 +51,33 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
         }
     }
 
-    private void showPositionNoFound() {
+    private void showBarCodeNoFound() {
         incomeTaskStateStateKeeper.change(state -> state
                 .toBuilder()
-                .position(state.position().toBuilder().barCode(barCode).build())
-                .viewState(barCodeNotFoundDialog)
+                //.position(state.position().toBuilder().barCode(barCode).build())
+                .position(NomenclaturePosition.EMPTY.toBuilder().barCode(barCode).build())
+                .positionState(notFound)
+                .errorState(ok)
                 .build());
     }
 
-    private void showError() {
-        incomeTaskStateStateKeeper.change(state -> {
-
-            return state.toBuilder()
-                    .viewState(positionTransmissionError)
-                    .build();
-        });
+    private void updateState(NomenclaturePosition position) {
+        incomeTaskStateStateKeeper.change(state ->
+                state.toBuilder()
+                        .position(position)
+                        .viewState(displayPosition)
+                        .positionState(received)
+                        .errorState(ok)
+                        .build());
     }
 
-    private void updateState(NomenclaturePosition position) {
-        incomeTaskStateStateKeeper.change(state -> {
-            IncomeTaskState newState = state
-                    .toBuilder()
-                    .position(position)
-                    .viewState(positionTransmissionError)
-                    .build();
-            return state.toBuilder()
-                    .position(position)
-                    .viewState(positionReceived)
-                    .build();
-        });
+    private void showError() {
+        incomeTaskStateStateKeeper.change(state ->
+            state.toBuilder()
+                    .positionState(error)
+                    .errorState(connectionError)
+                    .build()
+        );
     }
 
     private NomenclaturePosition getPosition() {
@@ -83,7 +85,11 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
     }
 
     private void showProgress() {
-        incomeTaskStateStateKeeper.change(state -> state.toBuilder().viewState(progress).build());
+        incomeTaskStateStateKeeper.change(state -> state.toBuilder()
+                .viewState(barCodeInput)
+                .positionState(requested)
+                .errorState(ok)
+                .build());
     }
 
 

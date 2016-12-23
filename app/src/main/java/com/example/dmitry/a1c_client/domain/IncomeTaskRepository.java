@@ -12,6 +12,5 @@ public interface IncomeTaskRepository {
     Single<NomenclaturePosition> getPositionByBarCode(String barCode);
     Single<NomenclaturePosition> getPositionByVendorCode(String vendorCode);
     Single<IncomeTaskState> getStorageInfo(IncomeTaskState taskState);
-    Single<IncomeTaskState> setNomenclatureBarCode(IncomeTaskState taskState);
     Single<Boolean> saveBarCode(NomenclaturePosition position, String barCode);
 }

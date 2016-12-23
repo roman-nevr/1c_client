@@ -12,9 +12,9 @@ import rx.Observable;
 
 public interface NewBarCodeDialogView {
     void showNomenklatura(NomenclaturePosition position);
-    Observable<CharSequence> getVendorCodeObservable();
+    EditText etVendorCode();
     void showYesButton();
     void hideYesButton();
     void dismiss();
-    void showError();
+    void showError(String message);
 }

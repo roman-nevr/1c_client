@@ -76,7 +76,7 @@ public class IncomeListPresenter {
                                 case progress:
                                     view.showProgress();
                                     break;
-                                case error:
+                                case downloadError:
                                     view.showError();
                                     break;
                                 case ready:
