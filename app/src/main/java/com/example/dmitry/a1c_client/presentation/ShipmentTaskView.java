@@ -1,5 +1,6 @@
 package com.example.dmitry.a1c_client.presentation;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.widget.EditText;
 
@@ -10,5 +11,7 @@ import android.widget.EditText;
 public interface ShipmentTaskView {
     void initProgressBar(int start, int max);
     ViewPager getViewPager();
-
+    FragmentManager provideFragmentManager();
+    void showProgress();
+    void hideProgress();
 }

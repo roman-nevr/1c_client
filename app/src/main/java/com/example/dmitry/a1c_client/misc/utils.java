@@ -57,4 +57,12 @@ public class utils {
         snackBarWithAction(view, message, action, 2, listener);
     }
 
+    public static void delay(int milliseconds){
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

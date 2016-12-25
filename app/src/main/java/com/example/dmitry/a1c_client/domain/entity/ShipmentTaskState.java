@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
-import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.CompleteState.notComplete;
+import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.CompleteState.notInitailased;
 import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.DisplayState.actual;
 
 /**
@@ -23,7 +23,7 @@ public abstract class ShipmentTaskState {
     private static List<ShipmentTaskPosition> EMPTY_LIST =
             Collections.unmodifiableList(new ArrayList<>());
 
-    public static ShipmentTaskState EMPTY = create(EMPTY_LIST, EMPTY_LIST, actual, notComplete, idle, ok);
+    public static ShipmentTaskState EMPTY = create(EMPTY_LIST, EMPTY_LIST, actual, notInitailased, idle, ok);
 
 
 
@@ -62,7 +62,7 @@ public abstract class ShipmentTaskState {
     }
 
     public enum CompleteState {
-        notComplete, comlete
+        notInitailased, notComplete, comlete
     }
 
 

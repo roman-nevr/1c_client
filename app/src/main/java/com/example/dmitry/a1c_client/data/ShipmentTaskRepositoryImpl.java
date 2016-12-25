@@ -5,6 +5,7 @@ import com.example.dmitry.a1c_client.domain.entity.Enums;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState;
 import com.example.dmitry.a1c_client.misc.dummy.Dummy;
+import com.example.dmitry.a1c_client.misc.utils;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,10 +22,12 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
 public class ShipmentTaskRepositoryImpl implements ShipmentTaskRepository {
 
     @Override public Single<List<ShipmentTaskPosition>> getTask() {
+        utils.delay(1000);
         return Single.just(Collections.unmodifiableList(Dummy.SHIPMENT_TASK));
     }
 
     @Override public Single<ShipmentTaskState> saveProgress(ShipmentTaskState taskState) {
+        utils.delay(1000);
         return Single.just(taskState.toBuilder()
                 .transmissionState(received)
                 .errorState(ok)
@@ -32,6 +35,7 @@ public class ShipmentTaskRepositoryImpl implements ShipmentTaskRepository {
     }
 
     @Override public Single<ShipmentTaskState> postInsufficientReport(ShipmentTaskState taskState) {
+        utils.delay(1000);
         return Single.just(taskState.toBuilder()
                 .transmissionState(received)
                 .errorState(ok)

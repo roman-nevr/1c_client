@@ -24,6 +24,7 @@ public class StateKeeper<T> {
         }
     }
 
+    //returns true if onNext was called
     public boolean change(Modifier<T> modifier) {
         synchronized (subjectLock) {
             T newState;

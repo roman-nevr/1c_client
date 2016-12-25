@@ -118,6 +118,6 @@ public class IncomeListFragment extends Fragment implements IncomeListView, IOnI
 
     @Override
     public void onItemClickAction(View view, String id) {
-        IncomeTaskActivity.start(getContext());
+        ShipmentTaskActivity.start(getContext());
     }
 }

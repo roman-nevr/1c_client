@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".android.income_task.IncomeTaskActivity">
         </activity>
+        <activity android:name=".android.ShipmentTaskActivity">
+        </activity>
     </application>
 
 </manifest>
