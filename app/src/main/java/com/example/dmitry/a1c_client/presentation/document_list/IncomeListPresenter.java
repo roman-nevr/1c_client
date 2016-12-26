@@ -18,15 +18,14 @@ import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.
 import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.ready;
 
 public class IncomeListPresenter {
-    @Inject
-    IncomeListView view;
+    @Inject IncomeListView view;
     @Inject StateKeeper<IncomeListState> incomeStateKeeper;
     @Inject UpdateDocumentsInteractor updateDocumentsInteractor;
     private CompositeSubscription compositeSubscription;
 
     @Inject
     public IncomeListPresenter() {
-        System.out.println(1);
+        compositeSubscription = new CompositeSubscription();
     }
 
     public void init() {
@@ -43,8 +42,7 @@ public class IncomeListPresenter {
     }
 
     public void start() {
-        compositeSubscription = new CompositeSubscription();
-        Observable<IncomeListState> observable = incomeStateKeeper
+                Observable<IncomeListState> observable = incomeStateKeeper
                 .getObservable()
                 .observeOn(AndroidSchedulers.mainThread());
         subscribeIncomeStateState(observable);
@@ -95,7 +93,7 @@ public class IncomeListPresenter {
     }
 
     public void stop() {
-        compositeSubscription.unsubscribe();
+        compositeSubscription.clear();
 
     }
 }

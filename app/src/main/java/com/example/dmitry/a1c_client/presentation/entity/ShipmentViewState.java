@@ -2,6 +2,7 @@ package com.example.dmitry.a1c_client.presentation.entity;
 
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,12 +14,10 @@ public class ShipmentViewState {
     public List<ShipmentTaskPosition> actualPositions;
     public boolean showOnlyActual;
 
-    public ShipmentViewState(List<ShipmentTaskPosition> initialPositions,
-                             List<ShipmentTaskPosition> actualPositions,
-                             boolean showOnlyActual) {
-        this.initialPositions = initialPositions;
-        this.actualPositions = actualPositions;
-        this.showOnlyActual = showOnlyActual;
+    public ShipmentViewState(List<ShipmentTaskPosition> positions) {
+        this.initialPositions = positions;
+        this.actualPositions = calculateActualPositions(positions);
+        this.showOnlyActual = true;
         markedItem = -1;
     }
 
@@ -44,5 +43,16 @@ public class ShipmentViewState {
         if (markedItem != -1 && showOnlyActual){
             actualPositions.remove(markedItem);
         }
+    }
+
+    private List<ShipmentTaskPosition> calculateActualPositions
+                                    (List<ShipmentTaskPosition> positions){
+        List<ShipmentTaskPosition> result = new ArrayList<>();
+        for (ShipmentTaskPosition item : positions){
+            if(item.doneQuantity() < item.requiredQuantity()){
+                result.add(item);
+            }
+        }
+        return result;
     }
 }

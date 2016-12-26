@@ -12,4 +12,12 @@ public class Enums {
     public static enum ErrorState {
         ok, noRights, connectionError
     }
+
+    public enum CompleteState {
+        notInitailased, notComplete, comlete
+    }
+
+    public enum DisplayState {
+        all, actual
+    }
 }

@@ -1,17 +1,18 @@
 package com.example.dmitry.a1c_client.domain.entity;
 
+import com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState;
+import com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState;
 import com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState;
 import com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState;
 import com.google.auto.value.AutoValue;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notInitailased;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.actual;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
-import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.CompleteState.notInitailased;
-import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.DisplayState.actual;
+import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition.EMPTY_LIST;
 
 /**
  * Created by Admin on 23.12.2016.
@@ -20,24 +21,15 @@ import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.Disp
 @AutoValue
 public abstract class ShipmentTaskState {
 
-    private static List<ShipmentTaskPosition> EMPTY_LIST =
-            Collections.unmodifiableList(new ArrayList<>());
-
-    public static ShipmentTaskState EMPTY = create(EMPTY_LIST, EMPTY_LIST, actual, notInitailased, idle, ok);
-
-
+    public static ShipmentTaskState EMPTY = create(EMPTY_LIST, notInitailased, actual, idle, ok);
 
     public static Builder builder() {return new AutoValue_ShipmentTaskState.Builder();}
 
-
-
-    public abstract List<ShipmentTaskPosition> initialPositions();
-
-    public abstract List<ShipmentTaskPosition> actualPositions();
-
-    public abstract DisplayState whatToShow();
+    public abstract List<ShipmentTaskPosition> positions();
 
     public abstract CompleteState completeState();
+
+    public abstract DisplayState whatToShow();
 
     public abstract TransmissionState transmissionState();
 
@@ -45,35 +37,22 @@ public abstract class ShipmentTaskState {
 
     public abstract Builder toBuilder();
 
-    public static ShipmentTaskState create(List<ShipmentTaskPosition> initialPositions, List<ShipmentTaskPosition> actualPositions, DisplayState whatToShow, CompleteState completeState, TransmissionState transmissionState, ErrorState errorState) {
+    public static ShipmentTaskState create(List<ShipmentTaskPosition> positions, CompleteState completeState, DisplayState displayState, TransmissionState transmissionState, ErrorState errorState) {
         return builder()
-                .initialPositions(initialPositions)
-                .actualPositions(actualPositions)
-                .whatToShow(whatToShow)
+                .positions(positions)
                 .completeState(completeState)
+                .whatToShow(displayState)
                 .transmissionState(transmissionState)
                 .errorState(errorState)
                 .build();
     }
 
-
-    public enum DisplayState {
-        all, actual
-    }
-
-    public enum CompleteState {
-        notInitailased, notComplete, comlete
-    }
-
-
     @AutoValue.Builder public abstract static class Builder {
-        public abstract Builder initialPositions(List<ShipmentTaskPosition> initialPositions);
-
-        public abstract Builder actualPositions(List<ShipmentTaskPosition> actualPositions);
-
-        public abstract Builder whatToShow(DisplayState whatToShow);
+        public abstract Builder positions(List<ShipmentTaskPosition> initialPositions);
 
         public abstract Builder completeState(CompleteState completeState);
+
+        public abstract Builder whatToShow(DisplayState displayState);
 
         public abstract Builder transmissionState(TransmissionState transmissionState);
 

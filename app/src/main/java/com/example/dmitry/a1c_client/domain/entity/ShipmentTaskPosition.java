@@ -4,6 +4,10 @@ import android.os.Bundle;
 
 import com.google.auto.value.AutoValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Admin on 23.12.2016.
  */
@@ -13,6 +17,9 @@ public abstract class ShipmentTaskPosition {
 
     public static ShipmentTaskPosition EMPTY = ShipmentTaskPosition
             .create(NomenclaturePosition.EMPTY, 0, 0);
+
+    public static List<ShipmentTaskPosition> EMPTY_LIST =
+            Collections.unmodifiableList(new ArrayList<>());
 
     public static ShipmentTaskPosition create(NomenclaturePosition position, int requiredQuantity, int doneQuantity) {
         return builder()

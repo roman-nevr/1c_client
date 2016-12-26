@@ -34,8 +34,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class IncomeListFragment extends Fragment implements IncomeListView, IOnItemClick {
-    @Inject
-    IncomeListPresenter presenter;
+    @Inject IncomeListPresenter presenter;
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.error_text) TextView errorText;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
@@ -118,6 +117,6 @@ public class IncomeListFragment extends Fragment implements IncomeListView, IOnI
 
     @Override
     public void onItemClickAction(View view, String id) {
-        ShipmentTaskActivity.start(getContext());
+        EquipmentTaskActivity.start(getContext());
     }
 }

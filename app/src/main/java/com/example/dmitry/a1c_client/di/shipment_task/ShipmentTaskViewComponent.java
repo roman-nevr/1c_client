@@ -12,5 +12,5 @@ import dagger.Component;
 @Component(dependencies = ShipmentTaskComponent.class)
 @PerActivity
 public interface ShipmentTaskViewComponent {
-    public void inject(ShipmentTaskFragment fragment);
+    void inject(ShipmentTaskFragment fragment);
 }

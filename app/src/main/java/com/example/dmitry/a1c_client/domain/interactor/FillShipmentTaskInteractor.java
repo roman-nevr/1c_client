@@ -13,13 +13,12 @@ import javax.inject.Inject;
 
 import rx.Single;
 
+import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notComplete;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
-import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.CompleteState.notComplete;
-import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState.DisplayState.actual;
 
 /**
  * Created by Admin on 23.12.2016.
@@ -64,9 +63,7 @@ public class FillShipmentTaskInteractor extends Interactor {
 
     private void updateState(List<ShipmentTaskPosition> shipmentTaskPositions) {
         stateKeeper.change(state -> state.toBuilder()
-                .initialPositions(shipmentTaskPositions)
-                .actualPositions(shipmentTaskPositions)
-                .whatToShow(actual)
+                .positions(shipmentTaskPositions)
                 .completeState(notComplete)
                 .transmissionState(received)
                 .errorState(Enums.ErrorState.ok)

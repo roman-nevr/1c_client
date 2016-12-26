@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.example.dmitry.a1c_client.R;
 
+import static com.example.dmitry.a1c_client.android.MyApplication.logger;
+
 public class MainWindowActivity extends AppCompatActivity {
 
     public static final String INCOME_FRAGMENT = "IncomeFragment";

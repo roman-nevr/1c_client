@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.dmitry.a1c_client">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +19,8 @@
         <activity android:name=".android.income_task.IncomeTaskActivity">
         </activity>
         <activity android:name=".android.ShipmentTaskActivity">
+        </activity>
+        <activity android:name=".android.EquipmentTaskActivity">
         </activity>
     </application>
 

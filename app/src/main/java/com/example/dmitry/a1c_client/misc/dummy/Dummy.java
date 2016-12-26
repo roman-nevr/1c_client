@@ -3,6 +3,7 @@ package com.example.dmitry.a1c_client.misc.dummy;
 import com.example.dmitry.a1c_client.domain.entity.Client;
 import com.example.dmitry.a1c_client.domain.entity.Document;
 import com.example.dmitry.a1c_client.domain.entity.Image;
+import com.example.dmitry.a1c_client.domain.entity.Kit;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.domain.entity.Unit;
@@ -25,8 +26,9 @@ public class Dummy {
     public static final List<Document> DOCUMENTS = new ArrayList<>();
     public static final List<NomenclaturePosition> NOMENCLATURE = new ArrayList<>();
     public static final List<ShipmentTaskPosition> SHIPMENT_TASK = new ArrayList<>();
+    public static final List<Kit> EQUIPMENT_TASK = new ArrayList<>();
 
-    public static final List<Unit> DEFAULT_LIST =
+    public static final List<Unit> DEFAULT_UNIT_LIST =
             Collections.unmodifiableList(getDefaultList());
 
 
@@ -54,25 +56,28 @@ public class Dummy {
             SHIPMENT_TASK.add(createDummyShipment(i));
         }
 
+        createEquipmentTask();
+
         POSITION_MAP.put("11111111", NomenclaturePosition.create("1", "First", "First description",
-                "F111", "11111111", Image.EMPTY, DEFAULT_LIST));
+                "F111", "11111111", Image.EMPTY, DEFAULT_UNIT_LIST));
         POSITION_MAP.put("11111112", NomenclaturePosition.create("2", "Second", "Second description",
-                "F112", "11111112", Image.EMPTY, DEFAULT_LIST));
+                "F112", "11111112", Image.EMPTY, DEFAULT_UNIT_LIST));
         POSITION_MAP.put("11111113", NomenclaturePosition.create("3", "Third", "Third description",
-                "F113", "11111113", Image.EMPTY, DEFAULT_LIST));
+                "F113", "11111113", Image.EMPTY, DEFAULT_UNIT_LIST));
 
         VENDOR_CODES_MAP.put("chul", NomenclaturePosition.create("5", "Чулки", "Черные чулки",
-                "chul", "11111115", Image.EMPTY, DEFAULT_LIST));
+                "chul", "11111115", Image.EMPTY, DEFAULT_UNIT_LIST));
         VENDOR_CODES_MAP.put("abc", NomenclaturePosition.create("6", "Букварь", "Детский букварь",
-                "abc", "11111116", Image.EMPTY, DEFAULT_LIST));
+                "abc", "11111116", Image.EMPTY, DEFAULT_UNIT_LIST));
         VENDOR_CODES_MAP.put("error", NomenclaturePosition.create("7", "error", "Детский букварь",
-                "error", "11111117", Image.EMPTY, DEFAULT_LIST));
+                "error", "11111117", Image.EMPTY, DEFAULT_UNIT_LIST));
+
     }
 
     private static ShipmentTaskPosition createDummyShipment(int i) {
         return ShipmentTaskPosition.create(
                 NomenclaturePosition.create("id"+i, "Название"+i,"Описание"+i, "art"+i,
-                        ""+i+i+i, Image.EMPTY, DEFAULT_LIST),
+                        ""+i+i+i, Image.EMPTY, DEFAULT_UNIT_LIST),
                 i , 0
         );
     }
@@ -82,6 +87,19 @@ public class Dummy {
         result.add(builder().id("1").name("шт.").build());
         result.add(builder().id("2").name("уп.").build());
         return result;
+    }
+
+    private static void createEquipmentTask(){
+        List<ShipmentTaskPosition> dummyPositions = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            dummyPositions.add(createDummyShipment(i));
+        }
+        EQUIPMENT_TASK.add(Kit.create(new ArrayList<>(dummyPositions.subList(0,3)),
+                NomenclaturePosition.create("012", "Шашлык", "набор для шашлыка", "шаш1", "123",
+                        Image.EMPTY, DEFAULT_UNIT_LIST)));
+        EQUIPMENT_TASK.add(Kit.create(new ArrayList<>(dummyPositions.subList(2,5)),
+                NomenclaturePosition.create("012", "Праздник", "набор для праздника", "праз1", "321",
+                        Image.EMPTY, DEFAULT_UNIT_LIST)));
     }
 
 
@@ -108,6 +126,6 @@ public class Dummy {
     private static NomenclaturePosition createNomenclature(int i) {
         return NomenclaturePosition.builder().id(""+i).positionName("Товар "+i)
                 .description("Описание товара "+i).vendorCode("AB"+i+"CD").barCode(""+i)
-                .units(Dummy.DEFAULT_LIST).image(Image.EMPTY).build();
+                .units(Dummy.DEFAULT_UNIT_LIST).image(Image.EMPTY).build();
     }
 }

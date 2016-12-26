@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.android.fragments.ShipmentAdapterFragment.ShipmentViewCallback;
+import com.example.dmitry.a1c_client.android.interfaces.ShipmentTaskItemView.ShipmentViewCallback;
 import com.example.dmitry.a1c_client.di.shipment_task.DaggerShipmentTaskViewComponent;
 import com.example.dmitry.a1c_client.di.shipment_task.ShipmentTaskComponent;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskPresenter;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskView;
+import com.example.dmitry.a1c_client.presentation.ShipmentTaskView.Callback;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,7 +33,7 @@ import static android.view.View.VISIBLE;
  * Created by roma on 25.12.2016.
  */
 
-public class ShipmentTaskFragment extends Fragment implements ShipmentTaskView, ShipmentViewCallback {
+public class ShipmentTaskFragment extends Fragment implements ShipmentTaskView, Callback {
 
     @Inject ShipmentTaskPresenter presenter;
     @BindView(R.id.pbCollecting) ProgressBar taskProgressBar;
@@ -90,7 +93,8 @@ public class ShipmentTaskFragment extends Fragment implements ShipmentTaskView, 
         presenter.start();
     }
 
-    @Override public ShipmentTaskPosition provide(int index) {
-        return presenter.getPosition(index);
+
+    @Override public void onShipmentComplete() {
+
     }
 }

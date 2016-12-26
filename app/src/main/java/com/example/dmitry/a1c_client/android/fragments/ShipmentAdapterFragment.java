@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.interfaces.ShipmentTaskItemView;
+import com.example.dmitry.a1c_client.android.interfaces.ShipmentTaskItemView.ShipmentViewCallback;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.misc.CommonFilters;
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -100,11 +102,7 @@ public class ShipmentAdapterFragment extends Fragment{
         return fragment;
     }
 
-    public interface ShipmentViewCallback {
-        ShipmentTaskPosition provide(int index);
-        void onBarCodeInput(int index, String barcode);
-        void onQuantityInput(int index, int quantity);
-    }
+
 //---------------------------Presenter----------------------
     private class Presenter{
         private ShipmentViewCallback callback;
@@ -116,7 +114,7 @@ public class ShipmentAdapterFragment extends Fragment{
             this.view = view;
             this.callback = callback;
             this.index = index;
-            position = callback.provide(index);
+            position = callback.getItem(index);
             subscriptions = new CompositeSubscription();
         }
 
@@ -134,7 +132,6 @@ public class ShipmentAdapterFragment extends Fragment{
 
     private void incrementQuantity(String barCode) {
         //TODO: continue writing
-        callback.onBarCodeInput(index, barCode);
     }
 
     private void initViews(){

@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.EditText;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.fragments.EquipmentTaskFragment;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskView;
 
 /**
