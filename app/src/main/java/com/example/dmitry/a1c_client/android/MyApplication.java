@@ -3,6 +3,7 @@ package com.example.dmitry.a1c_client.android;
 import android.app.Application;
 
 import com.example.dmitry.a1c_client.di.DaggerMainComponent;
+import com.example.dmitry.a1c_client.di.equipment.CollectionTaskViewComponent;
 import com.example.dmitry.a1c_client.di.equipment.DaggerEquipmentTaskComponent;
 import com.example.dmitry.a1c_client.di.equipment.EquipmentTaskComponent;
 import com.example.dmitry.a1c_client.di.income_task.DaggerIncomeTaskComponent;

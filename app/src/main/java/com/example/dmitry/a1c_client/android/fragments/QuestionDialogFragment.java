@@ -109,9 +109,9 @@ public class QuestionDialogFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        /*if (listener != null && !ok) {
+        if (listener != null && !ok) {
             listener.onCancelButtonClick(queryId);
-        }*/
+        }
     }
 
     @Override public void onPause() {

@@ -190,7 +190,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         showStorageInfo("", "");
         unitsSpinner.setAdapter(null);
         /*if(unitsSpinner.getAdapter()!=null){
-            System.out.println("adapter not null");
+            System.out.println("adapter notifyDataSetChanged null");
             ((UnitSpinnerAdapter)unitsSpinner.getAdapter()).clearItems();
         }*/
         disableStorageViews();

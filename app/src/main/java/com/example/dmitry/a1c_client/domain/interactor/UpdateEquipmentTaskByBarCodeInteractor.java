@@ -40,7 +40,7 @@ public class UpdateEquipmentTaskByBarCodeInteractor extends Interactor {
     @Override
     protected void operation() {
         if (barCode == null){
-            throw new UnsupportedOperationException("barCode must not be null");
+            throw new UnsupportedOperationException("barCode must notifyDataSetChanged be null");
         }
         try {
             Kit kit = stateKeeper.getValue().barCodeEntryMap().get(barCode);

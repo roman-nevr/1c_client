@@ -123,7 +123,8 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
     }
 
     private void initDI() {
-        EquipmentTaskComponent component = ((MyApplication) getActivity().getApplication()).getEquipmentTaskComponent();
+        EquipmentTaskComponent component = ((MyApplication) getActivity()
+                .getApplication()).getEquipmentTaskComponent();
         DaggerEquipmentTaskViewComponent.builder().equipmentTaskComponent(component).build().inject(this);
     }
 

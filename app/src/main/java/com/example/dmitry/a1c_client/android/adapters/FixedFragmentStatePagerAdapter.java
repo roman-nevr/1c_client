@@ -7,7 +7,7 @@ package com.example.dmitry.a1c_client.android.adapters;
  * Copyright (C) 2011 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * you may notifyDataSetChanged use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * saving and restoring of fragment's state.
  *
  * <p>This version of the pager is more useful when there are a large number
- * of pages, working more like a list view.  When pages are not visible to
+ * of pages, working more like a list view.  When pages are notifyDataSetChanged visible to
  * the user, their entire fragment may be destroyed, only keeping the saved
  * state of that fragment.  This allows the pager to hold on to much less
  * memory associated with each visited page as compared to

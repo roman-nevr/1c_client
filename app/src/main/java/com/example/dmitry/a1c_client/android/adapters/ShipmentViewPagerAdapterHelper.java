@@ -49,6 +49,10 @@ public class ShipmentViewPagerAdapterHelper {
         }
     }
 
+    public void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
     private class UpdatableAdapter extends FixedFragmentStatePagerAdapter{
         public UpdatableAdapter(FragmentManager fm) {
             super(fm);

@@ -30,7 +30,7 @@ public class SaveBarCodeInteractor extends Interactor {
 
     @Override protected void operation() {
         if (barCode == null) {
-            throw new IllegalArgumentException("barCode must not be null");
+            throw new IllegalArgumentException("barCode must notifyDataSetChanged be null");
         }
         try {
             showProgress();

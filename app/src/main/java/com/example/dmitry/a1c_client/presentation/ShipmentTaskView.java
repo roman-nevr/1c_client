@@ -23,6 +23,8 @@ public interface ShipmentTaskView {
     void hideProgress();
     void onComplete();
 
+    void incProgress();
+
     public interface Callback{
         void onShipmentComplete();
     }

@@ -69,6 +69,10 @@ public class MessageDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    public static MessageDialogFragment newInstance(String message){
+        return newInstance(message, 0);
+    }
+
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);

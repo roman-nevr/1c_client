@@ -2,6 +2,7 @@ package com.example.dmitry.a1c_client.domain.interactor;
 
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.Enums;
+import com.example.dmitry.a1c_client.domain.entity.Shipable;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState;
 
@@ -16,15 +17,15 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
  * Created by Admin on 27.12.2016.
  */
 
-public class ShipmentChangePositionInteractor extends Interactor {
+public abstract class ChangePositionInteractor extends Interactor {
 
-    @Inject StateKeeper<ShipmentTaskState> stateKeeper;
+
 
     private String id;
     private int newQuantity;
 
     @Inject
-    public ShipmentChangePositionInteractor() {}
+    public ChangePositionInteractor() {}
 
     public Interactor setData(String id, int newQuantity) {
         this.id = id;
@@ -37,25 +38,23 @@ public class ShipmentChangePositionInteractor extends Interactor {
         //need to update particular ShipmentPosition in list
         checkInitArgs();
         ShipmentTaskPosition newPosition = findPositionById();
-        List<ShipmentTaskPosition> positions = new ArrayList<>(stateKeeper.getValue().positions());
+        List<ShipmentTaskPosition> positions = new ArrayList<>(getValue().positions());
         int index = positions.indexOf(newPosition);
         newPosition = changeQuantity(newPosition);
         positions.set(index, newPosition);
         updateState(positions);
     }
 
-    private void updateState(List<ShipmentTaskPosition> positions) {
-        stateKeeper.change(state -> state.toBuilder()
-                .positions(positions)
-                .build());
-    }
+    protected abstract Shipable getValue();
+
+    protected abstract void updateState(List<ShipmentTaskPosition> positions);
 
     private ShipmentTaskPosition changeQuantity(ShipmentTaskPosition newPosition) {
         return newPosition.toBulder().doneQuantity(newQuantity).build();
     }
 
     private ShipmentTaskPosition findPositionById() {
-        List<ShipmentTaskPosition> items = stateKeeper.getValue().positions();
+        List<ShipmentTaskPosition> items = getValue().positions();
         for (ShipmentTaskPosition item : items) {
             if (item.position().id().equals(id)) {
                 return item;

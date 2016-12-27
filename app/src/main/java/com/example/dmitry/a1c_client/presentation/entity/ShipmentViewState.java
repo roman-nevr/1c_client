@@ -44,6 +44,7 @@ public class ShipmentViewState {
         if (markedItem != -1 && showOnlyActual){
             actualPositions.remove(markedItem);
         }
+        markedItem = -1;
     }
 
     public boolean isLastVisiblePage(){
@@ -66,10 +67,13 @@ public class ShipmentViewState {
         Iterator<ShipmentTaskPosition> actualIterator=  actualPositions.iterator();
         ShipmentTaskPosition actualPosition = actualIterator.next();
         for(ShipmentTaskPosition position : positions){
-            if(actualPosition.position() == position.position()
-                    && (actualPosition.doneQuantity() != position.doneQuantity()))
-            {
-                updateActualPosition(actualPosition, position);
+            if(actualPosition.position() == position.position()){
+                if(actualPosition.doneQuantity() != position.doneQuantity()){
+                    updateActualPosition(actualPosition, position);
+                }
+                if(actualIterator.hasNext()){
+                    actualPosition = actualIterator.next();
+                }
             }
         }
     }

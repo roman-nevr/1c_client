@@ -21,6 +21,6 @@ public interface ShipmentTaskItemView {
     }
     interface ShipmentViewCallback {
         ShipmentTaskPosition getItem(int index);
-        void onQuantityChanges(int index, int quantity);
+        void onQuantityChanges(String id, int quantity);
     }
 }

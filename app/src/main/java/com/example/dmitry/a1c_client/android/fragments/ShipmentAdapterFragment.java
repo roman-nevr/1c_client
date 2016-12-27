@@ -38,6 +38,7 @@ public class ShipmentAdapterFragment extends Fragment {
     @BindView(R.id.tvDescription) TextView tvDescription;
     @BindView(R.id.tvRequiredQuantity) TextView tvRequiredQuantity;
     @BindView(R.id.etQuantity) EditText etQuantity;
+    @BindView(R.id.tvVendorCode) TextView tvVendorCode;
     private int index;
     private ShipmentViewCallback callback;
     private Presenter presenter;
@@ -77,13 +78,13 @@ public class ShipmentAdapterFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.shipment_form_item_layout, container, false);
         ButterKnife.bind(this, fragmentView);
-        presenter = new Presenter(this, callback, index);
         return fragmentView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        presenter = new Presenter(this, callback, index);
         presenter.start();
     }
 
@@ -101,16 +102,20 @@ public class ShipmentAdapterFragment extends Fragment {
         tvDescription.setText(description);
     }
 
+    public void setVendorCode(String vendorCode){
+        tvVendorCode.setText(vendorCode);
+    }
+
     public void setRequiredQuantity(int quantity) {
-        if (quantity > 0) {
-            tvRequiredQuantity.setText("" + quantity);
-        } else {
-            tvRequiredQuantity.setText("");
-        }
+        tvRequiredQuantity.setText("" + quantity);
     }
 
     public void setDoneQuantity(int quantity) {
-        etQuantity.setText("" + quantity);
+        if (quantity > 0) {
+            etQuantity.setText("" + quantity);
+        } else {
+            etQuantity.setText("");
+        }
     }
 
     public Observable<CharSequence> getBarCodeObservable() {
@@ -126,7 +131,9 @@ public class ShipmentAdapterFragment extends Fragment {
     }
 
     private void setFocus() {
-        etBarCode.requestFocus();
+        if(etBarCode.requestFocus()){
+            System.out.println("focus fail");
+        }
     }
 
     //---------------------------Presenter----------------------
@@ -186,23 +193,25 @@ public class ShipmentAdapterFragment extends Fragment {
 
         private void incrementQuantity(String barCode) {
             if (barCode.equals(position.position().barCode())) {
-                callback.onQuantityChanges(index, position.doneQuantity() + 1);
+                callback.onQuantityChanges(position.position().id(), position.doneQuantity() + 1);
             }
         }
 
         private void setQuantity(int quantity) {
             if (quantity != position.doneQuantity()) {
-                callback.onQuantityChanges(index, quantity);
+                callback.onQuantityChanges(position.position().id(), quantity);
             }
         }
 
         private void initViews() {
-            view.setFocus();
+            view.etBarCode.setHint(position.position().barCode());
             view.setName(position.position().positionName());
             view.setDescription(position.position().description());
+            view.setVendorCode(position.position().vendorCode());
             view.setRequiredQuantity(position.requiredQuantity());
 
             view.setDoneQuantity(position.doneQuantity());
+            view.setFocus();
         }
 
         public void stop() {

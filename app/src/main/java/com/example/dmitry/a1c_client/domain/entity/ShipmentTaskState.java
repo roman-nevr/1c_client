@@ -19,23 +19,11 @@ import static com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition.E
  */
 
 @AutoValue
-public abstract class ShipmentTaskState {
+public abstract class ShipmentTaskState extends Shipable {
 
     public static ShipmentTaskState EMPTY = create(EMPTY_LIST, notInitailased, actual, idle, ok);
 
     public static Builder builder() {return new AutoValue_ShipmentTaskState.Builder();}
-
-    public abstract List<ShipmentTaskPosition> positions();
-
-    public abstract CompleteState completeState();
-
-    public abstract DisplayState whatToShow();
-
-    public abstract TransmissionState transmissionState();
-
-    public abstract ErrorState errorState();
-
-    public abstract Builder toBuilder();
 
     public static ShipmentTaskState create(List<ShipmentTaskPosition> positions, CompleteState completeState, DisplayState displayState, TransmissionState transmissionState, ErrorState errorState) {
         return builder()
@@ -46,6 +34,8 @@ public abstract class ShipmentTaskState {
                 .errorState(errorState)
                 .build();
     }
+
+    public abstract Builder toBuilder();
 
     @AutoValue.Builder public abstract static class Builder {
         public abstract Builder positions(List<ShipmentTaskPosition> initialPositions);

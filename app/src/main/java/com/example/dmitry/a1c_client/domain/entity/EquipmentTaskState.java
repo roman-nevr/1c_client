@@ -20,43 +20,30 @@ import static com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState.Sta
  */
 
 @AutoValue
-public abstract class EquipmentTaskState {
+public abstract class EquipmentTaskState extends Shipable {
 
-    private static List<Kit> EMPTY_LIST = Collections.unmodifiableList(Collections.emptyList());
+    private static List<Kit> KIT_EMPTY_LIST = Collections
+            .unmodifiableList(Collections.emptyList());
 
-    public static EquipmentTaskState EMPTY = create(EMPTY_LIST, Kit.EMPTY, notInitailased,
-            collect, BarCodeEntryMap.EMPTY, actual, idle, ok);
+    private static List<ShipmentTaskPosition> EMPTY_LIST = Collections
+            .unmodifiableList(Collections.emptyList());
 
-    public abstract List<Kit> kits();
-
-    public abstract Kit kitToShow();
-
-    public abstract BarCodeEntryMap barCodeEntryMap();
-
-    public abstract CompleteState completeState();
-
-    public abstract Stage stage();
-
-    public abstract DisplayState whatToShow();
-
-    public abstract TransmissionState transmissionState();
-
-    public abstract ErrorState errorState();
-
-    public abstract Builder toBuilder();
+    public static EquipmentTaskState EMPTY = create(KIT_EMPTY_LIST, Kit.EMPTY, EMPTY_LIST,
+            notInitailased, collect, BarCodeEntryMap.EMPTY, actual, idle, ok);
 
     public static EquipmentTaskState create(List<Kit> kits,
                                             Kit kitToShow,
+                                            List<ShipmentTaskPosition> positions,
                                             CompleteState completeState,
                                             Stage stage,
                                             BarCodeEntryMap barCodeEntryMap,
                                             DisplayState displayState,
                                             TransmissionState transmissionState,
-                                            ErrorState errorState)
-    {
+                                            ErrorState errorState) {
         return builder()
                 .kits(kits)
                 .kitToShow(kitToShow)
+                .positions(positions)
                 .completeState(completeState)
                 .stage(stage)
                 .barCodeEntryMap(barCodeEntryMap)
@@ -66,16 +53,28 @@ public abstract class EquipmentTaskState {
                 .build();
     }
 
-    public enum Stage{
+    public static Builder builder() {return new AutoValue_EquipmentTaskState.Builder();}
+
+    public abstract List<Kit> kits();
+
+    public abstract Kit kitToShow();
+
+    public abstract BarCodeEntryMap barCodeEntryMap();
+
+    public abstract Stage stage();
+
+    public abstract Builder toBuilder();
+
+    public enum Stage {
         collect, equip
     }
-
-    public static Builder builder() {return new AutoValue_EquipmentTaskState.Builder();}
 
     @AutoValue.Builder public abstract static class Builder {
         public abstract Builder kits(List<Kit> kits);
 
         public abstract Builder kitToShow(Kit kit);
+
+        public abstract Builder positions(List<ShipmentTaskPosition> positions);
 
         public abstract Builder completeState(CompleteState completeState);
 
