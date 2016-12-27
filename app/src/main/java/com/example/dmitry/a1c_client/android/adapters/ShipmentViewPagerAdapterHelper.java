@@ -37,6 +37,7 @@ public class ShipmentViewPagerAdapterHelper {
     }
 
 
+
     public void removeVisiblePage(){
         int currentItem = mViewPager.getCurrentItem();
         if(currentItem != viewState.size() - 1){//has next page?

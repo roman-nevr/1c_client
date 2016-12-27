@@ -21,6 +21,7 @@ public interface ShipmentTaskView {
     FragmentManager provideFragmentManager();
     void showProgress();
     void hideProgress();
+    void onComplete();
 
     public interface Callback{
         void onShipmentComplete();

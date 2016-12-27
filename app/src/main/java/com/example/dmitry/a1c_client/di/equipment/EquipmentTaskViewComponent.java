@@ -1,7 +1,6 @@
 package com.example.dmitry.a1c_client.di.equipment;
 
-import com.example.dmitry.a1c_client.android.fragments.EquipmentTaskFragment;
-import com.example.dmitry.a1c_client.di.scopes.EquipmentViewScope;
+import com.example.dmitry.a1c_client.android.equipment.EquipmentTaskFragment;
 import com.example.dmitry.a1c_client.di.scopes.PerActivity;
 
 import dagger.Component;

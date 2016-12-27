@@ -24,12 +24,12 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
  * Created by Admin on 23.12.2016.
  */
 
-public class FillShipmentTaskInteractor extends Interactor {
+public class UpdateShipmentTaskInteractor extends Interactor {
     @Inject StateKeeper<ShipmentTaskState> stateKeeper;
     @Inject ShipmentTaskRepository repository;
 
     @Inject
-    public FillShipmentTaskInteractor() {}
+    public UpdateShipmentTaskInteractor() {}
 
     @Override
     protected void operation() {

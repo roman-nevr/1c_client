@@ -25,4 +25,8 @@ public class CommonFilters {
             return false;
         }
     }
+
+    public static Boolean isInvalidNumber(String number){
+        return !isValidNumber(number);
+    }
 }

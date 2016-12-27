@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">1c_client</string>
+    <string name="description">Описание: </string>
 </resources>

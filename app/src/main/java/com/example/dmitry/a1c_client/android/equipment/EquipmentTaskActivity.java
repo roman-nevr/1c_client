@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.equipment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.android.fragments.EquipmentTaskFragment;
+import com.example.dmitry.a1c_client.android.BaseActivity;
 import com.example.dmitry.a1c_client.presentation.EquipmentTaskView.Callback;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskView;
 

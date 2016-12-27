@@ -3,6 +3,7 @@ package com.example.dmitry.a1c_client.presentation.entity;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -14,10 +15,10 @@ public class ShipmentViewState {
     public List<ShipmentTaskPosition> actualPositions;
     public boolean showOnlyActual;
 
-    public ShipmentViewState(List<ShipmentTaskPosition> positions) {
+    public ShipmentViewState(List<ShipmentTaskPosition> positions, boolean showOnlyActual) {
         this.initialPositions = positions;
         this.actualPositions = calculateActualPositions(positions);
-        this.showOnlyActual = true;
+        this.showOnlyActual = showOnlyActual;
         markedItem = -1;
     }
 
@@ -45,6 +46,10 @@ public class ShipmentViewState {
         }
     }
 
+    public boolean isLastVisiblePage(){
+        return actualPositions.size() == 1;
+    }
+
     private List<ShipmentTaskPosition> calculateActualPositions
                                     (List<ShipmentTaskPosition> positions){
         List<ShipmentTaskPosition> result = new ArrayList<>();
@@ -54,5 +59,27 @@ public class ShipmentViewState {
             }
         }
         return result;
+    }
+
+    public void update(List<ShipmentTaskPosition> positions) {
+        initialPositions = positions;
+        Iterator<ShipmentTaskPosition> actualIterator=  actualPositions.iterator();
+        ShipmentTaskPosition actualPosition = actualIterator.next();
+        for(ShipmentTaskPosition position : positions){
+            if(actualPosition.position() == position.position()
+                    && (actualPosition.doneQuantity() != position.doneQuantity()))
+            {
+                updateActualPosition(actualPosition, position);
+            }
+        }
+    }
+
+    private void updateActualPosition(ShipmentTaskPosition actualPosition, ShipmentTaskPosition position) {
+        int index = actualPositions.indexOf(actualPosition);
+        if(position.doneQuantity() == position.requiredQuantity()){
+            markedItem = index;
+        }else {
+            actualPositions.set(index,position);
+        }
     }
 }

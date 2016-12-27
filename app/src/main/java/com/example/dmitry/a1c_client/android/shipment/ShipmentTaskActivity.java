@@ -1,21 +1,20 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.shipment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.widget.EditText;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.android.fragments.EquipmentTaskFragment;
-import com.example.dmitry.a1c_client.presentation.ShipmentTaskView;
+import com.example.dmitry.a1c_client.android.BaseActivity;
+
+import static com.example.dmitry.a1c_client.presentation.ShipmentTaskView.Callback;
 
 /**
  * Created by Admin on 23.12.2016.
  */
 
-public class ShipmentTaskActivity extends BaseActivity {
+public class ShipmentTaskActivity extends BaseActivity implements Callback {
 
     public static final String SHIPMENT_FRAGMENT = "shipment";
 
@@ -37,5 +36,10 @@ public class ShipmentTaskActivity extends BaseActivity {
     public static void start(Context context){
         Intent intent = new Intent(context, ShipmentTaskActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onShipmentComplete() {
+
     }
 }

@@ -13,6 +13,7 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.no
 import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.actual;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
+import static com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState.Stage.collect;
 
 /**
  * Created by Admin on 26.12.2016.
@@ -24,7 +25,7 @@ public abstract class EquipmentTaskState {
     private static List<Kit> EMPTY_LIST = Collections.unmodifiableList(Collections.emptyList());
 
     public static EquipmentTaskState EMPTY = create(EMPTY_LIST, Kit.EMPTY, notInitailased,
-            BarCodeEntryMap.EMPTY, actual, idle, ok);
+            collect, BarCodeEntryMap.EMPTY, actual, idle, ok);
 
     public abstract List<Kit> kits();
 
@@ -33,6 +34,8 @@ public abstract class EquipmentTaskState {
     public abstract BarCodeEntryMap barCodeEntryMap();
 
     public abstract CompleteState completeState();
+
+    public abstract Stage stage();
 
     public abstract DisplayState whatToShow();
 
@@ -45,19 +48,26 @@ public abstract class EquipmentTaskState {
     public static EquipmentTaskState create(List<Kit> kits,
                                             Kit kitToShow,
                                             CompleteState completeState,
+                                            Stage stage,
                                             BarCodeEntryMap barCodeEntryMap,
                                             DisplayState displayState,
                                             TransmissionState transmissionState,
-                                            ErrorState errorState) {
+                                            ErrorState errorState)
+    {
         return builder()
                 .kits(kits)
                 .kitToShow(kitToShow)
                 .completeState(completeState)
+                .stage(stage)
                 .barCodeEntryMap(barCodeEntryMap)
                 .whatToShow(displayState)
                 .transmissionState(transmissionState)
                 .errorState(errorState)
                 .build();
+    }
+
+    public enum Stage{
+        collect, equip
     }
 
     public static Builder builder() {return new AutoValue_EquipmentTaskState.Builder();}
@@ -68,6 +78,8 @@ public abstract class EquipmentTaskState {
         public abstract Builder kitToShow(Kit kit);
 
         public abstract Builder completeState(CompleteState completeState);
+
+        public abstract Builder stage(Stage stage);
 
         public abstract Builder barCodeEntryMap(BarCodeEntryMap barCodeEntryMap);
 

@@ -28,7 +28,6 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
 
 public class EquipmentTaskPresenter {
     @Inject StateKeeper<EquipmentTaskState> stateKeeper;
-    @Inject UpdateEquipmentTaskInteractor updateInteractor;
     @Inject UpdateEquipmentTaskByBarCodeInteractor barCodeInputInteractor;
     @Inject CheckIfEquipmentComplete checkIfEquipmentCompleteInteractor;
     private EquipmentTaskView view;
@@ -38,21 +37,6 @@ public class EquipmentTaskPresenter {
     @Inject
     public EquipmentTaskPresenter() {
         subscriptions = new CompositeSubscription();
-    }
-
-    public void init() {
-        boolean success = stateKeeper.change(state -> {
-            if (state.completeState() == notInitailased) {
-                return state.toBuilder()
-                        .completeState(notComplete)
-                        .transmissionState(requested).build();
-            } else {
-                return null;
-            }
-        });
-        if (success) {
-            updateInteractor.execute();
-        }
     }
 
     public void start() {

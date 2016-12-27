@@ -1,6 +1,6 @@
 package com.example.dmitry.a1c_client.di.shipment_task;
 
-import com.example.dmitry.a1c_client.android.ShipmentTaskFragment;
+import com.example.dmitry.a1c_client.android.shipment.ShipmentTaskFragment;
 import com.example.dmitry.a1c_client.di.scopes.PerActivity;
 
 import dagger.Component;

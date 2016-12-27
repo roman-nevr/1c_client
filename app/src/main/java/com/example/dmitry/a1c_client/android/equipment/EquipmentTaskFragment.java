@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.fragments;
+package com.example.dmitry.a1c_client.android.equipment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -116,7 +116,6 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initDI();
         presenter.setView(this);
-        presenter.init();
         View fragmentView = inflater.inflate(R.layout.equip_act_fragment_layout, container, false);
         ButterKnife.bind(this, fragmentView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
