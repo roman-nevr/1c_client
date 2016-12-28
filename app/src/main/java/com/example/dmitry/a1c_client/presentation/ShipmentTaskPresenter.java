@@ -4,6 +4,8 @@ import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.Shipable;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState;
+import com.example.dmitry.a1c_client.domain.interactor.ChangePositionInteractor;
+import com.example.dmitry.a1c_client.domain.interactor.Interactor;
 import com.example.dmitry.a1c_client.domain.interactor.SetDisplayStateInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.ShipmentChangePositionInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.ShipmentSetDisplayStateInteractor;
@@ -31,17 +33,21 @@ public class ShipmentTaskPresenter extends BaseShipmentPresenter{
 
 
     @Inject
-    public ShipmentTaskPresenter() {
-
-    }
+    public ShipmentTaskPresenter() { }
 
     @Override
     protected Observable<Shipable> getObservable() {
         return stateKeeper.getObservable().map(state -> (Shipable)state);
     }
 
-    public void init() {
-        boolean success = stateKeeper.change(state -> {
+    @Override
+    protected ChangePositionInteractor getChangeInteractor() {
+        return changeInteractor;
+    }
+
+    @Override
+    protected boolean checkAndInitStateKeeper() {
+        return stateKeeper.change(state -> {
             if (state.completeState() == notInitailased) {
                 return state.toBuilder()
                         .completeState(notComplete)
@@ -50,26 +56,17 @@ public class ShipmentTaskPresenter extends BaseShipmentPresenter{
                 return null;
             }
         });
-        if (success) {
-            updateInteractor.execute();
-        }else {//else data have already downloaded
-            fillView(stateKeeper.getValue());
-        }
     }
 
-
-
-    public ShipmentTaskPosition getPosition(int index) {
-        return viewState.get(index);
+    @Override
+    protected Shipable getStateKeeperValue() {
+        return stateKeeper.getValue();
     }
 
-    public void onQuantityChanges(String id, int quantity) {
-        changeInteractor.setData(id, quantity).execute();
+    @Override
+    protected Interactor getUpdateInteractor() {
+        return updateInteractor;
     }
-
-
-
-
 
     protected void setIdle() {
         stateKeeper.change(state -> state.toBuilder()

@@ -261,7 +261,7 @@ public class IncomeTaskPresenter {
     public void onBarCodeNotFoundDialogAccept() {
         stateKeeper.change(state -> state.toBuilder()
                 .viewState(newBarcodeDialog).positionState(idle).build());
-        //view.showNewBarCodeDialog(stateKeeper.getValue().position().barCode());
+        //view.showNewBarCodeDialog(stateKeeper.getStateKeeperValue().position().barCode());
     }
 
     public void onRetryDecline() {

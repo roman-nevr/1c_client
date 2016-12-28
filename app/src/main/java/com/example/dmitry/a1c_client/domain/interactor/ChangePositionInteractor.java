@@ -19,13 +19,9 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
 
 public abstract class ChangePositionInteractor extends Interactor {
 
-
-
     private String id;
     private int newQuantity;
 
-    @Inject
-    public ChangePositionInteractor() {}
 
     public Interactor setData(String id, int newQuantity) {
         this.id = id;

@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import com.example.dmitry.a1c_client.android.adapters.ShipmentViewPagerAdapterHelper;
 import com.example.dmitry.a1c_client.domain.entity.Shipable;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
+import com.example.dmitry.a1c_client.domain.interactor.ChangePositionInteractor;
+import com.example.dmitry.a1c_client.domain.interactor.Interactor;
 import com.example.dmitry.a1c_client.domain.interactor.SetDisplayStateInteractor;
 import com.example.dmitry.a1c_client.presentation.entity.ShipmentViewState;
 
@@ -15,6 +17,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notComplete;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notInitailased;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.actual;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.all;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
@@ -37,6 +40,7 @@ public abstract class BaseShipmentPresenter {
 
     protected abstract Observable<Shipable> getObservable();
 
+    //TODO: cleanse out this class
     //---------Filters---------------
     protected Boolean isProgress(Shipable state) {
         return state.transmissionState() == requested;
@@ -147,5 +151,30 @@ public abstract class BaseShipmentPresenter {
         getDisplayStateInteractor().setDisplayState(actual).execute();
         adapterHelper.notifyDataSetChanged();
     }
+
+    public ShipmentTaskPosition getPosition(int index) {
+        return viewState.get(index);
+    }
+
+    public void onQuantityChanges(String id, int quantity) {
+        getChangeInteractor().setData(id, quantity).execute();
+    }
+
+    protected abstract ChangePositionInteractor getChangeInteractor();
+
+    public void init() {
+        boolean success = checkAndInitStateKeeper();
+        if (success) {
+            getUpdateInteractor().execute();
+        }else {//else data have already downloaded
+            fillView(getStateKeeperValue());
+        }
+    }
+
+    protected abstract boolean checkAndInitStateKeeper();
+
+    protected abstract Shipable getStateKeeperValue();
+
+    protected abstract Interactor getUpdateInteractor();
 
 }

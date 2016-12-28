@@ -20,6 +20,8 @@ import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment.Mes
 import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment.AnswerCallBack;
 import com.example.dmitry.a1c_client.android.interfaces.ShipmentTaskItemView.ShipmentViewCallback;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
+import com.example.dmitry.a1c_client.misc.utils;
+import com.example.dmitry.a1c_client.presentation.BaseShipmentPresenter;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskView;
 
 import butterknife.BindView;
@@ -108,7 +110,10 @@ public abstract class BaseShipmentFragment extends Fragment
 
     protected abstract void initDI();
 
-    protected abstract void initPresenter();
+    protected void initPresenter(){
+        presenter().setView(this);
+        presenter().init();
+    }
 
     @Override
     public void onComplete() {
@@ -154,6 +159,66 @@ public abstract class BaseShipmentFragment extends Fragment
         DialogFragment fragment = QuestionDialogFragment.newInstance(question, okButtonText,
                 cancelButtonText, id, this);
         fragment.show(getChildFragmentManager(), "ask");
+    }
+
+    protected void hideKeyboard() {
+        utils.hideKeyboard(getActivity());
+    }
+
+    protected abstract BaseShipmentPresenter presenter();
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter().start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter().stop();
+    }
+
+    @Override
+    public void onOkButtonClick(int queryId) {
+        switch (queryId){
+            case INSUFFICIENT_REPORT:{
+                showMessage("Отчет отправлен", FINAL);
+                //finish();
+                break;
+            }
+            case SHOW_ALL_DIALOG:{
+                hideKeyboard();
+                presenter().showAllAccepted();
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onCancelButtonClick(int queryId) {
+        switch (queryId) {
+            case SHOW_ALL_DIALOG: {
+                presenter().showAllDenied();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    @Override
+    public ShipmentTaskPosition getItem(int index) {
+        return presenter().getPosition(index);
+    }
+
+    @Override
+    public void onQuantityChanges(String id, int quantity) {
+        presenter().onQuantityChanges(id, quantity);
     }
 
 }

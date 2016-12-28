@@ -1,20 +1,24 @@
 package com.example.dmitry.a1c_client.presentation;
 
-import com.example.dmitry.a1c_client.android.adapters.ShipmentViewPagerAdapterHelper;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;
 import com.example.dmitry.a1c_client.domain.entity.Shipable;
+import com.example.dmitry.a1c_client.domain.interactor.ChangePositionInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.CollectionChangePositionInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.CollectionSetDisplayStateInteractor;
+import com.example.dmitry.a1c_client.domain.interactor.Interactor;
 import com.example.dmitry.a1c_client.domain.interactor.SetDisplayStateInteractor;
-import com.example.dmitry.a1c_client.domain.interactor.ShipmentChangePositionInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.UpdateEquipmentTaskInteractor;
-import com.example.dmitry.a1c_client.presentation.entity.ShipmentViewState;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.subscriptions.CompositeSubscription;
+
+import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notComplete;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notInitailased;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
 
 /**
  * Created by Admin on 26.12.2016.
@@ -25,15 +29,9 @@ public class CollectionPresenter extends BaseShipmentPresenter{
     @Inject UpdateEquipmentTaskInteractor updateInteractor;
     @Inject CollectionChangePositionInteractor changeInteractor;
     @Inject CollectionSetDisplayStateInteractor displayStateInteractor;
-    private CompositeSubscription subscriptions;
-    private ShipmentTaskView view;
-    private ShipmentViewPagerAdapterHelper adapterHelper;
-    private ShipmentViewState viewState;
 
     @Inject
-    public CollectionPresenter() {
-        subscriptions = new CompositeSubscription();
-    }
+    public CollectionPresenter() { }
 
     @Override
     protected Observable<Shipable> getObservable() {
@@ -42,17 +40,47 @@ public class CollectionPresenter extends BaseShipmentPresenter{
 
     @Override
     protected void clearState() {
-
+        stateKeeper.update(EquipmentTaskState.EMPTY);
     }
 
     @Override
     protected void setIdle() {
-
+        stateKeeper.change(state -> state.toBuilder()
+                .transmissionState(idle)
+                .errorState(ok).build());
     }
 
     @Override
     protected SetDisplayStateInteractor getDisplayStateInteractor() {
         return displayStateInteractor;
+    }
+
+    @Override
+    protected ChangePositionInteractor getChangeInteractor() {
+        return changeInteractor;
+    }
+
+    @Override
+    protected boolean checkAndInitStateKeeper() {
+        return stateKeeper.change(state -> {
+            if (state.completeState() == notInitailased) {
+                return state.toBuilder()
+                        .completeState(notComplete)
+                        .transmissionState(requested).build();
+            } else {
+                return null;
+            }
+        });
+    }
+
+    @Override
+    protected Shipable getStateKeeperValue() {
+        return stateKeeper.getValue();
+    }
+
+    @Override
+    protected Interactor getUpdateInteractor() {
+        return updateInteractor;
     }
 
 }

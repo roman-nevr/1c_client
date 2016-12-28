@@ -29,7 +29,7 @@ public class StateKeeper<T> {
         synchronized (subjectLock) {
             T newState;
             if (subject.hasValue()) {
-                //System.out.println(subject.getValue());
+                //System.out.println(subject.getStateKeeperValue());
                 newState = modifier.modify(subject.getValue());
             } else {
                 newState = modifier.modify(defaultValue);
