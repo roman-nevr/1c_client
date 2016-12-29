@@ -46,10 +46,7 @@ public abstract class BaseShipmentPresenter {
         return state.transmissionState() == requested;
     }
 
-    protected Boolean isDataLoaded(Shipable taskState) {
-        return taskState.transmissionState() == received
-                && taskState.completeState() == notComplete;
-    }
+
 
     protected Boolean isDataChange(Shipable taskState) {
         return taskState.transmissionState() == idle
@@ -99,16 +96,7 @@ public abstract class BaseShipmentPresenter {
                 .subscribe(state -> view.showProgress()));
     }
 
-    protected void subscribeOnDataLoaded() {
-        subscriptions.add(getObservable()
-                .filter(this::isDataLoaded)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(state -> {
-                    view.hideProgress();
-                    fillView(state);
-                    setIdle();
-                }));
-    }
+
 
     protected void subscribeOnDataChanges() {
         subscriptions.add(getObservable()
@@ -125,10 +113,7 @@ public abstract class BaseShipmentPresenter {
 
     protected abstract void clearState();
 
-    protected abstract void setIdle();
-
     public void start() {
-        subscribeOnDataLoaded();
         subscribeOnProgress();
         subscribeOnDataChanges();
     }
@@ -163,8 +148,8 @@ public abstract class BaseShipmentPresenter {
     protected abstract ChangePositionInteractor getChangeInteractor();
 
     public void init() {
-        boolean success = checkAndInitStateKeeper();
-        if (success) {
+        boolean isInitiated = checkAndInitStateKeeper();
+        if (isInitiated) {
             getUpdateInteractor().execute();
         }else {//else data have already downloaded
             fillView(getStateKeeperValue());

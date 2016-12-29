@@ -23,7 +23,7 @@ public interface EquipmentTaskView {
     void hideViews();
     void onComplete();
 
-    interface Callback{
+    interface EquipCallback {
         void onEquipmentComplete();
     }
 }

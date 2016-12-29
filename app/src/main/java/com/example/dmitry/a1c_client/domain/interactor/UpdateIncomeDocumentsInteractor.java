@@ -3,29 +3,33 @@ package com.example.dmitry.a1c_client.domain.interactor;
 
 import com.example.dmitry.a1c_client.domain.DocumentRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
-import com.example.dmitry.a1c_client.domain.entity.Document;
+import com.example.dmitry.a1c_client.domain.entity.IncomeDocument;
 import com.example.dmitry.a1c_client.domain.entity.IncomeListState;
+import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState;
+import com.example.dmitry.a1c_client.domain.entity.ShipmentDocument;
+import com.example.dmitry.a1c_client.domain.entity.ShipmentListState;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.downloadError;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.progress;
-import static com.example.dmitry.a1c_client.domain.entity.IncomeListState.State.ready;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.DocumentsState.downloadError;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.DocumentsState.progress;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.DocumentsState.ready;
 
-public class UpdateDocumentsInteractor extends Interactor {
+
+public class UpdateIncomeDocumentsInteractor extends Interactor {
     @Inject StateKeeper<IncomeListState> incomeListStateKeeper;
     @Inject DocumentRepository documentRepository;
 
     @Inject
-    public UpdateDocumentsInteractor() {}
+    public UpdateIncomeDocumentsInteractor() {}
 
     @Override
     protected void operation() {
             try {
                 showProgress();
-                List<Document> documents = loadDocuments();
+                List<IncomeDocument> documents = loadDocuments();
                 updateState(documents);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
@@ -33,9 +37,9 @@ public class UpdateDocumentsInteractor extends Interactor {
             }
     }
 
-    private List<Document> loadDocuments() throws Throwable {
+    private List<IncomeDocument> loadDocuments() throws Throwable {
         return documentRepository
-                .getDocuments()
+                .getIncomeDocuments()
                 .toBlocking()
                 .value();
     }
@@ -48,7 +52,7 @@ public class UpdateDocumentsInteractor extends Interactor {
         incomeListStateKeeper.change(state -> state.toBuilder().state(progress).build());
     }
 
-    private void updateState(List<Document> documents) {
+    private void updateState(List<IncomeDocument> documents) {
         incomeListStateKeeper.change(state -> state.toBuilder().documents(documents).state(ready).build());
     }
 }

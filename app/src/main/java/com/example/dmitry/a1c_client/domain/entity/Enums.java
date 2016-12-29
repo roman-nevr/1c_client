@@ -5,6 +5,11 @@ package com.example.dmitry.a1c_client.domain.entity;
  */
 
 public class Enums {
+
+    public enum DocumentsState {
+        downloadError, ready, progress, notInitialased
+    }
+
     public static enum TransmissionState {
         idle, requested, received, notFound, error  //Not a State
     }

@@ -41,7 +41,7 @@ public class ShipmentViewState {
         return markedItem >= 0;
     }
     public void removeMarkedItem(){
-        if (markedItem != -1 && showOnlyActual){
+        if (markedItem != -1){
             actualPositions.remove(markedItem);
         }
         markedItem = -1;
@@ -82,8 +82,7 @@ public class ShipmentViewState {
         int index = actualPositions.indexOf(actualPosition);
         if(position.doneQuantity() == position.requiredQuantity()){
             markedItem = index;
-        }else {
-            actualPositions.set(index,position);
         }
+        actualPositions.set(index,position);
     }
 }

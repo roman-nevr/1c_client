@@ -66,4 +66,9 @@ public abstract class NomenclaturePosition {
 
         public abstract NomenclaturePosition build();
     }
+
+    @Override
+    public String toString() {
+        return id() + ", " + positionName() + ", " + barCode();
+    }
 }

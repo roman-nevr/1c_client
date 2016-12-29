@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment.Mes
 import com.example.dmitry.a1c_client.android.fragments.NewBarCodeDialogFragment;
 import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment;
 import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment.AnswerCallBack;
+import com.example.dmitry.a1c_client.android.fragments.ShowMapDialogFragment;
 import com.example.dmitry.a1c_client.di.income_task.DaggerIncomeTaskViewComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskViewModule;
@@ -105,6 +107,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         progressBar.setVisibility(View.GONE);
         etBarCode.setEnabled(true);
         etQuantity.setEnabled(true);
+        System.out.println("hide progress");
     }
 
     @Override
@@ -134,8 +137,9 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
 
 
     @Override
-    public void showStorageInfo(String place, String element) {
-        hideKeyboard(this);
+    public void showStorageInfo(String quantity, String place, String element) {
+        //hideKeyboard(this);
+        etQuantity.setText(quantity);
         tvStorageElement.setText(element);
         tvStoragePlace.setText(place);
     }
@@ -146,7 +150,8 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
 
     @Override
     public void showMap(StoreMapObject storeMapObject) {
-
+        DialogFragment fragment = ShowMapDialogFragment.newInstance();
+        fragment.show(getSupportFragmentManager(), "map");
     }
 
     @Override
@@ -187,7 +192,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         tvDescription.setText("");
         tvVendorCode.setText("");
         etQuantity.setText("");
-        showStorageInfo("", "");
+        showStorageInfo("", "", "");
         unitsSpinner.setAdapter(null);
         /*if(unitsSpinner.getAdapter()!=null){
             System.out.println("adapter notifyDataSetChanged null");

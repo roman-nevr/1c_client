@@ -41,7 +41,7 @@ public abstract class BaseShipmentFragment extends Fragment
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.progressBar) ProgressBar progress;
 
-    private Callback callback;
+    private ShipmentCallback callback;
 
     public static final int INSUFFICIENT_REPORT = 1;
     public static final int SHOW_ALL_DIALOG = 2;
@@ -79,8 +79,8 @@ public abstract class BaseShipmentFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(getActivity() instanceof Callback){
-            callback = (Callback) getActivity();
+        if(getActivity() instanceof ShipmentCallback){
+            callback = (ShipmentCallback) getActivity();
         }else {
             throw new UnsupportedOperationException("parent must implement ShipmentTaskView.Callback");
         }
@@ -126,12 +126,12 @@ public abstract class BaseShipmentFragment extends Fragment
         fragment.show(getChildFragmentManager(), "end");
     }
 
-    @Override
+    /*@Override
     public void onMessageButtonClick(int id) {
         if(id == FINAL){
             getActivity().finish();
         }
-    }
+    }*/
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -1,6 +1,7 @@
 package com.example.dmitry.a1c_client.android.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -130,6 +131,15 @@ public class ShipmentAdapterFragment extends Fragment {
         etQuantity.setError("");
     }
 
+    public void setDone(){
+        etQuantity.setBackgroundColor(Color.GREEN);
+    }
+
+    public void showTooMany(){
+        //etQuantity.setBackgroundColor(Color.RED);
+        //TODO: anamation
+    }
+
     private void setFocus() {
         if(etBarCode.requestFocus()){
             System.out.println("focus fail");
@@ -164,7 +174,7 @@ public class ShipmentAdapterFragment extends Fragment {
                     .debounce(500, TimeUnit.MILLISECONDS)
                     .map(charSequence -> charSequence.toString())
                     .filter(CommonFilters::isValidNumber)
-                    .observeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(quantity -> {
                         setQuantity(Integer.parseInt(quantity));
                     }));
@@ -188,18 +198,32 @@ public class ShipmentAdapterFragment extends Fragment {
                     .debounce(300, TimeUnit.MILLISECONDS)
                     .map(charSequence -> charSequence.toString())
                     .filter(CommonFilters::isValidBarCode)
-                    .subscribe(barCode -> incrementQuantity(barCode)));
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(barCode -> {incrementQuantity(barCode);
+                    view.clearBarCode();}));
         }
 
         private void incrementQuantity(String barCode) {
             if (barCode.equals(position.position().barCode())) {
                 callback.onQuantityChanges(position.position().id(), position.doneQuantity() + 1);
+                view.setDoneQuantity(position.doneQuantity() + 1);
+                position = position.toBulder().doneQuantity(position.doneQuantity() + 1).build();
+                if(position.doneQuantity() > position.requiredQuantity()){
+                    view.showTooMany();
+                }
             }
         }
 
         private void setQuantity(int quantity) {
             if (quantity != position.doneQuantity()) {
                 callback.onQuantityChanges(position.position().id(), quantity);
+                position = position.toBulder().doneQuantity(quantity).build();
+            }
+            if(quantity == position.requiredQuantity()){
+                view.setDone();
+            }
+            if(quantity > position.requiredQuantity()){
+                view.showTooMany();
             }
         }
 
@@ -209,13 +233,19 @@ public class ShipmentAdapterFragment extends Fragment {
             view.setDescription(position.position().description());
             view.setVendorCode(position.position().vendorCode());
             view.setRequiredQuantity(position.requiredQuantity());
-
             view.setDoneQuantity(position.doneQuantity());
+            if(position.doneQuantity() == position.requiredQuantity()){
+                view.setDone();
+            }
             view.setFocus();
         }
 
         public void stop() {
             subscriptions.clear();
         }
+    }
+
+    private void clearBarCode() {
+        etBarCode.setText("");
     }
 }

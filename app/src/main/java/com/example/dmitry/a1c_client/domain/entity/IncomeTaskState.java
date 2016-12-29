@@ -91,4 +91,5 @@ public abstract class IncomeTaskState {
 
         public abstract IncomeTaskState build();
     }
+
 }

@@ -5,8 +5,10 @@ import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.Enums;
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;
 import com.example.dmitry.a1c_client.domain.entity.Kit;
+import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.presentation.entity.BarCodeEntryMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,6 +20,7 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
+import static com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState.Stage.collect;
 
 /**
  * Created by Admin on 26.12.2016.
@@ -36,18 +39,40 @@ public class UpdateEquipmentTaskInteractor extends Interactor {
         try {
             showProgress();
             List<Kit> kits = loadKits();
-            updateState(kits);
+            List<ShipmentTaskPosition> positions = calculatePositions(kits);
+            updateState(kits, positions);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             showError();
         }
     }
 
-    private void updateState(List<Kit> kits) {
+    private List<ShipmentTaskPosition> calculatePositions(List<Kit> kits) {
+        List<ShipmentTaskPosition> result = new ArrayList<>();
+        for(Kit kit : kits){
+            for (ShipmentTaskPosition item : kit.kitContent()){
+                int index = result.indexOf(item);
+                if(index == -1){
+                    result.add(item);
+                }else{
+                    incrementRequiredQuantity(index, result, item.requiredQuantity());
+                }
+            }
+        }
+        return result;
+    }
+
+    private void incrementRequiredQuantity(int index, List<ShipmentTaskPosition> result, int diff) {
+        result.set(index, result.get(index).toBulder().requiredQuantity(result.get(index).requiredQuantity() + diff).build());
+    }
+
+    private void updateState(List<Kit> kits, List<ShipmentTaskPosition> positions) {
         stateKeeper.change(state -> state.toBuilder()
                 .kits(kits)
+                .positions(positions)
                 .barCodeEntryMap(new BarCodeEntryMap(kits))
                 .completeState(notComplete)
+                .stage(collect)
                 .transmissionState(received)
                 .errorState(ok).build());
     }

@@ -99,7 +99,9 @@ public class IncomeTaskPresenter {
         subscriptions.add(stateKeeper.getObservable()
                 .filter(this::isProgress)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(i -> view.showProgress()));
+                .subscribe(i -> {
+                    System.out.println("showProgress");
+                    view.showProgress();}));
     }
 
     private void subscribeOnNetError() {
@@ -165,7 +167,7 @@ public class IncomeTaskPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(taskState -> {
                     view.hideProgress();
-                    view.showStorageInfo(taskState.storagePlace(),
+                    view.showStorageInfo(""+taskState.quantity(), taskState.storagePlace(),
                             taskState.storageElement());
                 }));
     }
@@ -196,8 +198,8 @@ public class IncomeTaskPresenter {
                                 .quantity(quantity).build());
                         storageInteractor.execute();
                     } else {
-                        view.hideProgress();
-                        view.showPosition(stateKeeper.getValue().position());
+                        //view.hideProgress();
+                        //view.showPosition(stateKeeper.getValue().position());
                     }
                 }));
     }
@@ -208,10 +210,13 @@ public class IncomeTaskPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (isValidNumber(view.getQuantity())) {
-                        stateKeeper.change(state -> state.toBuilder()
-                                .quantity(Integer.parseInt(view.getQuantity()))
-                                .build());
-                        storageInteractor.execute();
+                        int quantity = Integer.parseInt(view.getQuantity());
+                        if(true){//or check isQuantityChanged
+                            stateKeeper.change(state -> state.toBuilder()
+                                    .quantity(quantity)
+                                    .build());
+                            storageInteractor.execute();
+                        }
                     } else {
                         view.showQuantityError();
                     }
@@ -322,12 +327,16 @@ public class IncomeTaskPresenter {
     }
 
     private Boolean isProgress(IncomeTaskState taskState) {
-        return (taskState.viewState() == barCodeInput
+        boolean result = (taskState.viewState() == barCodeInput
                     && taskState.positionState() == requested)
                 || (taskState.viewState() == displayPosition
                     && taskState.storageState() == requested)
                 || (taskState.viewState() == displayStorageInfo
                     && taskState.storageState() == requested);
+        if(result){
+            System.out.println("progress");
+        }
+        return result;
     }
 
     private boolean isBarCodeChanged(String barCode) {

@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:text="1111"
         android:background="@color/white"
         android:padding="3dp"
         android:ems="8"
@@ -34,7 +33,8 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="1111"/>
 
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tvNomenklauraName"
-        android:text="Чулки сетчатые, черные"
+        tools:text="Чулки сетчатые, черные"
         android:textSize="@dimen/detailsItemFormBarcodeLabelTextSize"
         android:layout_marginStart="8dp"
         app:layout_constraintLeft_toRightOf="@+id/tvNomenklaturaLabel"
@@ -97,7 +97,7 @@
         app:layout_constraintLeft_toRightOf="@+id/ivPic"
         app:layout_constraintTop_toTopOf="@+id/ivPic" />
     <TextView
-        android:text="ABC12300011001"
+        tools:text="ABC12300011001"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvInfoVendorCodeName"
@@ -116,7 +116,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/tvInfoVendorCodeLabel" />
 
     <TextView
-        android:text="Чулки сетчатые в прозрачной полиэтиленовой упаковке с наклейкой"
+        tools:text="Чулки сетчатые в прозрачной полиэтиленовой упаковке с наклейкой"
 
         android:ellipsize="end"
         android:layout_width="0dp"
@@ -169,7 +169,7 @@
         tools:text="1"/>
 
     <TextView
-        android:text="Единицы измерения"
+        tools:text="Единицы измерения"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/detailsItemFormNomenklaturaLabelTextSize"

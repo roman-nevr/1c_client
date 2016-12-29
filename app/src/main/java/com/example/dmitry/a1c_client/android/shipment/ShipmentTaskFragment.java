@@ -39,10 +39,10 @@ public class ShipmentTaskFragment extends BaseShipmentFragment {
     }
 
 
-
-
-
-
-
-
+    @Override
+    public void onMessageButtonClick(int id) {
+        if(id == FINAL){
+            getActivity().finish();
+        }
+    }
 }

@@ -48,5 +48,4 @@ public abstract class ShipmentTaskPosition {
 
         public abstract ShipmentTaskPosition build();
     }
-
 }

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.notFound;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
@@ -57,6 +58,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
                 //.position(state.position().toBuilder().barCode(barCode).build())
                 .position(NomenclaturePosition.EMPTY.toBuilder().barCode(barCode).build())
                 .positionState(notFound)
+                .storageState(idle)
                 .errorState(ok)
                 .build());
     }
@@ -67,6 +69,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
                         .position(position)
                         .viewState(displayPosition)
                         .positionState(received)
+                        .storageState(idle)
                         .errorState(ok)
                         .build());
     }
@@ -88,6 +91,7 @@ public class GetNomenclatureByBarCodeInteractor extends Interactor {
         incomeTaskStateStateKeeper.change(state -> state.toBuilder()
                 .viewState(barCodeInput)
                 .positionState(requested)
+                .storageState(idle)
                 .errorState(ok)
                 .build());
     }

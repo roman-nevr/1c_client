@@ -14,6 +14,7 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.act
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
 import static com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState.Stage.collect;
+import static com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState.Stage.notInitialised;
 
 /**
  * Created by Admin on 26.12.2016.
@@ -29,7 +30,7 @@ public abstract class EquipmentTaskState extends Shipable {
             .unmodifiableList(Collections.emptyList());
 
     public static EquipmentTaskState EMPTY = create(KIT_EMPTY_LIST, Kit.EMPTY, EMPTY_LIST,
-            notInitailased, collect, BarCodeEntryMap.EMPTY, actual, idle, ok);
+            notInitailased, notInitialised, BarCodeEntryMap.EMPTY, actual, idle, ok);
 
     public static EquipmentTaskState create(List<Kit> kits,
                                             Kit kitToShow,
@@ -66,7 +67,7 @@ public abstract class EquipmentTaskState extends Shipable {
     public abstract Builder toBuilder();
 
     public enum Stage {
-        collect, equip
+        notInitialised, collect, equip
     }
 
     @AutoValue.Builder public abstract static class Builder {

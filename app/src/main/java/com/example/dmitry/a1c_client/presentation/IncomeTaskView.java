@@ -14,7 +14,7 @@ public interface IncomeTaskView {
     public void showProgress();
     public void hideProgress();
     public void showPosition(NomenclaturePosition position);
-    public void showStorageInfo(String place, String element);
+    public void showStorageInfo(String quantity, String place, String element);
     public void hideStorageInfo();
     public void showMap(StoreMapObject storeMapObject);
     public void showBarCodeNotFoundDialog();

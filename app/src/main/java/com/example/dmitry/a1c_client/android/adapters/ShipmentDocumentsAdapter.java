@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.domain.entity.Document;
+import com.example.dmitry.a1c_client.domain.entity.ShipmentDocument;
 import com.example.dmitry.a1c_client.presentation.interfaces.IOnItemClick;
 
 import java.text.DateFormat;
@@ -17,18 +17,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyHolder>{
-    private List<Document> documentList;
+public class ShipmentDocumentsAdapter extends RecyclerView.Adapter<ShipmentDocumentsAdapter.MyHolder>{
+    private List<ShipmentDocument> documentList;
     private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
     private IOnItemClick onItemClick;
 
-    public DocumentsAdapter(List<Document> documentList, IOnItemClick onItemClick) {
+    public ShipmentDocumentsAdapter(List<ShipmentDocument> documentList, IOnItemClick onItemClick) {
         this.onItemClick = onItemClick;
         this.documentList = documentList;
-        setHasStableIds(true);
+        //setHasStableIds(true);
     }
 
-    public void update(List<Document> documentList) {
+    public void update(List<ShipmentDocument> documentList) {
         this.documentList = documentList;
         notifyDataSetChanged();
     }
@@ -41,12 +41,13 @@ public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyH
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        Document document = documentList.get(position);
+        ShipmentDocument document = documentList.get(position);
+        holder.document = document;
         holder.id.setText(document.id());
         holder.docNumber.setText(document.docNumber());
         holder.docDate.setText(dateFormat.format(document.docDate()));
         holder.clientName.setText(document.client().name());
-        holder.holderView.setOnClickListener(v -> onItemClick.onItemClickAction(v, document.id()));
+        holder.holderView.setOnClickListener(v -> onItemClick.onItemClickAction(v, holder.document.id()));
     }
 
     @Override
@@ -59,6 +60,7 @@ public class DocumentsAdapter  extends RecyclerView.Adapter<DocumentsAdapter.MyH
         @BindView(R.id.tvNumber) TextView docNumber;
         @BindView(R.id.tvPropsDate) TextView docDate;
         @BindView(R.id.tvClientName) TextView clientName;
+        public ShipmentDocument document;
         public final View holderView;
 
         public MyHolder(View itemView) {

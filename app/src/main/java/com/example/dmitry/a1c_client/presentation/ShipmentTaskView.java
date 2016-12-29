@@ -25,7 +25,7 @@ public interface ShipmentTaskView {
 
     void incProgress();
 
-    public interface Callback{
+    interface ShipmentCallback {
         void onShipmentComplete();
     }
 }

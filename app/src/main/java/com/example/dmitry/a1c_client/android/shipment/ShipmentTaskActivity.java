@@ -8,18 +8,18 @@ import android.support.annotation.Nullable;
 import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.android.BaseActivity;
 
-import static com.example.dmitry.a1c_client.presentation.ShipmentTaskView.Callback;
+import static com.example.dmitry.a1c_client.presentation.ShipmentTaskView.ShipmentCallback;
 
 /**
  * Created by Admin on 23.12.2016.
  */
 
-public class ShipmentTaskActivity extends BaseActivity implements Callback {
+public class ShipmentTaskActivity extends BaseActivity implements ShipmentCallback {
 
     public static final String SHIPMENT_FRAGMENT = "shipment";
 
     @Override protected int provideLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.frame_layout;
     }
 
     @Override protected void initDi(Bundle savedInstanceState) {

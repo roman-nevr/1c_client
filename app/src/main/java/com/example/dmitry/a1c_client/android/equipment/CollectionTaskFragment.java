@@ -29,4 +29,9 @@ public class CollectionTaskFragment extends BaseShipmentFragment {
     protected BaseShipmentPresenter presenter() {
         return presenter;
     }
+
+    @Override
+    public void onMessageButtonClick(int id) {
+
+    }
 }

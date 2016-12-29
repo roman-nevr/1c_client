@@ -27,8 +27,6 @@ import com.example.dmitry.a1c_client.presentation.EquipmentTaskPresenter;
 import com.example.dmitry.a1c_client.presentation.EquipmentTaskView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -36,7 +34,6 @@ import butterknife.ButterKnife;
 import rx.Observable;
 
 import static android.view.View.*;
-import static com.example.dmitry.a1c_client.android.MyApplication.logger;
 
 /**
  * Created by Admin on 26.12.2016.
@@ -51,7 +48,7 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
     @BindView(R.id.tvKitDescription) TextView tvKitDescription;
     @BindView(R.id.llHidable) LinearLayout llHidable;
     @BindView(R.id.tvContainsLabel) TextView tvContainsLabel;
-    private Callback callback;
+    private EquipCallback callback;
 
     @Override
     public void showProgress() {
@@ -104,8 +101,8 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof Callback){
-            this.callback = (Callback) context;
+        if(context instanceof EquipCallback){
+            this.callback = (EquipCallback) context;
         }else {
             throw  new UnsupportedOperationException("activity must implement Callback");
         }

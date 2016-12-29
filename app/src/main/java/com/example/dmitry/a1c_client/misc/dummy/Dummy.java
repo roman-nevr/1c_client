@@ -1,7 +1,9 @@
 package com.example.dmitry.a1c_client.misc.dummy;
 
 import com.example.dmitry.a1c_client.domain.entity.Client;
-import com.example.dmitry.a1c_client.domain.entity.Document;
+import com.example.dmitry.a1c_client.domain.entity.EquipDocument;
+import com.example.dmitry.a1c_client.domain.entity.IncomeDocument;
+import com.example.dmitry.a1c_client.domain.entity.ShipmentDocument;
 import com.example.dmitry.a1c_client.domain.entity.Image;
 import com.example.dmitry.a1c_client.domain.entity.Kit;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
@@ -23,7 +25,9 @@ import static com.example.dmitry.a1c_client.domain.entity.Unit.builder;
 
 public class Dummy {
     public static final List<Client> CLIENTS = new ArrayList<>();
-    public static final List<Document> DOCUMENTS = new ArrayList<>();
+    public static final List<ShipmentDocument> SHIPMENT_DOCUMENTS = new ArrayList<>();
+    public static final List<IncomeDocument> INCOME_DOCUMENTS = new ArrayList<>();
+    public static final List<EquipDocument> EQUIP_DOCUMENTS = new ArrayList<>();
     public static final List<NomenclaturePosition> NOMENCLATURE = new ArrayList<>();
     public static final List<ShipmentTaskPosition> SHIPMENT_TASK = new ArrayList<>();
     public static final List<Kit> EQUIPMENT_TASK = new ArrayList<>();
@@ -37,7 +41,7 @@ public class Dummy {
     public static final Map<String, NomenclaturePosition> POSITION_MAP = new HashMap<>();
     public static final Map<String, NomenclaturePosition> VENDOR_CODES_MAP = new HashMap<>();
 
-    private static final int COUNT = 10;
+    private static final int COUNT = 20;
 
     static {
 
@@ -48,8 +52,8 @@ public class Dummy {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
             addNomenclature(createNomenclature(i));
-            addDocument(createDummyDocument0(i));
-            addDocument(createDummyDocument1(i));
+            addDocument(createDummyShipmentDocument(i, CLIENTS.get(0)));
+            addDocument(createDummyShipmentDocument(i, CLIENTS.get(1)));
         }
 
         for (int i = 1; i <= 5; i++) {
@@ -57,6 +61,10 @@ public class Dummy {
         }
 
         createEquipmentTask();
+        
+        createIncomeList();
+
+        createEquipmentList();
 
         POSITION_MAP.put("11111111", NomenclaturePosition.create("1", "First", "First description",
                 "F111", "11111111", Image.EMPTY, DEFAULT_UNIT_LIST));
@@ -72,6 +80,26 @@ public class Dummy {
         VENDOR_CODES_MAP.put("error", NomenclaturePosition.create("7", "error", "Детский букварь",
                 "error", "11111117", Image.EMPTY, DEFAULT_UNIT_LIST));
 
+    }
+
+    private static void createEquipmentList() {
+        for (int i = 1; i <= COUNT; i++){
+            EQUIP_DOCUMENTS.add(createDummyEquipDocument(i, CLIENTS.get(0)));
+        }
+    }
+
+    private static EquipDocument createDummyEquipDocument(int i, Client client) {
+        return EquipDocument.create("id"+i, "Комплектация"+i, new Date(), client, "");
+    }
+
+    private static void createIncomeList() {
+        for (int i = 1; i <= COUNT; i++){
+            INCOME_DOCUMENTS.add(createDummyIncomeDocument(i));
+        }
+    }
+
+    private static IncomeDocument createDummyIncomeDocument(int i) {
+        return IncomeDocument.create("id"+i, "Приход"+i, new Date());
     }
 
     private static ShipmentTaskPosition createDummyShipment(int i) {
@@ -104,19 +132,17 @@ public class Dummy {
 
 
 
-    private static void addDocument(Document item) {
-        DOCUMENTS.add(item);
+    private static void addDocument(ShipmentDocument item) {
+        SHIPMENT_DOCUMENTS.add(item);
     }
 
-    private static Document createDummyDocument0(int i) {
-        return Document.builder().id("AB" + i).client(CLIENTS.get(0)).docNumber(""+i).comment("")
+    private static ShipmentDocument createDummyShipmentDocument(int i, Client client) {
+        return ShipmentDocument.builder().id("AB" + i).client(client).docNumber(""+i)
+                .comment("")
+                .number("N"+i)
                 .docDate(new Date()).build();
     }
 
-    private static Document createDummyDocument1(int i) {
-        return Document.builder().id("AB" + i + COUNT).client(CLIENTS.get(1))
-                .docNumber(""+i + COUNT).comment("").docDate(new Date()).build();
-    }
 
     private static void addNomenclature(NomenclaturePosition item) {
         NOMENCLATURE.add(item);

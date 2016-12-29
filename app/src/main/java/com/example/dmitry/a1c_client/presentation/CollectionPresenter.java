@@ -43,12 +43,7 @@ public class CollectionPresenter extends BaseShipmentPresenter{
         stateKeeper.update(EquipmentTaskState.EMPTY);
     }
 
-    @Override
-    protected void setIdle() {
-        stateKeeper.change(state -> state.toBuilder()
-                .transmissionState(idle)
-                .errorState(ok).build());
-    }
+
 
     @Override
     protected SetDisplayStateInteractor getDisplayStateInteractor() {

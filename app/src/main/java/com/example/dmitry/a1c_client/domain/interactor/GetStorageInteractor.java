@@ -48,6 +48,7 @@ public class GetStorageInteractor extends Interactor {
         stateKeeper.change(state -> state.toBuilder()
                 .storageElement(taskState.storageElement())
                 .storagePlace(taskState.storagePlace())
+                .storeMapObject(taskState.storeMapObject())
                 .storageState(received)
                 .errorState(ok)
                 .build());
