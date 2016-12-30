@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.fragments;
+package com.example.dmitry.a1c_client.android.views.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.misc.utils;
 
 
 /**
@@ -28,15 +27,13 @@ public class QuestionDialogFragment extends DialogFragment {
     public static final String BUTTON_OK = "ok";
     public static final String BUTTON_CANCEL = "cancel";
     public static final String ID = "id";
-    private static AnswerCallBack listener;
+    private AnswerCallBack listener;
     private View form;
     private boolean ok = false;
     private int queryId;
 
     public static QuestionDialogFragment newInstance(String question, String btnOkText,
-                                                     String btnCancelText, int queryId,
-                                                     AnswerCallBack callBack) {
-        listener = callBack;
+                                                     String btnCancelText, int queryId) {
         QuestionDialogFragment fragment = new QuestionDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(QuestionDialogFragment.QUESTION, question);

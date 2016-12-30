@@ -1,11 +1,12 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.views;
 
 
 import android.view.View;
 
+import com.example.dmitry.a1c_client.android.MyApplication;
 import com.example.dmitry.a1c_client.android.adapters.ShipmentDocumentsAdapter;
-import com.example.dmitry.a1c_client.android.fragments.BaseListFragment;
-import com.example.dmitry.a1c_client.android.shipment.ShipmentTaskActivity;
+import com.example.dmitry.a1c_client.android.views.fragments.BaseListFragment;
+import com.example.dmitry.a1c_client.android.views.shipment.ShipmentTaskActivity;
 import com.example.dmitry.a1c_client.di.DaggerShipmentFragmentComponent;
 import com.example.dmitry.a1c_client.di.ShipmentListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
@@ -53,7 +54,7 @@ public class ShipmentListFragment extends BaseListFragment implements ShipmentLi
     }
 
     @Override
-    public void onItemClickAction(View view, String id) {
+    public void onItemClickAction(String id) {
         ShipmentTaskActivity.start(getContext());
     }
 }

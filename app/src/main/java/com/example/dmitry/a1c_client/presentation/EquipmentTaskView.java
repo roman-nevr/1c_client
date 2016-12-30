@@ -1,5 +1,6 @@
 package com.example.dmitry.a1c_client.presentation;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;
@@ -22,6 +23,10 @@ public interface EquipmentTaskView {
     void showError(String message);
     void hideViews();
     void onComplete();
+    FragmentManager fragmentManager();
+
+    void showBarCodeHint(String barCode);
+    void clearBarCode();
 
     interface EquipCallback {
         void onEquipmentComplete();

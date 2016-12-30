@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.views;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,12 +22,18 @@ public class MainWindowActivity extends BaseActivity {
     public static final String EQUIPMENT_TAG = "Комплектация";
 
     @Override
+    protected int provideLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            Fragment shipmentFragment = new IncomeListFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.main_container, shipmentFragment, INCOME_TAG).commit();
-            setTitle(INCOME_TAG);
+            String tag = EQUIPMENT_TAG;
+            Fragment shipmentFragment = getFragmentByTag(tag);
+            getSupportFragmentManager().beginTransaction().add(R.id.main_container, shipmentFragment, tag).commit();
+            setTitle(tag);
         }
     }
 
@@ -51,11 +57,6 @@ public class MainWindowActivity extends BaseActivity {
         getSupportFragmentManager().executePendingTransactions();
         //currentTag = tag;
         //toolbar.setTitle(tag);
-    }
-
-    @Override
-    protected int provideLayoutId() {
-        return R.layout.activity_main;
     }
 
     private Fragment getFragmentByTag(String tag) {

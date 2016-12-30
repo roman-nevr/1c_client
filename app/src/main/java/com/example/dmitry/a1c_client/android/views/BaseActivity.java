@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.views;
 
 import android.content.Context;
 import android.content.Intent;

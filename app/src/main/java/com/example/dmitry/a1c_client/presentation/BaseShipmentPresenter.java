@@ -13,6 +13,7 @@ import com.example.dmitry.a1c_client.presentation.entity.ShipmentViewState;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -162,4 +163,7 @@ public abstract class BaseShipmentPresenter {
 
     protected abstract Interactor getUpdateInteractor();
 
+    protected void addSubscription(Subscription subscription){
+        subscriptions.add(subscription);
+    }
 }

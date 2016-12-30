@@ -1,6 +1,6 @@
 package com.example.dmitry.a1c_client.di.income_task;
 
-import com.example.dmitry.a1c_client.android.fragments.ShowMapDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.ShowMapDialogFragment;
 import com.example.dmitry.a1c_client.di.scopes.MapScope;
 
 import dagger.Component;

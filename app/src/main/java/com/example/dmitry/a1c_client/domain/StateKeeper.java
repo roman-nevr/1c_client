@@ -19,7 +19,7 @@ public class StateKeeper<T> {
 
     public void update(T state) {
         synchronized (subjectLock) {
-           // System.out.println("check " + state);
+            System.out.println("check " + state);
             subject.onNext(state);
         }
     }

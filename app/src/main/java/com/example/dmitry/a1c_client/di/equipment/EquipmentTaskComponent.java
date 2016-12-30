@@ -5,13 +5,15 @@ import com.example.dmitry.a1c_client.domain.EquipmentRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
  * Created by Admin on 26.12.2016.
  */
 @Component(modules = EquipmentTaskModule.class)
-@TaskScope
+@Singleton
 public interface EquipmentTaskComponent {
     StateKeeper<EquipmentTaskState> provideEquipmentTaskComponent();
 

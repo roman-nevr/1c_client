@@ -12,6 +12,9 @@ import javax.inject.Inject;
 public class EquipmentWipeInteractor extends Interactor {
     @Inject StateKeeper<EquipmentTaskState> stateKeeper;
 
+    @Inject
+    public EquipmentWipeInteractor() {}
+
     @Override
     protected void operation() {
     }

@@ -1,14 +1,15 @@
 package com.example.dmitry.a1c_client.presentation;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.dmitry.a1c_client.android.adapters.EquipActTableAdapter;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;
 import com.example.dmitry.a1c_client.domain.entity.Kit;
 import com.example.dmitry.a1c_client.domain.interactor.CheckIfEquipmentComplete;
 import com.example.dmitry.a1c_client.domain.interactor.UpdateEquipmentTaskByBarCodeInteractor;
-import com.example.dmitry.a1c_client.domain.interactor.UpdateEquipmentTaskInteractor;
 import com.example.dmitry.a1c_client.misc.CommonFilters;
 
 import javax.inject.Inject;
@@ -16,8 +17,9 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.comlete;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notComplete;
-import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notInitailased;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.notFound;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
@@ -34,6 +36,8 @@ public class EquipmentTaskPresenter {
     private CompositeSubscription subscriptions;
     private EquipActTableAdapter adapter;
 
+    public static final int FINAL = 4;
+
     @Inject
     public EquipmentTaskPresenter() {
         subscriptions = new CompositeSubscription();
@@ -41,54 +45,9 @@ public class EquipmentTaskPresenter {
 
     public void start() {
         subscribeOnBarCodeInput();
-        subscribeOnDataDownload();
         subscribeOnKitToShow();
-        subscribeOnProgress();
         subscribeOnBarCodeNotFound();
         subscribeOnComplete();
-    }
-
-    private void subscribeOnProgress() {
-        subscriptions.add(stateKeeper.getObservable()
-                .filter(this::isProgress)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(state -> view.showProgress()));
-    }
-
-    private Boolean isProgress(EquipmentTaskState state) {
-        return state.transmissionState() == requested;
-    }
-
-    private void subscribeOnBarCodeNotFound() {
-        subscriptions.add(stateKeeper.getObservable()
-                .filter(this::isError)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(state -> view.showError("Штрихкод в подборе не найден")));
-    }
-
-    private Boolean isError(EquipmentTaskState state) {
-        return state.transmissionState() == notFound;
-    }
-
-    private void subscribeOnComplete() {
-        subscriptions.add(stateKeeper.getObservable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(state -> view.onComplete()));
-    }
-
-    private void subscribeOnKitToShow() {
-        subscriptions.add(stateKeeper.getObservable()
-                .map(state -> state.kitToShow())
-                .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(kit -> {
-                    if (kit != Kit.EMPTY) {
-                        view.setViews(kit);
-                        view.setAdapter(getAdapter(kit));
-                    } else {
-                        view.hideViews();
-                    }
-                }));
     }
 
     public void stop() {
@@ -99,18 +58,52 @@ public class EquipmentTaskPresenter {
         this.view = view;
     }
 
-    private void subscribeOnDataDownload() {
+    private void subscribeOnProgress() {
         subscriptions.add(stateKeeper.getObservable()
-                .filter(this::isDataDownload)
+                .filter(this::isProgress)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(state -> view.showProgress()));
+    }
+
+
+    private void subscribeOnBarCodeNotFound() {
+        subscriptions.add(stateKeeper.getObservable()
+                .filter(this::isError)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(state -> view.showError("Штрихкод в подборе не найден")));
+    }
+
+
+    private void subscribeOnComplete() {
+        subscriptions.add(stateKeeper.getObservable()
+                .filter(this::isComplete)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(state -> {
-                    view.hideProgress();
+                    showMessage("Положите в набор\n" + stateKeeper.getValue().kitToShow()
+                            .kitName().positionName() + "\nи нажмите ОК для завершения", FINAL);
                 }));
     }
 
-    private Boolean isDataDownload(EquipmentTaskState taskState) {
-        return taskState.completeState() == notComplete
-                && taskState.transmissionState() == received;
+    private void showMessage(String s, int id) {
+        DialogFragment fragment = MessageDialogFragment.newInstance(s, id);
+        fragment.show(view.fragmentManager(), "ask");
+    }
+
+
+    private void subscribeOnKitToShow() {
+        subscriptions.add(stateKeeper.getObservable()
+                .map(state -> state.kitToShow())
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(kit -> {
+                    if (kit != Kit.EMPTY) {
+                        view.setViews(kit);
+                        view.setAdapter(getAdapter(kit));
+                        view.clearBarCode();
+                    } else {
+                        view.hideViews();
+                    }
+                }));
     }
 
     private void subscribeOnBarCodeInput() {
@@ -118,6 +111,7 @@ public class EquipmentTaskPresenter {
                 .map(charSequence -> charSequence.toString())
                 .filter(CommonFilters::isValidBarCode)
                 .subscribe(barCode -> {
+                    view.showBarCodeHint(barCode);
                     barCodeInputInteractor.setBarCode(barCode).execute();
                     checkIfEquipmentCompleteInteractor.execute();
                 }));
@@ -130,5 +124,21 @@ public class EquipmentTaskPresenter {
             adapter.update(kit.kitContent());
         }
         return adapter;
+    }
+
+    //---------Filters-------------------
+
+    private Boolean isError(EquipmentTaskState state) {
+        return state.transmissionState() == notFound;
+    }
+
+
+    private Boolean isProgress(EquipmentTaskState state) {
+        return state.transmissionState() == requested;
+    }
+
+
+    private Boolean isComplete(EquipmentTaskState state) {
+        return state.completeState() == comlete;
     }
 }

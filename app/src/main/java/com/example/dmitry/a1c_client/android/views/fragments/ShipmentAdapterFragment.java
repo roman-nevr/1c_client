@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.fragments;
+package com.example.dmitry.a1c_client.android.views.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -23,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 
@@ -141,9 +140,7 @@ public class ShipmentAdapterFragment extends Fragment {
     }
 
     private void setFocus() {
-        if(etBarCode.requestFocus()){
-            System.out.println("focus fail");
-        }
+        etBarCode.requestFocus();
     }
 
     //---------------------------Presenter----------------------

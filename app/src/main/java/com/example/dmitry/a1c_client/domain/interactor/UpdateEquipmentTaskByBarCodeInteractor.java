@@ -17,6 +17,7 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.no
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.connectionError;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.error;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.notFound;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
@@ -89,8 +90,8 @@ public class UpdateEquipmentTaskByBarCodeInteractor extends Interactor {
                 .kits(kits)
                 .kitToShow(kit)
                 .barCodeEntryMap(new BarCodeEntryMap(kits))
-                .transmissionState(received)
-                .errorState(ok).build());
+                .transmissionState(idle)
+                .build());
     }
 
 

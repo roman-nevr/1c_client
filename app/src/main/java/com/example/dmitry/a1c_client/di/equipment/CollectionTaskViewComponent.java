@@ -1,7 +1,6 @@
 package com.example.dmitry.a1c_client.di.equipment;
 
-import com.example.dmitry.a1c_client.android.equipment.CollectionTaskFragment;
-import com.example.dmitry.a1c_client.di.scopes.PerInstance;
+import com.example.dmitry.a1c_client.android.views.equipment.CollectionTaskFragment;
 import com.example.dmitry.a1c_client.di.scopes.ShipmentScope;
 
 import dagger.Component;

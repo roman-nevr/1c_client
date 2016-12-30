@@ -1,6 +1,6 @@
 package com.example.dmitry.a1c_client.di.income_task;
 
-import com.example.dmitry.a1c_client.android.income_task.IncomeTaskActivity;
+import com.example.dmitry.a1c_client.android.views.income_task.IncomeTaskActivity;
 import com.example.dmitry.a1c_client.di.scopes.PerInstance;
 
 import dagger.Component;

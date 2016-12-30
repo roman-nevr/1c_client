@@ -1,14 +1,9 @@
-package com.example.dmitry.a1c_client.android.shipment;
-
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+package com.example.dmitry.a1c_client.android.views.shipment;
 
 import com.example.dmitry.a1c_client.android.MyApplication;
-import com.example.dmitry.a1c_client.android.fragments.BaseShipmentFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.BaseShipmentFragment;
 import com.example.dmitry.a1c_client.di.shipment_task.DaggerShipmentTaskViewComponent;
 import com.example.dmitry.a1c_client.di.shipment_task.ShipmentTaskComponent;
-import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
-import com.example.dmitry.a1c_client.misc.utils;
 import com.example.dmitry.a1c_client.presentation.BaseShipmentPresenter;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskPresenter;
 
@@ -38,11 +33,4 @@ public class ShipmentTaskFragment extends BaseShipmentFragment {
 
     }
 
-
-    @Override
-    public void onMessageButtonClick(int id) {
-        if(id == FINAL){
-            getActivity().finish();
-        }
-    }
 }

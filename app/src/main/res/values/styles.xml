@@ -33,7 +33,7 @@
     <style name="TabTextView">
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/storage_buttons_selector</item>
+        <item name="android:background">@drawable/icon_buttons_selector</item>
         <item name="android:padding">5dp</item>
     </style>
 

@@ -1,9 +1,11 @@
-package com.example.dmitry.a1c_client.android.equipment;
+package com.example.dmitry.a1c_client.android.views.equipment;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.android.MyApplication;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment.MessageCallBack;
 import com.example.dmitry.a1c_client.di.equipment.DaggerEquipmentTaskViewComponent;
 import com.example.dmitry.a1c_client.di.equipment.EquipmentTaskComponent;
 import com.example.dmitry.a1c_client.domain.entity.Kit;
@@ -34,12 +38,13 @@ import butterknife.ButterKnife;
 import rx.Observable;
 
 import static android.view.View.*;
+import static com.example.dmitry.a1c_client.presentation.EquipmentTaskPresenter.FINAL;
 
 /**
  * Created by Admin on 26.12.2016.
  */
 
-public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView {
+public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView, MessageCallBack {
     @Inject EquipmentTaskPresenter presenter;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.etBarCode) EditText etBarCode;
@@ -99,6 +104,22 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
     }
 
     @Override
+    public FragmentManager fragmentManager() {
+        return getChildFragmentManager();
+    }
+
+    @Override
+    public void showBarCodeHint(String barCode) {
+        etBarCode.setHint(barCode);
+    }
+
+    @Override
+    public void clearBarCode() {
+        etBarCode.setText("");
+    }
+
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if(context instanceof EquipCallback){
@@ -150,5 +171,12 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
         }
         super.onOptionsItemSelected(item);
         return false;
+    }
+
+    @Override
+    public void onMessageButtonClick(int id) {
+        if(id == FINAL){
+            callback.onEquipmentComplete();
+        }
     }
 }

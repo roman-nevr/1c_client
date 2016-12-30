@@ -1,10 +1,9 @@
-package com.example.dmitry.a1c_client.android.equipment;
+package com.example.dmitry.a1c_client.android.views.equipment;
 
 import com.example.dmitry.a1c_client.android.MyApplication;
-import com.example.dmitry.a1c_client.android.fragments.BaseShipmentFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.BaseShipmentFragment;
 import com.example.dmitry.a1c_client.di.equipment.DaggerCollectionTaskViewComponent;
 import com.example.dmitry.a1c_client.di.equipment.EquipmentTaskComponent;
-import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.presentation.BaseShipmentPresenter;
 import com.example.dmitry.a1c_client.presentation.CollectionPresenter;
 
@@ -28,10 +27,5 @@ public class CollectionTaskFragment extends BaseShipmentFragment {
     @Override
     protected BaseShipmentPresenter presenter() {
         return presenter;
-    }
-
-    @Override
-    public void onMessageButtonClick(int id) {
-
     }
 }

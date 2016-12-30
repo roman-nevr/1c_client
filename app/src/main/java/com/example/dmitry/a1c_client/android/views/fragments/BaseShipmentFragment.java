@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.fragments;
+package com.example.dmitry.a1c_client.android.views.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment.MessageCallBack;
-import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment.AnswerCallBack;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment.MessageCallBack;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment.AnswerCallBack;
 import com.example.dmitry.a1c_client.android.interfaces.ShipmentTaskItemView.ShipmentViewCallback;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.misc.utils;
@@ -115,23 +115,23 @@ public abstract class BaseShipmentFragment extends Fragment
         presenter().init();
     }
 
-    @Override
-    public void onComplete() {
-        showMessage("Задание выполнено", FINAL);
-        callback.onShipmentComplete();
-    }
-
     protected void showMessage(String message, int id) {
         MessageDialogFragment fragment = MessageDialogFragment.newInstance(message, id);
         fragment.show(getChildFragmentManager(), "end");
     }
 
-    /*@Override
+    @Override
+    public void onComplete() {
+        //showMessage("Задание выполнено", FINAL);
+        callback.onShipmentComplete();
+    }
+
+    @Override
     public void onMessageButtonClick(int id) {
         if(id == FINAL){
             getActivity().finish();
         }
-    }*/
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -157,7 +157,7 @@ public abstract class BaseShipmentFragment extends Fragment
 
     private void showQuestion(String question, String okButtonText, String cancelButtonText, int id){
         DialogFragment fragment = QuestionDialogFragment.newInstance(question, okButtonText,
-                cancelButtonText, id, this);
+                cancelButtonText, id);
         fragment.show(getChildFragmentManager(), "ask");
     }
 
@@ -188,7 +188,6 @@ public abstract class BaseShipmentFragment extends Fragment
                 break;
             }
             case SHOW_ALL_DIALOG:{
-                hideKeyboard();
                 presenter().showAllAccepted();
                 break;
             }

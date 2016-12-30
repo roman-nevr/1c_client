@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.example.dmitry.a1c_client.android.fragments.ShipmentAdapterFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.ShipmentAdapterFragment;
 import com.example.dmitry.a1c_client.presentation.entity.ShipmentViewState;
 
 /**

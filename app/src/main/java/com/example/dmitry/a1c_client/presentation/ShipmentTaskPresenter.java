@@ -14,11 +14,14 @@ import com.example.dmitry.a1c_client.domain.interactor.UpdateShipmentTaskInterac
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notComplete;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notInitailased;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
+import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
 
 /**
@@ -68,7 +71,7 @@ public class ShipmentTaskPresenter extends BaseShipmentPresenter{
         return updateInteractor;
     }
 
-    protected void setIdle() {
+    void setIdle() {
         stateKeeper.change(state -> state.toBuilder()
                 .transmissionState(idle)
                 .errorState(ok).build());
@@ -83,5 +86,26 @@ public class ShipmentTaskPresenter extends BaseShipmentPresenter{
     @Override
     protected void clearState() {
         stateKeeper.update(ShipmentTaskState.EMPTY);
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        addSubscription(onDataDownloaded());
+    }
+
+    private Subscription onDataDownloaded(){
+        return stateKeeper.getObservable()
+                .filter(this::isDataDownloaded)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(state -> {
+                    view.hideProgress();
+                    fillView(state);
+                    setIdle();
+                });
+    }
+
+    private Boolean isDataDownloaded(ShipmentTaskState taskState) {
+        return taskState.transmissionState()==received && taskState.errorState() == ok;
     }
 }

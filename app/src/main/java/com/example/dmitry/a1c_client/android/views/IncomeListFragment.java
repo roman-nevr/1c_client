@@ -1,24 +1,18 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.views;
 
 
 import android.view.View;
 
+import com.example.dmitry.a1c_client.android.MyApplication;
 import com.example.dmitry.a1c_client.android.adapters.IncomeDocumentsAdapter;
-import com.example.dmitry.a1c_client.android.adapters.ShipmentDocumentsAdapter;
-import com.example.dmitry.a1c_client.android.fragments.BaseListFragment;
-import com.example.dmitry.a1c_client.android.income_task.IncomeTaskActivity;
-import com.example.dmitry.a1c_client.android.shipment.ShipmentTaskActivity;
+import com.example.dmitry.a1c_client.android.views.fragments.BaseListFragment;
+import com.example.dmitry.a1c_client.android.views.income_task.IncomeTaskActivity;
 import com.example.dmitry.a1c_client.di.DaggerIncomeFragmentComponent;
-import com.example.dmitry.a1c_client.di.DaggerShipmentFragmentComponent;
 import com.example.dmitry.a1c_client.di.IncomeListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
-import com.example.dmitry.a1c_client.di.ShipmentListModule;
 import com.example.dmitry.a1c_client.domain.entity.IncomeDocument;
-import com.example.dmitry.a1c_client.domain.entity.ShipmentDocument;
 import com.example.dmitry.a1c_client.presentation.document_list.IncomeListPresenter;
 import com.example.dmitry.a1c_client.presentation.document_list.IncomeListView;
-import com.example.dmitry.a1c_client.presentation.document_list.ShipmentListPresenter;
-import com.example.dmitry.a1c_client.presentation.document_list.ShipmentListView;
 
 import java.util.List;
 
@@ -61,7 +55,7 @@ public class IncomeListFragment extends BaseListFragment implements IncomeListVi
     }
 
     @Override
-    public void onItemClickAction(View view, String id) {
+    public void onItemClickAction(String id) {
         IncomeTaskActivity.start(getContext());
     }
 }

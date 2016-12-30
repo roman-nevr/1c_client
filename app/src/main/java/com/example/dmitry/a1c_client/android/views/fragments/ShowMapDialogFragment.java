@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.fragments;
+package com.example.dmitry.a1c_client.android.views.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -7,28 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.android.MyApplication;
 import com.example.dmitry.a1c_client.android.custom_view.StoreMapView;
-import com.example.dmitry.a1c_client.di.income_task.DaggerNewBarCodeViewComponent;
 import com.example.dmitry.a1c_client.di.income_task.DaggerShowMapComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState;
-import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
-import com.example.dmitry.a1c_client.misc.utils;
-import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogPresenter;
-import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Admin on 23.11.2016.

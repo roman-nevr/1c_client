@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.fragments;
+package com.example.dmitry.a1c_client.android.views.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,14 +18,12 @@ import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 import com.example.dmitry.a1c_client.misc.utils;
 import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogPresenter;
 import com.example.dmitry.a1c_client.presentation.NewBarCodeDialogView;
-import com.jakewharton.rxbinding.widget.RxTextView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
 
 /**
  * Created by Admin on 23.11.2016.

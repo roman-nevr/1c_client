@@ -6,6 +6,8 @@ import com.example.dmitry.a1c_client.domain.EquipmentRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,13 +18,13 @@ import dagger.Provides;
 @Module
 public class EquipmentTaskModule {
     @Provides
-    @TaskScope
+    @Singleton
     public StateKeeper<EquipmentTaskState> provideEquipmentTaskState(){
         return new StateKeeper<>(EquipmentTaskState.EMPTY);
     }
 
     @Provides
-    @TaskScope
+    @Singleton
     public EquipmentRepository provideEquipmentRepository(){
         return new EquipmentRepositoryImpl();
     }

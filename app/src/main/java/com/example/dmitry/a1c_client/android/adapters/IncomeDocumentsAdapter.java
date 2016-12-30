@@ -37,7 +37,14 @@ public class IncomeDocumentsAdapter extends RecyclerView.Adapter<IncomeDocuments
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_documents, parent, false);
-        return new MyHolder(view);
+        MyHolder holder = new MyHolder(view);
+        view.setOnClickListener(it -> {
+            int adapterPosition = holder.getAdapterPosition();
+            if(adapterPosition != RecyclerView.NO_POSITION){
+                onItemClick.onItemClickAction(documentList.get(adapterPosition).id());
+            }
+        });
+        return holder;
     }
 
     @Override
@@ -47,7 +54,6 @@ public class IncomeDocumentsAdapter extends RecyclerView.Adapter<IncomeDocuments
         holder.id.setText(document.id());
         holder.docNumber.setText(document.docNumber());
         holder.docDate.setText(dateFormat.format(document.docDate()));
-        holder.holderView.setOnClickListener(v -> onItemClick.onItemClickAction(v, holder.document.id()));
     }
 
     @Override
@@ -61,12 +67,10 @@ public class IncomeDocumentsAdapter extends RecyclerView.Adapter<IncomeDocuments
         @BindView(R.id.tvPropsDate) TextView docDate;
         @BindView(R.id.tvClientName) TextView clientName;
         public IncomeDocument document;
-        public final View holderView;
 
         public MyHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            holderView = itemView;
         }
     }
 }

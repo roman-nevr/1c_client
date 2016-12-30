@@ -1,11 +1,12 @@
-package com.example.dmitry.a1c_client.android;
+package com.example.dmitry.a1c_client.android.views;
 
 
 import android.view.View;
 
+import com.example.dmitry.a1c_client.android.MyApplication;
 import com.example.dmitry.a1c_client.android.adapters.EquipDocumentsAdapter;
-import com.example.dmitry.a1c_client.android.equipment.EquipmentTaskActivity;
-import com.example.dmitry.a1c_client.android.fragments.BaseListFragment;
+import com.example.dmitry.a1c_client.android.views.equipment.EquipmentTaskActivity;
+import com.example.dmitry.a1c_client.android.views.fragments.BaseListFragment;
 import com.example.dmitry.a1c_client.di.DaggerEquipFragmentComponent;
 import com.example.dmitry.a1c_client.di.EquipListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
@@ -54,7 +55,7 @@ public class EquipListFragment extends BaseListFragment implements EquipListView
     }
 
     @Override
-    public void onItemClickAction(View view, String id) {
+    public void onItemClickAction(String id) {
         EquipmentTaskActivity.start(getContext());
     }
 }

@@ -1,7 +1,6 @@
 package com.example.dmitry.a1c_client.di;
 
-import com.example.dmitry.a1c_client.android.IncomeListFragment;
-import com.example.dmitry.a1c_client.android.ShipmentListFragment;
+import com.example.dmitry.a1c_client.android.views.IncomeListFragment;
 import com.example.dmitry.a1c_client.di.scopes.PerActivity;
 
 import dagger.Component;

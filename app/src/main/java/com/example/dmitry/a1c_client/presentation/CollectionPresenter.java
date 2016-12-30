@@ -6,6 +6,7 @@ import com.example.dmitry.a1c_client.domain.entity.Shipable;
 import com.example.dmitry.a1c_client.domain.interactor.ChangePositionInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.CollectionChangePositionInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.CollectionSetDisplayStateInteractor;
+import com.example.dmitry.a1c_client.domain.interactor.EquipmentWipeInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.Interactor;
 import com.example.dmitry.a1c_client.domain.interactor.SetDisplayStateInteractor;
 import com.example.dmitry.a1c_client.domain.interactor.UpdateEquipmentTaskInteractor;
@@ -27,6 +28,7 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
 public class CollectionPresenter extends BaseShipmentPresenter{
     @Inject StateKeeper<EquipmentTaskState> stateKeeper;
     @Inject UpdateEquipmentTaskInteractor updateInteractor;
+    @Inject EquipmentWipeInteractor wipeInteractor;
     @Inject CollectionChangePositionInteractor changeInteractor;
     @Inject CollectionSetDisplayStateInteractor displayStateInteractor;
 
@@ -40,7 +42,8 @@ public class CollectionPresenter extends BaseShipmentPresenter{
 
     @Override
     protected void clearState() {
-        stateKeeper.update(EquipmentTaskState.EMPTY);
+        wipeInteractor.execute();
+        //stateKeeper.update(EquipmentTaskState.EMPTY);
     }
 
 

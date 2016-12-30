@@ -7,5 +7,5 @@ import android.view.View;
  */
 
 public interface IOnItemClick {
-    void onItemClickAction(View view, String id);
+    void onItemClickAction(String id);
 }

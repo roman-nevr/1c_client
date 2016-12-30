@@ -122,10 +122,10 @@ public class Dummy {
         for (int i = 1; i <= 5; i++) {
             dummyPositions.add(createDummyShipment(i));
         }
-        EQUIPMENT_TASK.add(Kit.create(new ArrayList<>(dummyPositions.subList(0,3)),
+        EQUIPMENT_TASK.add(Kit.create(new ArrayList<>(dummyPositions.subList(0,4)),
                 NomenclaturePosition.create("012", "Шашлык", "набор для шашлыка", "шаш1", "123",
                         Image.EMPTY, DEFAULT_UNIT_LIST)));
-        EQUIPMENT_TASK.add(Kit.create(new ArrayList<>(dummyPositions.subList(2,5)),
+        EQUIPMENT_TASK.add(Kit.create(new ArrayList<>(dummyPositions.subList(3,5)),
                 NomenclaturePosition.create("012", "Праздник", "набор для праздника", "праз1", "321",
                         Image.EMPTY, DEFAULT_UNIT_LIST)));
     }

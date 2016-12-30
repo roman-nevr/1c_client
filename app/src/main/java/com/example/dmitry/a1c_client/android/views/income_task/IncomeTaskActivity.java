@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.android.income_task;
+package com.example.dmitry.a1c_client.android.views.income_task;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,21 +14,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
-import com.example.dmitry.a1c_client.android.BaseActivity;
+import com.example.dmitry.a1c_client.android.views.BaseActivity;
 import com.example.dmitry.a1c_client.android.MyApplication;
-import com.example.dmitry.a1c_client.android.adapters.UnitSpinnerAdapter;
-import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment;
-import com.example.dmitry.a1c_client.android.fragments.MessageDialogFragment.MessageCallBack;
-import com.example.dmitry.a1c_client.android.fragments.NewBarCodeDialogFragment;
-import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment;
-import com.example.dmitry.a1c_client.android.fragments.QuestionDialogFragment.AnswerCallBack;
-import com.example.dmitry.a1c_client.android.fragments.ShowMapDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment.MessageCallBack;
+import com.example.dmitry.a1c_client.android.views.fragments.NewBarCodeDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment.AnswerCallBack;
+import com.example.dmitry.a1c_client.android.views.fragments.ShowMapDialogFragment;
 import com.example.dmitry.a1c_client.di.income_task.DaggerIncomeTaskViewComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskComponent;
 import com.example.dmitry.a1c_client.di.income_task.IncomeTaskViewModule;
 import com.example.dmitry.a1c_client.domain.entity.NomenclaturePosition;
 import com.example.dmitry.a1c_client.domain.entity.StoreMapObject;
-import com.example.dmitry.a1c_client.misc.utils;
 import com.example.dmitry.a1c_client.presentation.IncomeTaskPresenter;
 import com.example.dmitry.a1c_client.presentation.IncomeTaskView;
 
@@ -112,6 +110,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
 
     @Override
     public void showPosition(NomenclaturePosition position) {
+        etBarCode.setText(position.barCode());
         tvNomenklatura.setText(position.positionName());
         tvDescription.setText(position.description());
         tvVendorCode.setText(position.vendorCode());
@@ -158,7 +157,7 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     public void showBarCodeNotFoundDialog() {
         hideKeyboard(this);
         QuestionDialogFragment.newInstance("Позиция по штрихкоду не найдена \n Завести новый?",
-                "Да, завести", "Нет, не надо", BARCODE_NOT_FOUND, this).show(getSupportFragmentManager()
+                "Да, завести", "Нет, не надо", BARCODE_NOT_FOUND).show(getSupportFragmentManager()
                 , "notFound");
     }
 
@@ -255,5 +254,15 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
             }
             default:throw new  UnsupportedOperationException();
         }
+    }
+
+    private void clearComponent(){
+        ((MyApplication)getApplication()).clearIncomeTaskComponent();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        clearComponent();
     }
 }
