@@ -3,9 +3,9 @@ package com.example.dmitry.a1c_client.presentation.document_list;
 import com.example.dmitry.a1c_client.BuildConfig;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipListState;
-import com.example.dmitry.a1c_client.domain.entity.IncomeListState;
 import com.example.dmitry.a1c_client.domain.interactor.UpdateEquipDocumentsInteractor;
-import com.example.dmitry.a1c_client.domain.interactor.UpdateShipmentDocumentsInteractor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Inject;
 
