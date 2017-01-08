@@ -3,6 +3,7 @@ package com.example.dmitry.a1c_client.android.views.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.example.dmitry.a1c_client.android.MyApplication.log;
 
 /**
  * Created by Admin on 29.12.2016.
@@ -36,7 +38,7 @@ public abstract class BaseListFragment extends Fragment implements DocumentsList
         View view = inflater.inflate(R.layout.fragment_income, container, false);
         initDi();
         ButterKnife.bind(this, view);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
     }
 
@@ -72,6 +74,7 @@ public abstract class BaseListFragment extends Fragment implements DocumentsList
 
     @Override
     public void showDocuments() {
+        log("show docs");
         progressBar.setVisibility(GONE);
         errorText.setVisibility(GONE);
         recyclerView.setVisibility(VISIBLE);
@@ -80,5 +83,10 @@ public abstract class BaseListFragment extends Fragment implements DocumentsList
     @Override
     public void hideDocuments() {
         recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override public void onDestroy() {
+        log("destroy" + this.toString());
+        super.onDestroy();
     }
 }
