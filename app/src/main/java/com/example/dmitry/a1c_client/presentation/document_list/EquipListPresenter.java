@@ -59,6 +59,7 @@ public class EquipListPresenter {
                 .filter(incomeState -> incomeState.state()==ready)
                 .map(EquipListState::documents)
                 .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         documents -> {
                             view.setDocuments(documents);
