@@ -18,6 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.example.dmitry.a1c_client.android.MyApplication.log;
+
 public class IncomeListFragment extends BaseListFragment implements IncomeListView {
     @Inject IncomeListPresenter presenter;
 
@@ -26,12 +28,13 @@ public class IncomeListFragment extends BaseListFragment implements IncomeListVi
     protected void initDi() {
         MainComponent mainComponent = ((MyApplication) getActivity().getApplication()).getMainComponent();
         DaggerIncomeFragmentComponent.builder().mainComponent(mainComponent).incomeListModule(new IncomeListModule(this)).build().inject(this);
-
+        log("init income");
         presenter.init();
     }
 
     @Override
     public void setDocuments(List<IncomeDocument> documents) {
+        log("set income");
         if (adapter == null) {
             adapter = new IncomeDocumentsAdapter(documents, this);
             recyclerView().setAdapter(adapter);
@@ -44,6 +47,7 @@ public class IncomeListFragment extends BaseListFragment implements IncomeListVi
 
     @Override
     public void onStart() {
+        log("start income");
         super.onStart();
         presenter.start();
     }

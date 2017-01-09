@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.example.dmitry.a1c_client.domain.entity.Enums.DocumentsState.notInitialased;
@@ -59,10 +60,11 @@ public class EquipListPresenter {
                 .filter(incomeState -> incomeState.state()==ready)
                 .map(EquipListState::documents)
                 .distinctUntilChanged()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         documents -> {
-                            view.setDocuments(documents);
+                            //view.setDocuments(documents);
                         },
                         Throwable::printStackTrace
                 );
@@ -83,6 +85,7 @@ public class EquipListPresenter {
                                     view.showError();
                                     break;
                                 case ready:
+                                    view.setDocuments(stateKeeper.getValue().documents());
                                     view.showDocuments();
                                     break;
                                 default:

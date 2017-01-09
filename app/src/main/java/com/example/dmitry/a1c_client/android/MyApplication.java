@@ -1,6 +1,7 @@
 package com.example.dmitry.a1c_client.android;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.dmitry.a1c_client.di.DaggerMainComponent;
 import com.example.dmitry.a1c_client.di.equipment.CollectionTaskViewComponent;
@@ -14,6 +15,8 @@ import com.example.dmitry.a1c_client.di.shipment_task.DaggerShipmentTaskComponen
 import com.example.dmitry.a1c_client.di.shipment_task.ShipmentTaskComponent;
 import com.example.dmitry.a1c_client.misc.Logger;
 import com.example.dmitry.a1c_client.presentation.IncomeTaskView;
+
+import java.util.Date;
 
 
 public class MyApplication extends Application {
@@ -69,5 +72,13 @@ public class MyApplication extends Application {
         mainComponent = DaggerMainComponent.create();
     }
 
+    private static long time = currentTime();
+    private static long currentTime(){
+        return (new Date()).getTime();
+    }
+    public static void log(String message){
+        Log.d("rectest", message + " "+ (currentTime() - time));
+        time = currentTime();
+    }
 
 }
