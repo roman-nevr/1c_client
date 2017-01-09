@@ -34,11 +34,20 @@ public class UpdateEquipmentTaskInteractor extends Interactor {
     @Inject
     public UpdateEquipmentTaskInteractor() {}
 
+    private String id;
+    public Interactor setId(String id){
+        this.id = id;
+        return this;
+    }
+
     @Override
     protected void operation() {
+        if (id == null){
+            throw new UnsupportedOperationException();
+        }
         try {
             showProgress();
-            List<Kit> kits = loadKits();
+            List<Kit> kits = loadKits(id);
             List<ShipmentTaskPosition> positions = calculatePositions(kits);
             updateState(kits, positions);
         } catch (Throwable throwable) {
@@ -77,8 +86,8 @@ public class UpdateEquipmentTaskInteractor extends Interactor {
                 .errorState(ok).build());
     }
 
-    private List<Kit> loadKits() {
-        return repository.getKits().toBlocking().value();
+    private List<Kit> loadKits(String id) {
+        return repository.getKits(id).toBlocking().value();
     }
 
     private void showError() {

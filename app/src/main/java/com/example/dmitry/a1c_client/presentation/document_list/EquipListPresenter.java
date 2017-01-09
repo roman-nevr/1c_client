@@ -47,12 +47,16 @@ public class EquipListPresenter {
         }
     }
 
+    public void update(){
+        updateDocumentsInteractor.execute();
+    }
+
     public void start() {
         Observable<EquipListState> observable = stateKeeper
                 .getObservable()
                 .observeOn(AndroidSchedulers.mainThread());
         subscribeIncomeStateState(observable);
-        subscribeDocuments(observable);
+        //subscribeDocuments(observable);
     }
 
     private void subscribeDocuments(Observable<EquipListState> observable) {
@@ -64,7 +68,7 @@ public class EquipListPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         documents -> {
-                            //view.setDocuments(documents);
+                            view.setDocuments(documents);
                         },
                         Throwable::printStackTrace
                 );

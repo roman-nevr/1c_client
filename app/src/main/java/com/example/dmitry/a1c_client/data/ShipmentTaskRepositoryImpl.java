@@ -21,7 +21,7 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
 
 public class ShipmentTaskRepositoryImpl implements ShipmentTaskRepository {
 
-    @Override public Single<List<ShipmentTaskPosition>> getTask() {
+    @Override public Single<List<ShipmentTaskPosition>> getTask(String id) {
         utils.delay(1000);
         return Single.just(Collections.unmodifiableList(Dummy.SHIPMENT_TASK));
     }

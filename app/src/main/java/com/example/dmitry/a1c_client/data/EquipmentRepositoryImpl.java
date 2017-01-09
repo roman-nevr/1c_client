@@ -14,7 +14,7 @@ import rx.Single;
  */
 
 public class EquipmentRepositoryImpl implements EquipmentRepository {
-    @Override public Single<List<Kit>> getKits() {
+    @Override public Single<List<Kit>> getKits(String id) {
         return Single
                 .just(Dummy.EQUIPMENT_TASK).delay(1, TimeUnit.SECONDS);
     }

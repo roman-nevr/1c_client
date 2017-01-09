@@ -31,11 +31,20 @@ public class UpdateShipmentTaskInteractor extends Interactor {
     @Inject
     public UpdateShipmentTaskInteractor() {}
 
+    private String id;
+    public Interactor setId(String id){
+        this.id = id;
+        return this;
+    }
+
     @Override
     protected void operation() {
+        if(id == null){
+            throw new UnsupportedOperationException();
+        }
         try {
             showProgress();
-            List<ShipmentTaskPosition> shipmentTaskPositions = loadPositions();
+            List<ShipmentTaskPosition> shipmentTaskPositions = loadPositions(id);
             updateState(shipmentTaskPositions);
         }catch (IOException e){
             e.printStackTrace();
@@ -43,8 +52,8 @@ public class UpdateShipmentTaskInteractor extends Interactor {
         }
     }
 
-    private List<ShipmentTaskPosition> loadPositions() throws IOException {
-        return repository.getTask().toBlocking().value();
+    private List<ShipmentTaskPosition> loadPositions(String id) throws IOException {
+        return repository.getTask(id).toBlocking().value();
     }
 
     private void showProgress() {

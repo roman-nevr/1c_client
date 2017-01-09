@@ -47,6 +47,9 @@ public abstract class BaseShipmentFragment extends Fragment
     public static final int SHOW_ALL_DIALOG = 2;
 
     public static final int FINAL = 4;
+    public static final String ID = "id";
+
+    private String id;
 
     @Override public void showProgress() {
         progress.setVisibility(VISIBLE);

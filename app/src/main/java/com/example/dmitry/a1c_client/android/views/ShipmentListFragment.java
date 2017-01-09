@@ -1,6 +1,7 @@
 package com.example.dmitry.a1c_client.android.views;
 
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.dmitry.a1c_client.android.MyApplication;
@@ -11,6 +12,7 @@ import com.example.dmitry.a1c_client.di.DaggerShipmentFragmentComponent;
 import com.example.dmitry.a1c_client.di.ShipmentListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentDocument;
+import com.example.dmitry.a1c_client.misc.dummy.Dummy;
 import com.example.dmitry.a1c_client.presentation.document_list.ShipmentListPresenter;
 import com.example.dmitry.a1c_client.presentation.document_list.ShipmentListView;
 
@@ -30,6 +32,12 @@ public class ShipmentListFragment extends BaseListFragment implements ShipmentLi
     }
 
     @Override
+    protected void refresh() {
+        Dummy.addDummyShipmentDocument();
+        presenter.update();
+    }
+
+    @Override
     public void setDocuments(List<ShipmentDocument> documents) {
         if (adapter == null) {
             adapter = new ShipmentDocumentsAdapter(documents, this);
@@ -38,8 +46,6 @@ public class ShipmentListFragment extends BaseListFragment implements ShipmentLi
             adapter.update(documents);
         }
     }
-
-
 
     @Override
     public void onStart() {
@@ -55,6 +61,6 @@ public class ShipmentListFragment extends BaseListFragment implements ShipmentLi
 
     @Override
     public void onItemClickAction(String id) {
-        ShipmentTaskActivity.start(getContext());
+        ShipmentTaskActivity.start(getContext(), id);
     }
 }

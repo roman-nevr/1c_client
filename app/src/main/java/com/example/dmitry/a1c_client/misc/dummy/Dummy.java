@@ -92,6 +92,10 @@ public class Dummy {
         return EquipDocument.create("id"+i, "Комплектация"+i, new Date(), client, "");
     }
 
+    public static void addDummyEquipDocument(){
+        EQUIP_DOCUMENTS.add(createDummyEquipDocument(EQUIP_DOCUMENTS.size(), CLIENTS.get(0)));
+    }
+
     private static void createIncomeList() {
         for (int i = 1; i <= COUNT; i++){
             INCOME_DOCUMENTS.add(createDummyIncomeDocument(i));
@@ -100,6 +104,10 @@ public class Dummy {
 
     private static IncomeDocument createDummyIncomeDocument(int i) {
         return IncomeDocument.create("id"+i, "Приход"+i, new Date());
+    }
+
+    public static void addDummyIncomeDocument(){
+        INCOME_DOCUMENTS.add(createDummyIncomeDocument(INCOME_DOCUMENTS.size()));
     }
 
     private static ShipmentTaskPosition createDummyShipment(int i) {
@@ -141,6 +149,11 @@ public class Dummy {
                 .comment("")
                 .number("N"+i)
                 .docDate(new Date()).build();
+    }
+
+    public static void addDummyShipmentDocument(){
+        SHIPMENT_DOCUMENTS.add(createDummyShipmentDocument(SHIPMENT_DOCUMENTS.size(),
+                CLIENTS.get(0)));
     }
 
 

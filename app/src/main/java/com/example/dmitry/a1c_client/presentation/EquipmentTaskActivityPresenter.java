@@ -68,7 +68,7 @@ public class EquipmentTaskActivityPresenter {
         return null;
     }
 
-    public void init(Bundle savedInstanceState) {
+    public void init(Bundle savedInstanceState, String id) {
         if (savedInstanceState == null) {
             boolean isNotUpToDate = stateKeeper.change(state -> {
                 if (state.completeState() == notInitailased) {
@@ -83,7 +83,7 @@ public class EquipmentTaskActivityPresenter {
                 }
             });
             if (isNotUpToDate) {
-                updateInteractor.execute();
+                updateInteractor.setId(id).execute();
             } else {//if updated
                 String tag = stateKeeper.getValue().stage() == collect ? COLLECT_TAG : EQUIP_TAG;
                 showFragmentByTag(tag);

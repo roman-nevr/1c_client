@@ -151,7 +151,7 @@ public abstract class BaseShipmentPresenter {
     public void init() {
         boolean isInitiated = checkAndInitStateKeeper();
         if (isInitiated) {
-            getUpdateInteractor().execute();
+            //getUpdateInteractor().execute();
         }else {//else data have already downloaded
             fillView(getStateKeeperValue());
         }
@@ -160,8 +160,6 @@ public abstract class BaseShipmentPresenter {
     protected abstract boolean checkAndInitStateKeeper();
 
     protected abstract Shipable getStateKeeperValue();
-
-    protected abstract Interactor getUpdateInteractor();
 
     protected void addSubscription(Subscription subscription){
         subscriptions.add(subscription);

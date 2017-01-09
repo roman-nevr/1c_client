@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by roma on 16.06.2016.
  */
@@ -64,5 +66,8 @@ public class utils {
             e.printStackTrace();
         }
     }
+
+    public static SimpleDateFormat fullFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    public static SimpleDateFormat shortFormat = new SimpleDateFormat("dd.MM HH:mm:ss");
 
 }

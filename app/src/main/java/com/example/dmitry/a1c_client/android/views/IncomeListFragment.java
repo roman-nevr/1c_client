@@ -11,6 +11,7 @@ import com.example.dmitry.a1c_client.di.DaggerIncomeFragmentComponent;
 import com.example.dmitry.a1c_client.di.IncomeListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.domain.entity.IncomeDocument;
+import com.example.dmitry.a1c_client.misc.dummy.Dummy;
 import com.example.dmitry.a1c_client.presentation.document_list.IncomeListPresenter;
 import com.example.dmitry.a1c_client.presentation.document_list.IncomeListView;
 
@@ -30,6 +31,12 @@ public class IncomeListFragment extends BaseListFragment implements IncomeListVi
         DaggerIncomeFragmentComponent.builder().mainComponent(mainComponent).incomeListModule(new IncomeListModule(this)).build().inject(this);
         log("init income");
         presenter.init();
+    }
+
+    @Override
+    protected void refresh() {
+        Dummy.addDummyIncomeDocument();
+        presenter.update();
     }
 
     @Override
@@ -60,6 +67,6 @@ public class IncomeListFragment extends BaseListFragment implements IncomeListVi
 
     @Override
     public void onItemClickAction(String id) {
-        IncomeTaskActivity.start(getContext());
+        IncomeTaskActivity.start(getContext(), id);
     }
 }

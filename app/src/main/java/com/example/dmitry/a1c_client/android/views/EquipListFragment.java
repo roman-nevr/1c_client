@@ -20,6 +20,7 @@ import com.example.dmitry.a1c_client.di.DaggerEquipFragmentComponent;
 import com.example.dmitry.a1c_client.di.EquipListModule;
 import com.example.dmitry.a1c_client.di.MainComponent;
 import com.example.dmitry.a1c_client.domain.entity.EquipDocument;
+import com.example.dmitry.a1c_client.misc.dummy.Dummy;
 import com.example.dmitry.a1c_client.presentation.document_list.EquipListPresenter;
 import com.example.dmitry.a1c_client.presentation.document_list.EquipListView;
 
@@ -43,33 +44,26 @@ public class EquipListFragment extends BaseListFragment implements EquipListView
     @BindView(R.id.error_text) TextView errorText;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_income, container, false);
-        initDi();
-        ButterKnife.bind(this, view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //recyclerView.setHasFixedSize(true);
-        return view;
-    }
-
     protected void initDi() {
         MainComponent mainComponent = ((MyApplication) getActivity().getApplication()).getMainComponent();
         DaggerEquipFragmentComponent.builder().mainComponent(mainComponent).equipListModule(new EquipListModule(this)).build().inject(this);
 
-        log("init equip");
+        //log("init equip");
         presenter.init();
     }
 
     @Override
+    protected void refresh() {
+        Dummy.addDummyEquipDocument();
+        presenter.update();
+    }
+
+    @Override
     public void setDocuments(List<EquipDocument> documents) {
-        log("set equip");
+        //log("set equip");
         if (adapter == null) {
-            long start = (new Date()).getTime();
             adapter = new EquipDocumentsAdapter(documents, this);
             recyclerView.setAdapter(adapter);
-            System.out.println((new Date()).getTime() - start);
         }else {
             adapter.update(documents);
         }
@@ -77,20 +71,20 @@ public class EquipListFragment extends BaseListFragment implements EquipListView
 
     @Override
     public void onStart() {
-        log("start equip");
+        //log("start equip");
         super.onStart();
         presenter.start();
     }
 
     @Override
     public void onStop() {
-        log("stop equip");
+        //log("stop equip");
         super.onStop();
         presenter.stop();
     }
 
     @Override
     public void onItemClickAction(String id) {
-        EquipmentTaskActivity.start(getContext());
+        EquipmentTaskActivity.start(getContext(), id);
     }
 }

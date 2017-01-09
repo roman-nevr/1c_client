@@ -22,15 +22,12 @@ public class ShipmentTaskFragment extends BaseShipmentFragment {
         return presenter;
     }
 
-
-
     @Override
     protected void initDI() {
         ShipmentTaskComponent taskComponent = ((MyApplication) getActivity().getApplication())
                 .getShipmentTaskComponent();
         DaggerShipmentTaskViewComponent.builder().shipmentTaskComponent(taskComponent)
                 .build().inject(this);
-
     }
 
 }

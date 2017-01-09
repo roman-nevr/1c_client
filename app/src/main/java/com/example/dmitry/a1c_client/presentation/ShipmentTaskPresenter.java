@@ -34,7 +34,6 @@ public class ShipmentTaskPresenter extends BaseShipmentPresenter{
     @Inject ShipmentChangePositionInteractor changeInteractor;
     @Inject ShipmentSetDisplayStateInteractor displayStateInteractor;
 
-
     @Inject
     public ShipmentTaskPresenter() { }
 
@@ -64,11 +63,6 @@ public class ShipmentTaskPresenter extends BaseShipmentPresenter{
     @Override
     protected Shipable getStateKeeperValue() {
         return stateKeeper.getValue();
-    }
-
-    @Override
-    protected Interactor getUpdateInteractor() {
-        return updateInteractor;
     }
 
     void setIdle() {

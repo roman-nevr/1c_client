@@ -12,7 +12,7 @@ import rx.Single;
  */
 
 public interface ShipmentTaskRepository {
-    Single<List<ShipmentTaskPosition>> getTask();
+    Single<List<ShipmentTaskPosition>> getTask(String id);
     Single<ShipmentTaskState> saveProgress(ShipmentTaskState taskState);
     Single<ShipmentTaskState> postInsufficientReport(ShipmentTaskState taskState);
 }

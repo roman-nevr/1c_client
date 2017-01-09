@@ -11,5 +11,5 @@ import rx.Single;
  */
 
 public interface EquipmentRepository {
-    Single<List<Kit>> getKits();
+    Single<List<Kit>> getKits(String id);
 }

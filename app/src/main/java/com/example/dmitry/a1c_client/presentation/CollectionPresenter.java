@@ -76,9 +76,5 @@ public class CollectionPresenter extends BaseShipmentPresenter{
         return stateKeeper.getValue();
     }
 
-    @Override
-    protected Interactor getUpdateInteractor() {
-        return updateInteractor;
-    }
 
 }

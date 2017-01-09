@@ -8,7 +8,7 @@
 >
 
     <TextView
-        android:id="@+id/tvId"
+        android:id="@+id/tv_doc_number"
         style="@style/TableRowTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -23,14 +23,12 @@
         android:layout_width="1dp"
         android:layout_height="32dp"
         android:background="@color/dividerColor"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="0dp"
         android:id="@+id/textView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"/>
 
     <TextView
-        android:id="@+id/tvClientName"
+        android:id="@+id/tv_client_name"
         style="@style/TableRowTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,20 +41,18 @@
         android:layout_width="1dp"
         android:layout_height="32dp"
         android:background="@color/dividerColor"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/tvNumber"
+        android:id="@+id/tv_order_number"
         style="@style/TableRowTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:text="Номер"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/tvId"
+        app:layout_constraintLeft_toRightOf="@+id/tv_doc_number"
         app:layout_constraintRight_toRightOf="parent"
         />
 
@@ -64,11 +60,9 @@
         android:layout_width="1dp"
         android:layout_height="32dp"
         android:background="@color/dividerColor"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="0dp"
         android:id="@+id/textView9"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/tvId"/>
+        app:layout_constraintLeft_toRightOf="@+id/tv_doc_number"/>
 
 
     <TextView
@@ -85,26 +79,26 @@
 
     <android.support.constraint.Guideline
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:id="@+id/guideline1"
         app:layout_constraintGuide_percent="0.25"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"/>
     <android.support.constraint.Guideline
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:id="@+id/guideline2"
         app:layout_constraintGuide_percent="0.5"
         android:orientation="vertical"
         tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="192dp"/>
+        tools:layout_editor_absoluteX="0dp"/>
     <android.support.constraint.Guideline
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:id="@+id/guideline3"
         app:layout_constraintGuide_percent="0.75"
         android:orientation="vertical"
         tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="288dp"/>
+        tools:layout_editor_absoluteX="0dp"/>
 </android.support.constraint.ConstraintLayout>

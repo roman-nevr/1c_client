@@ -56,13 +56,16 @@ public class IncomeTaskPresenter {
         System.out.println(this);
     }
 
+    public void init(String id){
+        if (stateKeeper.getValue() == null) {
+            setEmptyState();
+        }
+    }
 
     public void startSubscriptions(EditText etBarCode, EditText etQuantity, Spinner spinner,
                                    Button btnShowMap, Button btnGetStorageInfo) {
 
-        if (stateKeeper.getValue() == null) {
-            setEmptyState();
-        }
+
 
         subscribeOnProgress();
         subscribeOnNetError();

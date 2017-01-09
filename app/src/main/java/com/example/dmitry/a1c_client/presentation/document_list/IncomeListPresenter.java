@@ -100,4 +100,8 @@ public class IncomeListPresenter {
         compositeSubscription.clear();
 
     }
+
+    public void update() {
+        updateDocumentsInteractor.execute();
+    }
 }

@@ -60,9 +60,12 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
     public static final int BARCODE_NOT_FOUND = 1;
     public static final int NEW_BARCODE_DIALOG = 2;
 
+    public static final String ID = "id";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter.init(getIntent().getStringExtra(ID));
     }
 
     @Override
@@ -210,8 +213,9 @@ public class IncomeTaskActivity extends BaseActivity implements IncomeTaskView, 
         etQuantity.setError("ошибка");
     }
 
-    public static void start(Context context){
+    public static void start(Context context, String id){
         Intent intent = new Intent(context, IncomeTaskActivity.class);
+        intent.putExtra(ID, id);
         context.startActivity(intent);
     }
 

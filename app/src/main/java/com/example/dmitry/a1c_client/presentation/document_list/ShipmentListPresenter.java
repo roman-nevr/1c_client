@@ -96,4 +96,8 @@ public class ShipmentListPresenter {
         compositeSubscription.clear();
 
     }
+
+    public void update() {
+        updateDocumentsInteractor.execute();
+    }
 }

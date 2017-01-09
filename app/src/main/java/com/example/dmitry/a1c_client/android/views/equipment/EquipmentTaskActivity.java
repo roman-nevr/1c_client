@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static android.view.View.*;
 import static com.example.dmitry.a1c_client.presentation.EquipmentTaskActivityPresenter.EQUIP_STAGE;
 
 /**
@@ -35,6 +36,8 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
 
     @Inject EquipmentTaskActivityPresenter presenter;
     @BindView(R.id.progressBar) ProgressBar progressBar;
+
+    public static final String ID = "id";
 
     @Override
     protected int provideLayoutId() {
@@ -55,7 +58,7 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.init(savedInstanceState);
+        presenter.init(savedInstanceState, getIntent().getStringExtra(ID));
     }
 
     @Override
@@ -91,8 +94,9 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
         presenter.onShipmentComplete();
     }
 
-    public static void start(Context context){
+    public static void start(Context context, String id){
         Intent intent = new Intent(context, EquipmentTaskActivity.class);
+        intent.putExtra(ID, id);
         context.startActivity(intent);
     }
 
@@ -103,12 +107,12 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(GONE);
     }
 
     @Override
