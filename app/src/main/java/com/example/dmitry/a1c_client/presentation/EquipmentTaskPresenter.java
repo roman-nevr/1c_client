@@ -12,6 +12,8 @@ import com.example.dmitry.a1c_client.domain.interactor.CheckIfEquipmentComplete;
 import com.example.dmitry.a1c_client.domain.interactor.UpdateEquipmentTaskByBarCodeInteractor;
 import com.example.dmitry.a1c_client.misc.CommonFilters;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -68,6 +70,7 @@ public class EquipmentTaskPresenter {
 
     private void subscribeOnBarCodeNotFound() {
         subscriptions.add(stateKeeper.getObservable()
+                .debounce(500, TimeUnit.MILLISECONDS)
                 .filter(this::isError)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(state -> view.showError("Штрихкод в подборе не найден")));

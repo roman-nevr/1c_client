@@ -1,8 +1,10 @@
 package com.example.dmitry.a1c_client.presentation;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment;
 import com.example.dmitry.a1c_client.android.views.shipment.ShipmentTaskFragment;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskState;
@@ -26,11 +28,12 @@ import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionStat
  */
 public class ShipmentTaskActivityPresenter {
     @Inject StateKeeper<ShipmentTaskState> stateKeeper;
-    @Inject ShipmentView view;
+    @Inject WindowView view;
     @Inject UpdateShipmentTaskInteractor updateInteractor;
     private CompositeSubscription subscriptions;
 
     public static final String SHIPMENT_FRAGMENT = "shipment";
+    public static final int FINAL = 4;
 
     @Inject
     public ShipmentTaskActivityPresenter() {
@@ -107,5 +110,11 @@ public class ShipmentTaskActivityPresenter {
     private Boolean isDataLoaded(ShipmentTaskState taskState) {
         return taskState.transmissionState() == received
                 && taskState.completeState() == notComplete;
+    }
+
+    public void onShipmentComplete() {
+        DialogFragment fragment = MessageDialogFragment
+                .newInstance("Задание выполнено \nНажмите Ок для завершения", FINAL);
+        fragment.show(view.provideFragmentManager(), "ask");
     }
 }

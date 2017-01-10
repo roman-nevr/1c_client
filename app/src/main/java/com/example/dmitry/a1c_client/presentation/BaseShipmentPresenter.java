@@ -6,7 +6,6 @@ import com.example.dmitry.a1c_client.android.adapters.ShipmentViewPagerAdapterHe
 import com.example.dmitry.a1c_client.domain.entity.Shipable;
 import com.example.dmitry.a1c_client.domain.entity.ShipmentTaskPosition;
 import com.example.dmitry.a1c_client.domain.interactor.ChangePositionInteractor;
-import com.example.dmitry.a1c_client.domain.interactor.Interactor;
 import com.example.dmitry.a1c_client.domain.interactor.SetDisplayStateInteractor;
 import com.example.dmitry.a1c_client.presentation.entity.ShipmentViewState;
 
@@ -18,12 +17,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notComplete;
-import static com.example.dmitry.a1c_client.domain.entity.Enums.CompleteState.notInitailased;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.actual;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.DisplayState.all;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.ErrorState.ok;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.idle;
-import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.received;
 import static com.example.dmitry.a1c_client.domain.entity.Enums.TransmissionState.requested;
 
 /**
@@ -41,22 +38,43 @@ public abstract class BaseShipmentPresenter {
 
     protected abstract Observable<Shipable> getObservable();
 
+    public void init() {
+        boolean isInitiated = checkAndInitStateKeeper();
+        if (isInitiated) {
+            //getUpdateInteractor().execute();
+        }else {//else data have already downloaded
+            fillView(getStateKeeperValue());
+        }
+    }
+
+    public void start() {
+        subscribeOnProgress();
+        subscribeOnDataChanges();
+    }
+
+    public void stop() {
+        view.getViewPager().setTag(viewState);
+        subscriptions.clear();
+    }
+
     //TODO: cleanse out this class
-    //---------Filters---------------
-    protected Boolean isProgress(Shipable state) {
-        return state.transmissionState() == requested;
+    //------subscribe methods---------
+    protected void subscribeOnProgress() {
+        subscriptions.add(getObservable()
+                .filter(this::isProgress)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(state -> view.showProgress()));
     }
 
-
-
-    protected Boolean isDataChange(Shipable taskState) {
-        return taskState.transmissionState() == idle
-                && taskState.errorState() == ok
-                && taskState.completeState() == notComplete;
-    }
-
-    protected Boolean isPositionsChange(List<ShipmentTaskPosition> positions){
-        return positions != viewState.initialPositions;
+    protected void subscribeOnDataChanges() {
+        subscriptions.add(getObservable()
+                .filter(this::isDataChange)
+                .map(state -> state.positions())
+                .filter(this::isPositionsChange)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(positions -> {
+                    changeViewState(positions);
+                }));
     }
 
     //------------------------------------------
@@ -76,7 +94,7 @@ public abstract class BaseShipmentPresenter {
         adapterHelper.bindAdapterAndPageChangeListener();
     }
 
-    protected void changeData(List<ShipmentTaskPosition> positions) {
+    protected void changeViewState(List<ShipmentTaskPosition> positions) {
         viewState.update(positions);
         if (!viewState.isLastVisiblePage()) {
             if (viewState.hasMarkedItem()){
@@ -89,48 +107,13 @@ public abstract class BaseShipmentPresenter {
         }
     }
 
-    //------subscribe methods---------
-    protected void subscribeOnProgress() {
-        subscriptions.add(getObservable()
-                .filter(this::isProgress)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(state -> view.showProgress()));
-    }
-
-
-
-    protected void subscribeOnDataChanges() {
-        subscriptions.add(getObservable()
-                .filter(this::isDataChange)
-                .map(state -> state.positions())
-                .filter(this::isPositionsChange)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(positions -> {
-                    changeData(positions);
-                }));
-    }
-
     //------------------------------------------
-
-    protected abstract void clearState();
-
-    public void start() {
-        subscribeOnProgress();
-        subscribeOnDataChanges();
-    }
-
-    public void stop() {
-        view.getViewPager().setTag(viewState);
-        subscriptions.clear();
-    }
 
     public void showAllAccepted() {
         viewState.showOnlyActual = false;
         getDisplayStateInteractor().setDisplayState(all).execute();
         adapterHelper.notifyDataSetChanged();
     }
-
-    protected abstract SetDisplayStateInteractor getDisplayStateInteractor();
 
     public void showAllDenied() {
         viewState.showOnlyActual = true;
@@ -146,22 +129,34 @@ public abstract class BaseShipmentPresenter {
         getChangeInteractor().setData(id, quantity).execute();
     }
 
-    protected abstract ChangePositionInteractor getChangeInteractor();
+    protected abstract SetDisplayStateInteractor getDisplayStateInteractor();
 
-    public void init() {
-        boolean isInitiated = checkAndInitStateKeeper();
-        if (isInitiated) {
-            //getUpdateInteractor().execute();
-        }else {//else data have already downloaded
-            fillView(getStateKeeperValue());
-        }
-    }
+    protected abstract ChangePositionInteractor getChangeInteractor();
 
     protected abstract boolean checkAndInitStateKeeper();
 
     protected abstract Shipable getStateKeeperValue();
 
+    protected abstract void clearState();
+
     protected void addSubscription(Subscription subscription){
         subscriptions.add(subscription);
+    }
+
+    //---------Filters---------------
+    protected Boolean isProgress(Shipable state) {
+        return state.transmissionState() == requested;
+    }
+
+
+
+    protected Boolean isDataChange(Shipable taskState) {
+        return taskState.transmissionState() == idle
+                && taskState.errorState() == ok
+                && taskState.completeState() == notComplete;
+    }
+
+    protected Boolean isPositionsChange(List<ShipmentTaskPosition> positions){
+        return positions != viewState.initialPositions;
     }
 }

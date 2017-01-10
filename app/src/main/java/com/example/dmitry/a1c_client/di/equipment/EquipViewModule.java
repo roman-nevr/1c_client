@@ -1,7 +1,7 @@
 package com.example.dmitry.a1c_client.di.equipment;
 
 import com.example.dmitry.a1c_client.di.scopes.PerActivity;
-import com.example.dmitry.a1c_client.presentation.EquipmentView;
+import com.example.dmitry.a1c_client.presentation.WindowView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,15 +12,15 @@ import dagger.Provides;
 
 @Module
 public class EquipViewModule {
-    private EquipmentView view;
+    private WindowView view;
 
-    public EquipViewModule(EquipmentView view) {
+    public EquipViewModule(WindowView view) {
         this.view = view;
     }
 
     @PerActivity
     @Provides
-    EquipmentView provideEquipmentView(){
+    WindowView provideWindowView(){
         return view;
     }
 }

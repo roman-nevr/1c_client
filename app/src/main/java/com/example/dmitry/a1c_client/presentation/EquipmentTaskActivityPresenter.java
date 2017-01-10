@@ -41,7 +41,7 @@ public class EquipmentTaskActivityPresenter {
     public static final int FINAL = 4;
 
     @Inject StateKeeper<EquipmentTaskState> stateKeeper;
-    @Inject EquipmentView view;
+    @Inject WindowView view;
     @Inject UpdateEquipmentTaskInteractor updateInteractor;
     private CompositeSubscription subscriptions;
 
@@ -135,6 +135,8 @@ public class EquipmentTaskActivityPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(state -> {
                     showCollectionFragment();
+                    //test
+                    //showEquipFragment();
                     view.hideProgress();
                     setIdle();
                     subscriptions.clear();

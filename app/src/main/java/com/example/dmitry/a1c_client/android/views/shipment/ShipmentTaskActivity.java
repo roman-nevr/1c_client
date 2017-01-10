@@ -6,20 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.example.dmitry.a1c_client.R;
 import com.example.dmitry.a1c_client.android.MyApplication;
+import com.example.dmitry.a1c_client.android.views.ActivityWithFragment;
 import com.example.dmitry.a1c_client.android.views.BaseActivity;
 import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment;
 import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment.MessageCallBack;
-import com.example.dmitry.a1c_client.di.shipment_task.DaggerShipmentTaskViewComponent;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment.AnswerCallBack;
 import com.example.dmitry.a1c_client.di.shipment_task.DaggerShipmentViewComponent;
 import com.example.dmitry.a1c_client.di.shipment_task.ShipmentTaskComponent;
 import com.example.dmitry.a1c_client.di.shipment_task.ShipmentViewModule;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskActivityPresenter;
-import com.example.dmitry.a1c_client.presentation.ShipmentView;
+import com.example.dmitry.a1c_client.presentation.WindowView;
 
 import javax.inject.Inject;
 
@@ -27,31 +31,24 @@ import butterknife.BindView;
 
 import static android.view.View.*;
 import static android.view.View.GONE;
+import static com.example.dmitry.a1c_client.presentation.ShipmentTaskActivityPresenter.FINAL;
 import static com.example.dmitry.a1c_client.presentation.ShipmentTaskView.ShipmentCallback;
 
 /**
  * Created by Admin on 23.12.2016.
  */
 
-public class ShipmentTaskActivity extends BaseActivity implements ShipmentView,
+public class ShipmentTaskActivity extends ActivityWithFragment implements
         ShipmentCallback, MessageCallBack {
 
     @Inject ShipmentTaskActivityPresenter presenter;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
 
-    public static final int FINAL = 4;
     public static final String ID = "id";
 
     public static void start(Context context, String id) {
         Intent intent = new Intent(context, ShipmentTaskActivity.class);
         intent.putExtra(ID, id);
         context.startActivity(intent);
-    }
-
-
-    @Override
-    protected int provideLayoutId() {
-        return R.layout.frame_layout;
     }
 
     @Override
@@ -73,6 +70,11 @@ public class ShipmentTaskActivity extends BaseActivity implements ShipmentView,
     }
 
     @Override
+    protected String title() {
+        return "Отгрузка";
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         presenter.start();
@@ -86,14 +88,8 @@ public class ShipmentTaskActivity extends BaseActivity implements ShipmentView,
 
     @Override
     public void onShipmentComplete() {
-        showMessage("Задание выполнено \nНажмите Ок для завершения", FINAL);
+        presenter.onShipmentComplete();
     }
-
-    private void showMessage(String message, int id) {
-        DialogFragment fragment = MessageDialogFragment.newInstance(message, id);
-        fragment.show(getSupportFragmentManager(), "show");
-    }
-
 
     @Override
     public void onMessageButtonClick(int id) {
@@ -109,18 +105,8 @@ public class ShipmentTaskActivity extends BaseActivity implements ShipmentView,
         clearComponent();
     }
 
-    private void clearComponent() {
+    protected void clearComponent() {
         ((MyApplication) getApplication()).clearShipmentTaskComponent();
-    }
-
-    @Override
-    public void showProgress() {
-        progressBar.setVisibility(VISIBLE);
-    }
-
-    @Override
-    public void hideProgress() {
-        progressBar.setVisibility(GONE);
     }
 
     @Override

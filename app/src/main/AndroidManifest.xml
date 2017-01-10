@@ -10,17 +10,28 @@
         android:supportsRtl="true"
         android:name=".android.MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".android.views.MainWindowActivity">
+        <activity
+            android:name=".android.views.MainWindowActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".android.views.income_task.IncomeTaskActivity">
+        <activity
+            android:name=".android.views.income_task.IncomeTaskActivity"
+            >
         </activity>
-        <activity android:name=".android.views.shipment.ShipmentTaskActivity">
+        <activity
+            android:name=".android.views.shipment.ShipmentTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
         </activity>
-        <activity android:name=".android.views.equipment.EquipmentTaskActivity">
+        <activity
+            android:name=".android.views.equipment.EquipmentTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            >
         </activity>
         <activity android:name=".android.views.TestActivity">
         </activity>

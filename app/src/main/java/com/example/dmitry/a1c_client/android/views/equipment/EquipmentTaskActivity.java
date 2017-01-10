@@ -4,21 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.android.views.ActivityWithFragment;
 import com.example.dmitry.a1c_client.android.views.BaseActivity;
 import com.example.dmitry.a1c_client.android.MyApplication;
 import com.example.dmitry.a1c_client.android.views.fragments.MessageDialogFragment.MessageCallBack;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment;
+import com.example.dmitry.a1c_client.android.views.fragments.QuestionDialogFragment.AnswerCallBack;
 import com.example.dmitry.a1c_client.di.equipment.DaggerEquipViewComponent;
 import com.example.dmitry.a1c_client.di.equipment.EquipViewModule;
 import com.example.dmitry.a1c_client.di.equipment.EquipmentTaskComponent;
 import com.example.dmitry.a1c_client.presentation.EquipmentTaskActivityPresenter;
 import com.example.dmitry.a1c_client.presentation.EquipmentTaskView.EquipCallback;
-import com.example.dmitry.a1c_client.presentation.EquipmentView;
 import com.example.dmitry.a1c_client.presentation.ShipmentTaskView.ShipmentCallback;
+import com.example.dmitry.a1c_client.presentation.WindowView;
 
 import javax.inject.Inject;
 
@@ -31,18 +38,13 @@ import static com.example.dmitry.a1c_client.presentation.EquipmentTaskActivityPr
  * Created by Admin on 26.12.2016.
  */
 
-public class EquipmentTaskActivity extends BaseActivity implements EquipmentView,
+public class EquipmentTaskActivity extends ActivityWithFragment implements
         EquipCallback, ShipmentCallback, MessageCallBack {
 
     @Inject EquipmentTaskActivityPresenter presenter;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+
 
     public static final String ID = "id";
-
-    @Override
-    protected int provideLayoutId() {
-        return R.layout.frame_layout;
-    }
 
     @Override
     protected void initDi(Bundle savedInstanceState) {
@@ -62,6 +64,11 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
     }
 
     @Override
+    protected String title() {
+        return "Комлектация";
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         presenter.start();
@@ -74,18 +81,12 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        clearComponent();
-    }
-
-    @Override
     public void onEquipmentComplete() {
         clearComponent();
         finish();
     }
 
-    private void clearComponent(){
+    protected void clearComponent(){
         ((MyApplication)getApplication()).clearEquipmentTaskComponent();
     }
 
@@ -98,21 +99,6 @@ public class EquipmentTaskActivity extends BaseActivity implements EquipmentView
         Intent intent = new Intent(context, EquipmentTaskActivity.class);
         intent.putExtra(ID, id);
         context.startActivity(intent);
-    }
-
-    @Override
-    public FragmentManager provideFragmentManager() {
-        return getSupportFragmentManager();
-    }
-
-    @Override
-    public void showProgress() {
-        progressBar.setVisibility(VISIBLE);
-    }
-
-    @Override
-    public void hideProgress() {
-        progressBar.setVisibility(GONE);
     }
 
     @Override

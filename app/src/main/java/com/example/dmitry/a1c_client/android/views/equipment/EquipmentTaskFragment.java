@@ -84,6 +84,11 @@ public class EquipmentTaskFragment extends Fragment implements EquipmentTaskView
         llHidable.setVisibility(VISIBLE);
         tvKitName.setText(kit.kitName().positionName());
         tvKitDescription.setText(kit.kitName().description());
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() {
+        utils.hideKeyboard(getActivity());
     }
 
     @Override

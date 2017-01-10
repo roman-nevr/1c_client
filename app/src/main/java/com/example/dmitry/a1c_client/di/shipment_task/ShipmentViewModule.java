@@ -1,7 +1,7 @@
 package com.example.dmitry.a1c_client.di.shipment_task;
 
 import com.example.dmitry.a1c_client.di.scopes.PerActivity;
-import com.example.dmitry.a1c_client.presentation.ShipmentView;
+import com.example.dmitry.a1c_client.presentation.WindowView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,15 +12,15 @@ import dagger.Provides;
 
 @Module
 public class ShipmentViewModule {
-    private ShipmentView view;
+    private WindowView view;
 
-    public ShipmentViewModule(ShipmentView view) {
+    public ShipmentViewModule(WindowView view) {
         this.view = view;
     }
 
     @PerActivity
     @Provides
-    ShipmentView provideShipmentView(){
+    WindowView provideShipmentView(){
         return view;
     }
 }

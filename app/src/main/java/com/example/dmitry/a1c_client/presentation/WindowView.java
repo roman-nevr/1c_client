@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 /**
  * Created by Admin on 09.01.2017.
  */
-public interface ShipmentView {
+public interface WindowView {
     void showProgress();
     void hideProgress();
     FragmentManager provideFragmentManager();

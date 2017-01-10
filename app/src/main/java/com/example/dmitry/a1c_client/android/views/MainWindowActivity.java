@@ -3,6 +3,7 @@ package com.example.dmitry.a1c_client.android.views;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
@@ -39,6 +40,8 @@ public class MainWindowActivity extends BaseActivity {
             Fragment shipmentFragment = getFragmentByTag(tag);
             getSupportFragmentManager().beginTransaction().add(R.id.main_container, shipmentFragment, tag).commit();
             setTitle(tag);
+            ActionBar actionBar = getSupportActionBar();
+            System.out.println(actionBar);
         }
     }
 
