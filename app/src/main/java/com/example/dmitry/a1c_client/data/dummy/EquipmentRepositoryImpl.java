@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.data;
+package com.example.dmitry.a1c_client.data.dummy;
 
 import com.example.dmitry.a1c_client.domain.EquipmentRepository;
 import com.example.dmitry.a1c_client.domain.entity.Kit;

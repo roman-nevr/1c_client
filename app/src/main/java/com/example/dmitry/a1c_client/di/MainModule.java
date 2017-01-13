@@ -1,6 +1,6 @@
 package com.example.dmitry.a1c_client.di;
 
-import com.example.dmitry.a1c_client.data.DocumentRepositoryImpl;
+import com.example.dmitry.a1c_client.data.dummy.DocumentRepositoryDummyImpl;
 import com.example.dmitry.a1c_client.domain.DocumentRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipListState;
@@ -17,7 +17,7 @@ public class MainModule {
     @Provides
     @Singleton
     public DocumentRepository provideDocumentRepository() {
-        return new DocumentRepositoryImpl();
+        return new DocumentRepositoryDummyImpl();
     }
 
     @Provides

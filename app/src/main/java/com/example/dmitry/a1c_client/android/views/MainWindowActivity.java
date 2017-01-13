@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.widget.TextView;
 
 import com.example.dmitry.a1c_client.R;
+import com.example.dmitry.a1c_client.misc.utils;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.example.dmitry.a1c_client.android.MyApplication.log;
+import static com.example.dmitry.a1c_client.misc.utils.parseOdataTime;
 
 public class MainWindowActivity extends BaseActivity {
 
@@ -43,6 +45,7 @@ public class MainWindowActivity extends BaseActivity {
             ActionBar actionBar = getSupportActionBar();
             System.out.println(actionBar);
         }
+        System.out.println(utils.fullFormat.format(parseOdataTime("2016-12-29T15:20:06")));
     }
 
     @OnClick(R.id.tv_income) void onIncomeClick(){

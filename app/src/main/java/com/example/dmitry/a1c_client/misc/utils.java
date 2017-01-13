@@ -9,7 +9,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by roma on 16.06.2016.
@@ -69,5 +72,19 @@ public class utils {
 
     public static SimpleDateFormat fullFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     public static SimpleDateFormat shortFormat = new SimpleDateFormat("dd.MM HH:mm:ss");
+    //0123456789012345678
+    //2016-12-29T15:20:06
+    public static Date parseOdataTime(String oDataTime) throws IllegalArgumentException{
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date result;
+        try {
+            result =  df.parse(oDataTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+        return result;
+    }
+
 
 }

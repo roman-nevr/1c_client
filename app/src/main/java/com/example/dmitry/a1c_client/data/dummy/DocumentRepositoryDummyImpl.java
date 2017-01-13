@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.data;
+package com.example.dmitry.a1c_client.data.dummy;
 
 
 import com.example.dmitry.a1c_client.domain.DocumentRepository;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Single;
 
-public class DocumentRepositoryImpl implements DocumentRepository {
+public class DocumentRepositoryDummyImpl implements DocumentRepository {
     @Override
     public Single<List<ShipmentDocument>> getShipmentDocuments() {
         /*List<Document> newList = new ArrayList<>();

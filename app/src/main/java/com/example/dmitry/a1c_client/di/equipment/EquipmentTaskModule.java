@@ -1,7 +1,6 @@
 package com.example.dmitry.a1c_client.di.equipment;
 
-import com.example.dmitry.a1c_client.data.EquipmentRepositoryImpl;
-import com.example.dmitry.a1c_client.di.scopes.TaskScope;
+import com.example.dmitry.a1c_client.data.dummy.EquipmentRepositoryImpl;
 import com.example.dmitry.a1c_client.domain.EquipmentRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.EquipmentTaskState;

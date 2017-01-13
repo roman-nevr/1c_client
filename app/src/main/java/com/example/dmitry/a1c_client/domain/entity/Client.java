@@ -4,11 +4,20 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class Client {
+
+
+    public static Client create(String id, String name) {
+        return builder()
+                .id(id)
+                .name(name)
+                .build();
+    }
+
+    public static Builder builder() {return new AutoValue_Client.Builder();}
+
     abstract public String id();
 
     abstract public String name();
-
-    public static Builder builder() {return new AutoValue_Client.Builder();}
 
     @AutoValue.Builder
     public abstract static class Builder {

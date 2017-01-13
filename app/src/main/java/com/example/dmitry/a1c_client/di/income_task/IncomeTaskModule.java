@@ -1,11 +1,10 @@
 package com.example.dmitry.a1c_client.di.income_task;
 
-import com.example.dmitry.a1c_client.data.IncomeTaskRepositoryImpl;
+import com.example.dmitry.a1c_client.data.dummy.IncomeTaskRepositoryImpl;
 import com.example.dmitry.a1c_client.di.scopes.PerActivity;
 import com.example.dmitry.a1c_client.domain.IncomeTaskRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
 import com.example.dmitry.a1c_client.domain.entity.IncomeTaskState;
-import com.example.dmitry.a1c_client.presentation.IncomeTaskView;
 
 import dagger.Module;
 import dagger.Provides;

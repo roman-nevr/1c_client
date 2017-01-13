@@ -1,4 +1,4 @@
-package com.example.dmitry.a1c_client.data;
+package com.example.dmitry.a1c_client.data.dummy;
 
 import com.example.dmitry.a1c_client.domain.ShipmentTaskRepository;
 import com.example.dmitry.a1c_client.domain.entity.Enums;

@@ -1,7 +1,6 @@
 package com.example.dmitry.a1c_client.di.shipment_task;
 
-import com.example.dmitry.a1c_client.data.ShipmentTaskRepositoryImpl;
-import com.example.dmitry.a1c_client.di.scopes.PerActivity;
+import com.example.dmitry.a1c_client.data.dummy.ShipmentTaskRepositoryImpl;
 import com.example.dmitry.a1c_client.di.scopes.TaskScope;
 import com.example.dmitry.a1c_client.domain.ShipmentTaskRepository;
 import com.example.dmitry.a1c_client.domain.StateKeeper;
